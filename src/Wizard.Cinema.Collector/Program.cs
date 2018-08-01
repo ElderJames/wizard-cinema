@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Cinema.Collector
+namespace Wizard.Cinema.Collector
 {
     internal class Program
     {

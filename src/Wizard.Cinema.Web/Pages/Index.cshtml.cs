@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Cinema.Web.Pages
+namespace Wizard.Cinema.Web.Pages
 {
     public class IndexModel : PageModel
     {
         public void OnGet()
         {
-
         }
     }
 }

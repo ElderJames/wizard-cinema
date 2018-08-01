@@ -1,0 +1,39 @@
+﻿@page
+@model SeatModel
+@using System.Net.Http
+@using HtmlAgilityPack
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@{
+    ViewData["Title"] = "Seat";
+}
+
+@functions
+{
+
+public class SeatModel : PageModel
+{
+    readonly HttpClient httpClient;
+
+    public SeatModel(IHttpClientFactory httpClientFactory)
+    {
+        this.httpClient = httpClientFactory.CreateClient();
+    }
+
+    public async Task<IActionResult> OnGet()
+    {
+        var html = await httpClient.GetStringAsync("http://maoyan.com/xseats/201808010050937?movieId=1212592&cinemaId=2161");
+        var doc = new HtmlDocument();
+        doc.LoadHtml(html);
+
+        var target = doc.DocumentNode.SelectSingleNode("//*[@id=\"app\"]/div[2]/div[1]").OuterHtml;
+        ViewData["Html"] = target;
+        return Page();
+    }
+}
+
+}
+@section Styles{
+    <link rel="stylesheet" href="https://ms0.meituan.net/mywww/cinemas-seat.d66e64ba.css" />
+}
+
+@Html.Raw(ViewData["Html"])

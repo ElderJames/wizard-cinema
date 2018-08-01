@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Cinema.Web.Pages
+namespace Wizard.Cinema.Web.Pages
 {
     public class ContactModel : PageModel
     {
