@@ -1,0 +1,6 @@
+﻿
+获取电影需要cookie
+http://m.maoyan.com/ajax/movieOnInfoList?token=
+v=3; iuuid=1A6E888B4A4B29B16FBA1299108DBE9CD0C5091E8B5AF8162F85883AE9AC7C7A; webp=true; ci=20%2C%E5%B9%BF%E5%B7%9E
+
+第一次请求可以获取到cookie
