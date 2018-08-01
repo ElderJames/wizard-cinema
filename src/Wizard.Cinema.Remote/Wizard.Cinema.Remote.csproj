@@ -9,4 +9,10 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wizard.Cinema.Domain\Wizard.Cinema.Domain.csproj" />
+    <ProjectReference Include="..\Wizard.Cinema.QueryServices\Wizard.Cinema.QueryServices.csproj" />
+    <ProjectReference Include="..\Wizard.Cinema.Smartsql\Wizard.Cinema.Smartsql.csproj" />
+  </ItemGroup>
 </Project>
