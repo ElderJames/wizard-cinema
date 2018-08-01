@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Wizard.Cinema.Remote;
 
 namespace Wizard.Cinema.Web
 {
@@ -27,6 +28,8 @@ namespace Wizard.Cinema.Web
             });
 
             services.AddHttpClient();
+            services.AddSingleton<RemoteCall>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
