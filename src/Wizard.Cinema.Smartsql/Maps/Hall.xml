@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Hall"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd ../smartsql/SmartSqlMap.xsd">
+
+  <Statements>
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="and" Property="HallId">
+          HallId = @HallId
+        </IsNotNull>
+        <IsNotNull Prepend="and" Property="CinemaId">
+          CinemaId = @CinemaId
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Insert">
+      INSERT INTO cinema_hall
+      (HallId
+      ,Name
+      ,CinemaId
+      ,SeatHtml
+      ,SeatJson
+      ,LastUpdateTime)
+      VALUES
+      (@HallId
+      ,@Name
+      ,@CinemaId
+      ,@SeatHtml
+      ,@SeatJson
+      ,@LastUpdateTime
+      );
+      SELECT last_insert_rowid();
+    </Statement>
+
+    <Statement Id="InsertBatch">
+      INSERT INTO cinema_hall
+      (HallId
+      ,Name
+      ,CinemaId
+      ,SeatHtml
+      ,SeatJson
+      ,LastUpdateTime)
+      VALUES
+      <For Prepend="" Property="halls" Key="T" Open="" Separator="," Close="">
+        (@HallId
+        ,@Name
+        ,@CinemaId
+        ,@SeatHtml
+        ,@SeatJson
+        ,@LastUpdateTime
+        )
+      </For>
+    </Statement>
+
+    <!--<Statement Id="Query">
+      SELECT * From cinema_hall
+      <Include RefId="QueryParams" />
+    </Statement>-->
+  </Statements>
+</SmartSqlMap>
