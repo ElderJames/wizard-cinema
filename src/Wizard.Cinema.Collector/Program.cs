@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Response;
 using Wizard.Cinema.Smartsql;
+using Wizard.Cinema.Infrastructures;
 
 namespace Wizard.Cinema.Collector
 {
@@ -34,7 +36,8 @@ namespace Wizard.Cinema.Collector
                 .CreateLogger();
 
             var services = new ServiceCollection();
-            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(Log.Logger));
+            services.AddLogging();
+            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 
             services.AddHttpClient();
             services.AddSingleton<RemoteCall>();
@@ -45,76 +48,129 @@ namespace Wizard.Cinema.Collector
             var remoteCall = provider.GetService<RemoteCall>();
             var cinemaRepository = provider.GetService<ICinemaRepository>();
             var hallRepository = provider.GetService<IHallRepository>();
-            //var cites = await remoteCall.SendAsync(new CityRequest());
-            //Console.WriteLine(JsonConvert.SerializeObject(cites));
 
-            //var cinemas = await remoteCall.SendAsync(new CinemaRequest() { CityId = 10 });
+            var cites = await remoteCall.SendAsync(new CityRequest());
 
-            //cinemaRepository.InsertBatch(cinemas.cinemas.Take(2).Select(item => new Remote.Models.Cinema()
-            //{
-            //    CityId = 10,
-            //    Address = item.addr,
-            //    CinemaId = item.id,
-            //    Name = item.nm,
-            //    LastUpdateTime = DateTime.Now
-            //}).ToArray());
-
-            //Console.WriteLine(JsonConvert.SerializeObject(cinemas));
-
-            var movies = await remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = 184 });
-
-            //foreach (var item in movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist)))
-            //{
-            //    var seats = await remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = item.seqNo });
-            //}
-
-            var seats = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist)).AsParallel().Select(
-                x =>
-                {
-                    var hall = remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = x.seqNo }).Result;
-                    var html = remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seqNo }).Result;
-                    return (hall, html);
-                }).ToList();
-
-            try
+            var totalCityCount = cites.letterMap.SelectMany(x => x.Value).Count();
+            foreach (var city in cites.letterMap.SelectMany(x => x.Value))
             {
-                var arr = seats.Distinct(new SeatListResponseEqualityComparer()).Select(x => new Hall()
+                Console.WriteLine("城市剩余:" + totalCityCount--);
+                try
                 {
-                    HallId = x.Item1.seatData.hall.hallId,
-                    Name = x.Item1.seatData.hall.hallName,
-                    CinemaId = x.Item1.seatData.cinema.cinemaId,
-                    SeatJson = JsonConvert.SerializeObject(x.Item1.seatData.seat),
-                    SeatHtml = x.Item2,
-                    LastUpdateTime = DateTime.Now
-                }).ToArray();
-                hallRepository.InsertBatch(arr);
+                    //获取影院
+                    var cinemas = await remoteCall.SendAsync(new CinemaRequest() { CityId = city.id });
+
+                    //var splitArr = cinemas.cinemas.Split(20);
+                    //splitArr.ForEach(item =>
+                    //{
+                    //});
+                    //cinemas.cinemas.ForEach(o =>
+                    //{
+                    //    try
+                    //    {
+                    //        cinemaRepository.Insert(new Remote.Models.Cinema()
+                    //        {
+                    //            CityId = city.id,
+                    //            Address = o.addr,
+                    //            CinemaId = o.id,
+                    //            Name = o.nm,
+                    //            LastUpdateTime = DateTime.Now
+                    //        });
+                    //    }
+                    //    catch (Exception ex)
+                    //    {
+                    //        cinemaRepository.Insert(new Remote.Models.Cinema()
+                    //        {
+                    //            CityId = city.id,
+                    //            Address = o.addr,
+                    //            CinemaId = o.id,
+                    //            Name = o.nm,
+                    //            LastUpdateTime = DateTime.Now
+                    //        });
+                    //    }
+                    //});
+
+                    var cinemaCount = cinemas.cinemas.Length;
+
+                    foreach (var cinema in cinemas.cinemas)
+                    {
+                        Console.WriteLine("影院剩余：" + cinemaCount--);
+                        try
+                        {
+                            var movies = await remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinema.id });
+
+                            var seats = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist))
+                                .AsParallel().Select(x =>
+                                {
+                                    try
+                                    {
+                                        var result = remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = x.seqNo })
+                                            .Result;
+                                        if (result?.seatData?.hall == null)
+                                        {
+                                            Console.WriteLine("结果为null， seqNo:" + x.seqNo);
+                                            return null;
+                                        }
+
+                                        return result;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                        return null;
+                                    }
+                                }).Where(x => x != null)
+                                .ToList();
+
+                            seats.Distinct(new SeatListResponseEqualityComparer()).ForEach(x =>
+                            {
+                                try
+                                {
+                                    var html = remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seatData.show.seqNo }).Result;
+
+                                    html = Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline);
+
+                                    hallRepository.Insert(new Hall()
+                                    {
+                                        HallId = x.seatData.hall.hallId,
+                                        Name = x.seatData.hall.hallName,
+                                        CinemaId = x.seatData.cinema.cinemaId,
+                                        SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
+                                        SeatHtml = html.Replace("\r", "").Replace("\n", ""),
+                                        LastUpdateTime = DateTime.Now
+                                    });
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            //Console.WriteLine(JsonConvert.SerializeObject(movies));
-
-            //var seats = await remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = "201808020026945" });
-            //Console.WriteLine(JsonConvert.SerializeObject(seats));
-
-            //var seatHtml = await remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = "201808020026945" });
-            //Console.WriteLine(seatHtml);
 
             Console.ReadLine();
         }
 
-        public class SeatListResponseEqualityComparer : IEqualityComparer<(SeatListResponse, string)>
+        public class SeatListResponseEqualityComparer : IEqualityComparer<SeatListResponse>
         {
-            public bool Equals((SeatListResponse, string) x, (SeatListResponse, string) y)
+            public bool Equals(SeatListResponse x, SeatListResponse y)
             {
-                return x.Item1.seatData.hall.hallId == y.Item1.seatData.hall.hallId;
+                return x.seatData?.hall?.hallId == y.seatData?.hall?.hallId;
             }
 
-            public int GetHashCode((SeatListResponse, string) obj)
+            public int GetHashCode(SeatListResponse obj)
             {
-                return obj.Item1.seatData.hall.hallId;
+                return obj.seatData?.hall?.hallId ?? 0;
             }
         }
     }

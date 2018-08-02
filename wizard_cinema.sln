@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{6918A1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "remote", "remote", "{8457AE58-BB05-4F9D-8057-1EB1133DAE2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wizard.Cinema.Remote", "src\Wizard.Cinema.Remote\Wizard.Cinema.Remote.csproj", "{27F0356A-9933-4549-8FCE-BB60E136DB8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wizard.Cinema.Remote", "src\Wizard.Cinema.Remote\Wizard.Cinema.Remote.csproj", "{27F0356A-9933-4549-8FCE-BB60E136DB8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

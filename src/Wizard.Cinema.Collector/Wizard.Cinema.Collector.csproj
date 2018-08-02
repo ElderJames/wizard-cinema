@@ -13,12 +13,14 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.12" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0-dev-00024" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="2.6.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Wizard.Cinema.Infrastructures\Wizard.Cinema.Infrastructures.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.Remote\Wizard.Cinema.Remote.csproj" />
   </ItemGroup>
 

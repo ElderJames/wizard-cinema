@@ -30,8 +30,9 @@
       ,@SeatHtml
       ,@SeatJson
       ,@LastUpdateTime
-      );
-      SELECT last_insert_rowid();
+      )
+      <!--;SELECT last_insert_rowid();-->
+      ;SELECT last_insert_Id() as Id;
     </Statement>
 
     <Statement Id="InsertBatch">
