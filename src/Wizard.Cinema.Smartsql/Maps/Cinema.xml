@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SmartSqlMap Scope="Remote"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+<SmartSqlMap Scope="Cinema"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd ../smartsql/SmartSqlMap.xsd">
 
   <Statements>
-    <Statement Id="InsertCinema">
+    <Statement Id="Insert">
       INSERT INTO city_cinema
       (CinemaId
       ,Name
@@ -19,6 +19,24 @@
       ,@LastUpdateTime
       );
       SELECT last_insert_rowid();
+    </Statement>
+
+    <Statement Id="InsertBatch">
+      INSERT INTO city_cinema
+      (CinemaId
+      ,Name
+      ,CityId
+      ,Address
+      ,LastUpdateTime)
+      VALUES
+      <For Prepend="" Property="cinemas" Key="T" Open="" Separator="," Close="">
+        (@CinemaId
+        ,@Name
+        ,@CityId
+        ,@Address
+        ,@LastUpdateTime
+        )
+      </For>
     </Statement>
   </Statements>
 </SmartSqlMap>

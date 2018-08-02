@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using Wizard.Cinema.Remote;
 using Wizard.Cinema.Remote.Request;
 using Serilog;
 using Serilog.Events;
+using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Smartsql;
 
 namespace Wizard.Cinema.Collector
@@ -37,29 +39,21 @@ namespace Wizard.Cinema.Collector
             var provider = services.BuildServiceProvider();
 
             var remoteCall = provider.GetService<RemoteCall>();
-            var remoteRepository = provider.GetService<IRemoteRepository>();
+            var remoteRepository = provider.GetService<ICinemaRepository>();
             //var cites = await remoteCall.SendAsync(new CityRequest());
             //Console.WriteLine(JsonConvert.SerializeObject(cites));
 
             var cinemas = await remoteCall.SendAsync(new CinemaRequest() { CityId = 20 });
-            foreach (var item in cinemas.cinemas)
+
+            remoteRepository.InsertBatch(cinemas.cinemas.Select(item => new Remote.Models.Cinema()
             {
-                try
-                {
-                    remoteRepository.InsertCinema(new Remote.Models.Cinema()
-                    {
-                        CityId = 20,
-                        Address = item.addr,
-                        CinemaId = item.id,
-                        Name = item.nm,
-                        LastUpdateTime = DateTime.Now
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+                CityId = 20,
+                Address = item.addr,
+                CinemaId = item.id,
+                Name = item.nm,
+                LastUpdateTime = DateTime.Now
+            }).ToArray());
+
             //Console.WriteLine(JsonConvert.SerializeObject(cinemas));
 
             //var movies = await remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = 184 });
