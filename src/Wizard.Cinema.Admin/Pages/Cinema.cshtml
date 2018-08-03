@@ -1,0 +1,32 @@
+﻿@page
+@model CinemaModel
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Newtonsoft.Json
+@using Wizard.Cinema.Admin.Helpers
+@using Wizard.Cinema.Infrastructures
+@using Wizard.Cinema.Remote.Response
+@{
+    ViewData["Title"] = "Cinema";
+}
+
+@functions
+{
+
+public class CinemaModel : PageModel
+{
+    Lazy<CityHelper> cityhelper = new Lazy<CityHelper>();
+
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
+
+    public IActionResult OnGetSearchCity(string keyword)
+    {
+        var citys = cityhelper.Value.Search(keyword);
+        return new JsonResult(citys);
+    }
+}
+}
+
+<h2>Cinema</h2>
