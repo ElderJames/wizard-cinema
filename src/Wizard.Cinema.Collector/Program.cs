@@ -14,7 +14,6 @@ using Serilog.Events;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Response;
-using Wizard.Cinema.Smartsql;
 using Wizard.Cinema.Infrastructures;
 
 namespace Wizard.Cinema.Collector
@@ -39,9 +38,7 @@ namespace Wizard.Cinema.Collector
             services.AddLogging();
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 
-            services.AddHttpClient();
-            services.AddSingleton<RemoteCall>();
-            services.AddSmartSqlStorage(configuration);
+            services.AddRemote();
 
             var provider = services.BuildServiceProvider();
 

@@ -8,11 +8,20 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.8.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="SmartSql" Version="3.5.14" />
+    <PackageReference Include="SmartSql.DIExtension" Version="3.5.8" />
+    <PackageReference Include="SmartSql.DyRepository" Version="3.5.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wizard.Cinema.Domain\Wizard.Cinema.Domain.csproj" />
-    <ProjectReference Include="..\Wizard.Cinema.QueryServices\Wizard.Cinema.QueryServices.csproj" />
-    <ProjectReference Include="..\Wizard.Cinema.Smartsql\Wizard.Cinema.Smartsql.csproj" />
+    <None Update="SmartSqlConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlMaps\cinemas.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SqlMaps\halls.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

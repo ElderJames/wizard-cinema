@@ -14,7 +14,7 @@ namespace Wizard.Cinema.Remote
         public RemoteCall(IHttpClientFactory httpClientFactory, ILogger<RemoteCall> logger)
         {
             _logger = logger;
-            this._httpClient = httpClientFactory.CreateClient();
+            this._httpClient = httpClientFactory.CreateClient("movieInfo");
         }
 
         public async Task<TResponse> SendAsync<TResponse>(BaseRequest<TResponse> request) where TResponse : class

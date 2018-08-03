@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SmartSqlMap Scope="Hall"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd ../smartsql/SmartSqlMap.xsd">
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd smartsql/SmartSqlMap.xsd">
 
   <Statements>
     <Statement Id="QueryParams">
@@ -16,7 +16,7 @@
     </Statement>
 
     <Statement Id="Insert">
-      INSERT INTO cinema_hall
+      INSERT INTO halls
       (HallId
       ,Name
       ,CinemaId
@@ -36,7 +36,7 @@
     </Statement>
 
     <Statement Id="InsertBatch">
-      INSERT INTO cinema_hall
+      INSERT INTO halls
       (HallId
       ,Name
       ,CinemaId

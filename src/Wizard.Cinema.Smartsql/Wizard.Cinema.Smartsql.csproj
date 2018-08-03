@@ -15,13 +15,4 @@
     <PackageReference Include="SmartSql.DyRepository" Version="3.5.9" />
     <PackageReference Include="SmartSql.Options" Version="1.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Maps\Hall.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Maps\cinema.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>
