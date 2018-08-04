@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SmartSql;
+using Wizard.Cinema.Remote.Services;
 
 namespace Wizard.Cinema.Remote
 {
@@ -10,6 +11,7 @@ namespace Wizard.Cinema.Remote
         {
             services.AddHttpClient("movieInfo");
             services.AddSingleton<RemoteCall>();
+            services.AddSingleton<CityService>();
 
             services.AddSmartSql();
             services.AddRepositoryFactory();

@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Wizard.Cinema.Infrastructures\Wizard.Cinema.Infrastructures.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.Remote\Wizard.Cinema.Remote.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
 </Project>

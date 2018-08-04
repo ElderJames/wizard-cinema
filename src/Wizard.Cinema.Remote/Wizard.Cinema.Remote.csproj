@@ -5,12 +5,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="cities.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="cities.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.8.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="SmartSql" Version="3.5.14" />
     <PackageReference Include="SmartSql.DIExtension" Version="3.5.8" />
     <PackageReference Include="SmartSql.DyRepository" Version="3.5.9" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wizard.Cinema.Infrastructures\Wizard.Cinema.Infrastructures.csproj" />
   </ItemGroup>
 
   <ItemGroup>
