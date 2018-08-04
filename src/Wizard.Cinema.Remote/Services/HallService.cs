@@ -50,7 +50,6 @@ namespace Wizard.Cinema.Remote.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine(ex.Message);
                                     return null;
                                 }
                             }).Where(x => x != null)
@@ -69,7 +68,7 @@ namespace Wizard.Cinema.Remote.Services
                                 SeatHtml = html.IsNullOrEmpty() ? null : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline),
                                 LastUpdateTime = DateTime.Now
                             };
-                        });
+                        }).ToList();
 
                         repository.InsertBatch(halls);
                     }

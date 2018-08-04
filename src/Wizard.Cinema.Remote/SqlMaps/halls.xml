@@ -56,17 +56,17 @@
     </Statement>
 
     <Statement Id="Query">
-      SELECT * From cinema_hall
+      SELECT * From halls
       <Include RefId="QueryParams" />
     </Statement>
 
     <Statement Id="QueryByCinemaId">
-      SELECT * From cinema_hall
+      SELECT * From halls
       <Include RefId="QueryParams" />
     </Statement>
 
     <Statement Id="QueryById">
-      SELECT * From cinema_hall
+      SELECT * From halls
       <Include RefId="QueryParams" />
     </Statement>
   </Statements>

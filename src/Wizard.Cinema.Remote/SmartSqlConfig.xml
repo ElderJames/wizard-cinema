@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SmartSqlMapConfig xmlns="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd">
-  <Settings
-     IsWatchConfigFile="true" />
+  <Settings IsWatchConfigFile="true" IgnoreParameterCase="true" />
   <Database>
     <!--ParameterPrefix:[SqlServer:@ | MySQL:? |Oracle::] -->
     <DbProvider Name="MySqlClientFactory" ParameterPrefix="@" Type="MySql.Data.MySqlClient.MySqlClientFactory,MySql.Data" />

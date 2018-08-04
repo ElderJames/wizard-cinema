@@ -12,6 +12,8 @@ namespace Wizard.Cinema.Remote
             services.AddHttpClient("movieInfo");
             services.AddSingleton<RemoteCall>();
             services.AddSingleton<CityService>();
+            services.AddSingleton<CinemaService>();
+            services.AddSingleton<HallService>();
 
             services.AddSmartSql();
             services.AddRepositoryFactory();
