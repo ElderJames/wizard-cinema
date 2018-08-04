@@ -1,4 +1,5 @@
-﻿using Wizard.Cinema.Remote.Models;
+﻿using System.Collections.Generic;
+using Wizard.Cinema.Remote.Models;
 
 namespace Wizard.Cinema.Remote.Repository
 {
@@ -6,10 +7,10 @@ namespace Wizard.Cinema.Remote.Repository
     {
         int Insert(Hall hall);
 
-        int InsertBatch(Hall[] halls);
+        int InsertBatch(IEnumerable<Hall> halls);
 
-        //Hall Query(int hallId);
+        IEnumerable<Hall> QueryByCinemaId(int cinemaId);
 
-        //Hall Query(object condition);
+        Hall QueryById(int hallId);
     }
 }

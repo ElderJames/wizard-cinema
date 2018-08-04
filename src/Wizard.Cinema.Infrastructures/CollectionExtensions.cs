@@ -94,5 +94,13 @@ namespace Wizard.Cinema.Infrastructures
                 yield return array.Skip(i * size).Take(size);
             }
         }
+
+        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> array, int size)
+        {
+            for (var i = 0; i < (float)array.Count() / size; i++)
+            {
+                yield return array.Skip(i * size).Take(size);
+            }
+        }
     }
 }

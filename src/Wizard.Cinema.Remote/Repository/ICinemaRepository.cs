@@ -6,10 +6,10 @@ namespace Wizard.Cinema.Remote.Repository
     {
         int Insert(Models.Cinema cinema);
 
-        int InsertBatch(params Models.Cinema[] cinemas);
+        int InsertBatch(IEnumerable<Models.Cinema> cinemas);
 
         //int Update(Models.Cinema cinema);
 
-        //IEnumerable<Models.Cinema> Query();
+        IEnumerable<Models.Cinema> Query(int cityId);
     }
 }

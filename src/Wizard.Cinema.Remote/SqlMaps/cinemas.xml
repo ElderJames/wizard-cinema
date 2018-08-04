@@ -39,5 +39,18 @@
         )
       </For>
     </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="and" Property="CityId">
+          CityId = @CityId
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query">
+      SELECT * FROM cinemas
+      <Include RefId="QueryParams" />
+    </Statement>
   </Statements>
 </SmartSqlMap>

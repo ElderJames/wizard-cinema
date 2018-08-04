@@ -55,9 +55,19 @@
       </For>
     </Statement>
 
-    <!--<Statement Id="Query">
+    <Statement Id="Query">
       SELECT * From cinema_hall
       <Include RefId="QueryParams" />
-    </Statement>-->
+    </Statement>
+
+    <Statement Id="QueryByCinemaId">
+      SELECT * From cinema_hall
+      <Include RefId="QueryParams" />
+    </Statement>
+
+    <Statement Id="QueryById">
+      SELECT * From cinema_hall
+      <Include RefId="QueryParams" />
+    </Statement>
   </Statements>
 </SmartSqlMap>
