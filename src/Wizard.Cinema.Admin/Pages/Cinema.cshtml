@@ -8,7 +8,6 @@
 
 @functions
 {
-
 public class CinemaModel : PageModel
 {
     readonly CityService cityService;
@@ -30,5 +29,46 @@ public class CinemaModel : PageModel
     }
 }
 }
+<h2>城市</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <select id="city" name="city" class="form-control"></select>
+        </div>
+    </div>
+</div>
 
-<h2>Cinema</h2>
+
+@section Styles
+    {
+
+    <link href="~/lib/select2-4.0.6-rc.1/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+@section Scripts
+    {
+    <script src="~/lib/select2-4.0.6-rc.1/dist/js/select2.min.js"></script>
+    <script>
+        (function(window, document, $) {
+            $('#city').select2({
+                ajax: {
+                    url: '@Url.Page("Cinema", "SearchCity")',
+                    dataType: 'json',
+                    data: function(params) {
+                        return {
+                            keyword: params.term
+                        }
+                    },
+                    processResults: function(data) {
+                        // Tranforms the top-level key of the response object from 'items' to 'results'
+                       var re= {
+                            results: data.map(x => { return { id: x.id, text: x.nm }; })
+                        };
+                        console.log(re);
+                        return re;
+                    }
+                }
+            });
+        })(window, document, jQuery);
+    </script>
+}

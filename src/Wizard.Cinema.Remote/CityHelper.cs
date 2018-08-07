@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Response;
-using System.IO;
 
-namespace Wizard.Cinema.Admin.Helpers
+namespace Wizard.Cinema.Remote
 {
     public class CityHelper
     {
@@ -29,6 +28,9 @@ namespace Wizard.Cinema.Admin.Helpers
 
         public IEnumerable<CityResponse.City> Search(string keyword)
         {
+            if (keyword.IsNullOrEmpty())
+                return Enumerable.Empty<CityResponse.City>();
+
             return CityLsit.Where(x => x.nm.Contains(keyword) || x.py.Contains(keyword)).OrderBy(x => x.nm.IndexOf(keyword));
         }
     }
