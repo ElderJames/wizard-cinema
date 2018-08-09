@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Wizard.Cinema.Remote.Response;
+﻿using Wizard.Cinema.Remote.Spider.Response;
 
-namespace Wizard.Cinema.Remote.Request
+namespace Wizard.Cinema.Remote.Spider.Request
 {
     public class SeatInfoRequest : BaseRequest<SeatListResponse>
     {

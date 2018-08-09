@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Wizard.Cinema.Infrastructures;
+using Wizard.Cinema.Remote.Repository.Condition;
 
 namespace Wizard.Cinema.Remote.Repository
 {
@@ -10,6 +12,8 @@ namespace Wizard.Cinema.Remote.Repository
 
         //int Update(Models.Cinema cinema);
 
-        IEnumerable<Models.Cinema> Query(int cityId);
+        IEnumerable<Models.Cinema> GetList(SearchCinemaCondition condition);
+
+        PagedData<Models.Cinema> QueryPage(SearchCinemaCondition condition);
     }
 }

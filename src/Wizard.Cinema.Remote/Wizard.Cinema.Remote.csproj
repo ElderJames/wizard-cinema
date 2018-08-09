@@ -33,11 +33,16 @@
     <None Update="SmartSqlConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SqlMaps\cinemas.xml">
+    <None Update="Repository\SqlMaps\cinemas.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SqlMaps\halls.xml">
+    <None Update="Repository\SqlMaps\halls.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Request\" />
+    <Folder Include="Application\Response\" />
   </ItemGroup>
 </Project>

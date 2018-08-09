@@ -1,7 +1,8 @@
 ﻿@page
 @using Remote
-@using Remote.Request
-@inject RemoteCall remoteCall;
+@using Remote.Spider
+@using Remote.Spider.Request
+@inject RemoteSpider RemoteCall;
 @{
     ViewData["Title"] = "Seat";
 }
@@ -16,18 +17,18 @@
     </style>
 }
 <div class="container" id="app">
-<div class="main clearfix">
-    @Html.Raw(await remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = "201808020026945" }))
-    <div class="side">
-        <div class="ticket-info">
-            <div class="has-ticket">
-                <span class="text">座位：</span>
-                <div class="ticket-container" data-limit="6">
+    <div class="main clearfix">
+        @Html.Raw(await RemoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = "201808020026945" }))
+        <div class="side">
+            <div class="ticket-info">
+                <div class="has-ticket">
+                    <span class="text">座位：</span>
+                    <div class="ticket-container" data-limit="6">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 @section Scripts
     {

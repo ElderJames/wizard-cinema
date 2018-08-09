@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wizard.Cinema.Remote
+﻿namespace Wizard.Cinema.Remote.Spider.Response
 {
     public class BaseResponse<TResponse> where TResponse : class
     {

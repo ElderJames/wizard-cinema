@@ -2,47 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wizard.Cinema.Infrastructures;
+using Wizard.Cinema.Remote.Application;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
-using Wizard.Cinema.Remote.Request;
+using Wizard.Cinema.Remote.Spider;
+using Wizard.Cinema.Remote.Spider.Request;
 
-namespace Wizard.Cinema.Remote.Services
+namespace Wizard.Cinema.Remote.ApplicationServices
 {
     public class HallService
     {
-        private readonly RemoteCall remoteCall;
-        private readonly IHallRepository repository;
-        private readonly object locker = new object();
+        private readonly RemoteSpider _remoteCall;
+        private readonly IHallRepository _repository;
+        private readonly ILogger<HallService> _logger;
+        private readonly object _locker = new object();
 
-        public HallService(RemoteCall remoteCall, IHallRepository repository)
+        public HallService(RemoteSpider remoteCall, IHallRepository repository, ILogger<HallService> logger)
         {
-            this.remoteCall = remoteCall;
-            this.repository = repository;
+            this._remoteCall = remoteCall;
+            this._repository = repository;
+            this._logger = logger;
         }
 
         public IEnumerable<Hall> GetByCinemaId(int cinemaId)
         {
-            var halls = repository.QueryByCinemaId(cinemaId);
+            var halls = _repository.QueryByCinemaId(cinemaId);
             if (halls.IsNullOrEmpty())
             {
-                lock (locker)
+                lock (_locker)
                 {
-                    halls = repository.QueryByCinemaId(cinemaId);
+                    halls = _repository.QueryByCinemaId(cinemaId);
                     if (halls.IsNullOrEmpty())
                     {
-                        var movies = remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinemaId }).Result;
+                        var movies = _remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinemaId }).Result;
 
                         var seats = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist))
                             .AsParallel().Select(x =>
                             {
                                 try
                                 {
-                                    var result = remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = x.seqNo }).Result;
+                                    var result = _remoteCall.SendAsync(new SeatInfoRequest() { SeqNo = x.seqNo }).Result;
                                     if (result?.seatData?.hall == null)
                                     {
-                                        Console.WriteLine("结果为null， seqNo:" + x.seqNo);
+                                        _logger.LogError("结果为null， seqNo:" + x.seqNo);
                                         return null;
                                     }
 
@@ -50,6 +55,7 @@ namespace Wizard.Cinema.Remote.Services
                                 }
                                 catch (Exception ex)
                                 {
+                                    _logger.LogError("获取场次异常， seqNo:" + x.seqNo, ex);
                                     return null;
                                 }
                             }).Where(x => x != null)
@@ -57,7 +63,7 @@ namespace Wizard.Cinema.Remote.Services
 
                         halls = seats.Distinct(new SeatListResponseEqualityComparer()).Select(x =>
                         {
-                            var html = remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seatData.show.seqNo }).Result;
+                            var html = _remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seatData.show.seqNo }).Result;
 
                             return new Hall()
                             {
@@ -70,7 +76,7 @@ namespace Wizard.Cinema.Remote.Services
                             };
                         }).ToList();
 
-                        repository.InsertBatch(halls);
+                        _repository.InsertBatch(halls);
                     }
                 }
             }
@@ -80,7 +86,7 @@ namespace Wizard.Cinema.Remote.Services
 
         public Hall GetById(int hallId)
         {
-            return repository.QueryById(hallId);
+            return _repository.QueryById(hallId);
         }
     }
 }

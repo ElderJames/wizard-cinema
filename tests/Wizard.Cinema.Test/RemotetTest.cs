@@ -1,7 +1,8 @@
 using System.Linq;
-using Wizard.Cinema.Remote.Services;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
+using Wizard.Cinema.Remote.ApplicationServices;
+using Wizard.Cinema.Remote.Repository.Condition;
 
 namespace Wizard.Cinema.Test
 {
@@ -11,10 +12,10 @@ namespace Wizard.Cinema.Test
         public void SearchCinemaAndSaveTest()
         {
             var service = ServiceProvider.GetService<CinemaService>();
-            var cinemas = service.GetByCityId(10);
+            var cinemas = service.GetByCityId(new SearchCinemaCondition() { CityId = 10 });
             //1393
-            Assert.NotEmpty(cinemas);
-            Assert.True(cinemas.Count() == 322);
+            Assert.NotEmpty(cinemas.Records);
+            Assert.True(cinemas.TotalCount == 322);
         }
 
         [Fact]

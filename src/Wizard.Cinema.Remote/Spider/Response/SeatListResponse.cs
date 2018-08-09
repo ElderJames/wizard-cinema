@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wizard.Cinema.Remote.Response
+﻿namespace Wizard.Cinema.Remote.Spider.Response
 {
     /// <summary>
     /// 座位表

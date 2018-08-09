@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wizard.Cinema.Remote.Request
+﻿namespace Wizard.Cinema.Remote.Spider.Request
 {
     public class FetchSeatHtmlRequest : BaseRequest<string>
     {

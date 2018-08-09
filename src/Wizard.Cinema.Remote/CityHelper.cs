@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using Wizard.Cinema.Infrastructures;
-using Wizard.Cinema.Remote.Response;
+using Wizard.Cinema.Remote.Spider.Response;
 
 namespace Wizard.Cinema.Remote
 {

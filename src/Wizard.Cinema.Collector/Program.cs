@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Wizard.Cinema.Remote;
-using Wizard.Cinema.Remote.Request;
 using Serilog;
 using Serilog.Events;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
-using Wizard.Cinema.Remote.Response;
 using Wizard.Cinema.Infrastructures;
+using Wizard.Cinema.Remote.Application;
+using Wizard.Cinema.Remote.Spider;
+using Wizard.Cinema.Remote.Spider.Request;
 
 namespace Wizard.Cinema.Collector
 {
@@ -42,7 +43,7 @@ namespace Wizard.Cinema.Collector
 
             var provider = services.BuildServiceProvider();
 
-            var remoteCall = provider.GetService<RemoteCall>();
+            var remoteCall = provider.GetService<RemoteSpider>();
             var cinemaRepository = provider.GetService<ICinemaRepository>();
             var hallRepository = provider.GetService<IHallRepository>();
 

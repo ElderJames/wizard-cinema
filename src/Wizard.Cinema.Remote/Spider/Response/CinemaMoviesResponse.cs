@@ -1,4 +1,4 @@
-﻿namespace Wizard.Cinema.Remote.Response
+﻿namespace Wizard.Cinema.Remote.Spider.Response
 {
     /// <summary>
     /// 影院场次

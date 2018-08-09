@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
+﻿using System.Net.Http;
 
-namespace Wizard.Cinema.Remote
+namespace Wizard.Cinema.Remote.Spider.Request
 {
     public class BaseRequest<TResponse>
     {

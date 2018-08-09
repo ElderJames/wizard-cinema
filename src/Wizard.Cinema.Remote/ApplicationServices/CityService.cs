@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Wizard.Cinema.Remote.Response;
+using Wizard.Cinema.Remote.Spider.Response;
 
-namespace Wizard.Cinema.Remote.Services
+namespace Wizard.Cinema.Remote.ApplicationServices
 {
     public class CityService
     {

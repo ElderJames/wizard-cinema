@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Wizard.Cinema.Remote.Response
+namespace Wizard.Cinema.Remote.Spider.Response
 {
     public class CityResponse
     {

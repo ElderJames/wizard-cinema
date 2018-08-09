@@ -1,17 +1,18 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Wizard.Cinema.Remote.Spider.Request;
 
-namespace Wizard.Cinema.Remote
+namespace Wizard.Cinema.Remote.Spider
 {
-    public class RemoteCall
+    public class RemoteSpider
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<RemoteCall> _logger;
+        private readonly ILogger<RemoteSpider> _logger;
 
-        public RemoteCall(IHttpClientFactory httpClientFactory, ILogger<RemoteCall> logger)
+        public RemoteSpider(IHttpClientFactory httpClientFactory, ILogger<RemoteSpider> logger)
         {
             _logger = logger;
             this._httpClient = httpClientFactory.CreateClient("movieInfo");
