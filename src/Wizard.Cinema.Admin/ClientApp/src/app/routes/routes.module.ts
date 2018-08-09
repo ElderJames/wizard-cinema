@@ -18,6 +18,9 @@ import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
+//cinema pages
+import { CinemaShowsComponent } from './cinema/shows/shows.component';
+
 const COMPONENTS = [
   DashboardV1Component,
   DashboardAnalysisComponent,
@@ -32,7 +35,9 @@ const COMPONENTS = [
   CallbackComponent,
   Exception403Component,
   Exception404Component,
-  Exception500Component
+  Exception500Component,
+  //cinema pages
+  CinemaShowsComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

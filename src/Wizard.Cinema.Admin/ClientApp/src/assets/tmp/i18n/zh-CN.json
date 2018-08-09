@@ -1,5 +1,10 @@
 {
   "home": "主页",
+
+  "watch-film": "观影活动",
+  "cinema_shows": "观影场次",
+  "signed_up_wizards": "活动报名",
+  "wizards":"巫师名单",
   "settings": "设置",
   "profile": "个人资料",
   "login": "登录",
@@ -18,7 +23,7 @@
   "dashboard_monitor": "监控页",
   "dashboard_workplace": "工作台",
   "widgets": "小部件",
-  "main_navigation": "主导航",
+  "main_navigation": "有求必应屋",
   "component": "组件",
   "style": "样式",
   "gridmasonry": "瀑布流",
