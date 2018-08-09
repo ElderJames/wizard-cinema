@@ -18,14 +18,25 @@
           "i18n": "watch-film",
           "icon": "icon-speedometer",
           "children": [{
-            "text": "观影场次",
-            "link": "/cinema/shows",
-            "i18n": "cinema_shows"
-          }]
+              "text": "观影场次",
+              "link": "/cinema/shows",
+              "i18n": "cinema_shows"
+            },
+            {
+              "text": "巫师名单",
+              "link": "/cinema/wizards",
+              "i18n": "wizards"
+            },
+            {
+              "text": "活动报名",
+              "link": "/cinema/signed-up-wizards",
+              "i18n": "signed_up_wizards"
+            }
+          ]
         },
         {
-          "text": "巫师管理",
-          "i18n": "watch-film",
+          "text": "活动管理",
+          "i18n": "activity",
           "icon": "icon-speedometer",
           "children": [{
               "text": "巫师名单",
