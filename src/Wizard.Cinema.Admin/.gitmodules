@@ -1,0 +1,3 @@
+[submodule "ClientApp"]
+	path = ClientApp
+	url = https://github.com/cipchk/ng-alain.git
