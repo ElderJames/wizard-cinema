@@ -556,8 +556,20 @@ namespace Wizard.Cinema.Infrastructures.Encrypt
                     PublicKey = publicKey,
                     PrivateKey = privateKey,
                     Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-                    Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+                    Modulus = rsa.ExportParameters(false).Modulus.ToHexString(),
                 };
+            }
+        }
+
+        /// <summary>
+        /// Create RSAParameters
+        /// </summary>
+        /// <returns></returns>
+        public static RSAParameters GenerateParameters()
+        {
+            using (var key = new RSACryptoServiceProvider(2048))
+            {
+                return key.ExportParameters(true);
             }
         }
 

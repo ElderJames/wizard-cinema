@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Repository.Condition;
 
@@ -20,12 +21,14 @@ namespace Wizard.Cinema.Admin.Controllers
             this._cinemaService = cinemaService;
         }
 
+        [HttpGet("city/{keyword}")]
         public IActionResult SearchCity(string keyword)
         {
             var citys = this._cityService.Search(keyword);
             return new JsonResult(citys);
         }
 
+        [HttpGet("city/{cityId}/cinemas/{keyword}")]
         public IActionResult SearchCinema(int cityId, string keyword, int page = 1, int size = 10)
         {
             var cinemas = this._cinemaService.GetByCityId(new SearchCinemaCondition()
@@ -36,12 +39,25 @@ namespace Wizard.Cinema.Admin.Controllers
                 PageNow = page
             });
 
-            return Ok(cinemas.Records.Select(x => new
+            return Ok(new PagedData<object>
             {
-                x.CinemaId,
-                x.Name,
-                x.Address
-            }));
+                PageNow = cinemas.PageNow,
+                PageSize = cinemas.PageSize,
+                TotalCount = cinemas.TotalCount,
+                Records = cinemas.Records.Select(x => new
+                {
+                    x.CinemaId,
+                    x.Name,
+                    x.Address
+                })
+            });
+        }
+
+        [HttpGet("halls/{cinemaId}")]
+        public IActionResult GetHallByCinemaId(int cinemaId)
+        {
+            var halls = this._hallService.GetByCinemaId(cinemaId);
+            return Ok(halls);
         }
     }
 }
