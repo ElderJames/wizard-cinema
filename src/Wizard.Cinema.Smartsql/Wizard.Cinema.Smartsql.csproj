@@ -6,13 +6,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
-    <PackageReference Include="SmartSql" Version="3.5.13" />
-    <PackageReference Include="SmartSql.DIExtension" Version="3.5.8" />
+    <PackageReference Include="SmartSql" Version="3.6.0" />
+    <PackageReference Include="SmartSql.DIExtension" Version="3.6.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
-    <PackageReference Include="SmartSql.DyRepository" Version="3.5.9" />
+    <PackageReference Include="SmartSql.DyRepository" Version="3.6.1" />
     <PackageReference Include="SmartSql.Options" Version="1.0.0" />
   </ItemGroup>
 </Project>

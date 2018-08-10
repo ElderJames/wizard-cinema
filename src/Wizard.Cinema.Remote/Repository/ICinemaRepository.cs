@@ -12,8 +12,8 @@ namespace Wizard.Cinema.Remote.Repository
 
         //int Update(Models.Cinema cinema);
 
-        IEnumerable<Models.Cinema> GetList(SearchCinemaCondition condition);
+        IEnumerable<Models.Cinema> QueryToList(SearchCinemaCondition condition);
 
-        PagedData<Models.Cinema> QueryPage(SearchCinemaCondition condition);
+        PagedData<Models.Cinema> QueryPaged(SearchCinemaCondition condition);
     }
 }

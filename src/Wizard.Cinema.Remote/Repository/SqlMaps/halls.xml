@@ -3,6 +3,15 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd smartsql/SmartSqlMap.xsd">
 
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMReuslt">
+      <Result Property="TotalCount" />
+      <Result Property="Records" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
+
   <Statements>
     <Statement Id="QueryParams">
       <Where>
@@ -11,6 +20,14 @@
         </IsNotNull>
         <IsNotNull Prepend="and" Property="CinemaId">
           CinemaId = @CinemaId
+        </IsNotNull>
+        <IsNotNull Prepend="and" Property="PageSzie">
+          <IsNotNull Prepend="" Property="StartIndex">
+            LIMIT @StartIndex,@PageSize
+          </IsNotNull>
+          <IsNull Prepend="" Property="StartIndex">
+            LIMIT @PageSize
+          </IsNull>
         </IsNotNull>
       </Where>
     </Statement>
@@ -53,6 +70,11 @@
         ,@LastUpdateTime
         )
       </For>
+      ON DUPLICATE KEY UPDATE
+      Name = VALUES(Name),
+      SeatHtml = VALUES(SeatHtml),
+      SeatJson = VALUES(SeatJson),
+      LastUpdateTime = VALUES(LastUpdateTime)
     </Statement>
 
     <Statement Id="Query">
@@ -60,14 +82,13 @@
       <Include RefId="QueryParams" />
     </Statement>
 
-    <Statement Id="QueryByCinemaId">
-      SELECT * From halls
-      <Include RefId="QueryParams" />
-    </Statement>
-
-    <Statement Id="QueryById">
-      SELECT * From halls
-      <Include RefId="QueryParams" />
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+      SELECT COUNT(1) FROM halls
+      <Include RefId="QueryParams" />;
+      SELECT * FROM halls
+      <Include RefId="QueryParams" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
     </Statement>
   </Statements>
 </SmartSqlMap>

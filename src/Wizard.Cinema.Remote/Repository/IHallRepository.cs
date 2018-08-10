@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Models;
 
 namespace Wizard.Cinema.Remote.Repository
@@ -12,5 +13,9 @@ namespace Wizard.Cinema.Remote.Repository
         IEnumerable<Hall> QueryByCinemaId(int cinemaId);
 
         Hall QueryById(int hallId);
+
+        IEnumerable<Hall> Query(PagedSearch condition);
+
+        PagedData<Hall> QueryPaged(PagedSearch condition);
     }
 }

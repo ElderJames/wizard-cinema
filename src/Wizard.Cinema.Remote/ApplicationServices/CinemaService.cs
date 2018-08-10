@@ -23,13 +23,13 @@ namespace Wizard.Cinema.Remote.ApplicationServices
         {
             if (condition.PageNow == 1)
             {
-                var cinemas = _cinemaRepository.GetList(condition);
+                var cinemas = _cinemaRepository.QueryToList(condition);
                 var count = 0;
                 if (cinemas.IsNullOrEmpty())
                 {
                     lock (_locker)
                     {
-                        cinemas = _cinemaRepository.GetList(condition);
+                        cinemas = _cinemaRepository.QueryToList(condition);
 
                         if (cinemas.IsNullOrEmpty())
                         {
@@ -54,7 +54,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                 return new PagedData<Models.Cinema>() { PageNow = condition.PageNow, PageSize = condition.PageSize, TotalCount = count, Records = cinemas };
             }
 
-            return _cinemaRepository.QueryPage(condition);
+            return _cinemaRepository.QueryPaged(condition);
         }
     }
 }

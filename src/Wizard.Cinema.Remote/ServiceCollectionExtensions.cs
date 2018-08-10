@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SmartSql;
 using Wizard.Cinema.Remote.ApplicationServices;
@@ -17,7 +18,14 @@ namespace Wizard.Cinema.Remote
             services.AddSingleton<HallService>();
 
             services.AddSmartSql();
-            services.AddRepositoryFactory();
+            services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
+            {
+                var index = method.Name.IndexOf("By", StringComparison.Ordinal);
+                if (index <= 0)
+                    index = method.Name.IndexOf("To", StringComparison.Ordinal);
+
+                return index <= 0 ? method.Name : method.Name.Substring(0, method.Name.Length - index);
+            });
             services.AddRepositoryFromAssembly(options =>
             {
                 options.GetSmartSql = sp => new SmartSqlMapper(sp.GetRequiredService<ILoggerFactory>(), "SmartSqlConfig.xml");
