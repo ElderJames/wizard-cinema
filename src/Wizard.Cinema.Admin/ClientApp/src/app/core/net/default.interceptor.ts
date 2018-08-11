@@ -107,14 +107,14 @@ export class DefaultInterceptor implements HttpInterceptor {
     });
 
     // 设置JWT-Token
-    let model = this.injector.get(DA_SERVICE_TOKEN).get<JWTTokenModel>(JWTTokenModel);
-    if (model && model.token && !model.isExpired()) {
-      newReq = newReq.clone({
-        setHeaders: {
-          Authorization: `Bearer ${model.token}`
-        }
-      });
-    }
+    // let model = this.injector.get(DA_SERVICE_TOKEN).get<JWTTokenModel>(JWTTokenModel);
+    // if (model && model.token && !model.isExpired()) {
+    //   newReq = newReq.clone({
+    //     setHeaders: {
+    //       Authorization: `Bearer ${model.token}`
+    //     }
+    //   });
+    // }
 
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {
