@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SmartSqlMapConfig xmlns="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd">
+<SmartSqlMapConfig xmlns="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Repository/SqlMaps/smartsql/SmartSqlMapConfig.xsd">
+
   <Settings IsWatchConfigFile="true" IgnoreParameterCase="true" />
   <Database>
     <!--ParameterPrefix:[SqlServer:@ | MySQL:? |Oracle::] -->
@@ -7,6 +10,6 @@
     <Write Name="WriteDB" ConnectionString="server=localhost;port=3306; initial catalog=wizard_cinema;uid=root;" />
   </Database>
   <SmartSqlMaps>
-    <SmartSqlMap Path="SqlMaps" Type="Directory"></SmartSqlMap>
+    <SmartSqlMap Path="Repository/SqlMaps" Type="Directory" ></SmartSqlMap>
   </SmartSqlMaps>
 </SmartSqlMapConfig>

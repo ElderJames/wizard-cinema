@@ -24,7 +24,7 @@ namespace Wizard.Cinema.Remote
                 if (index <= 0)
                     index = method.Name.IndexOf("To", StringComparison.Ordinal);
 
-                return index <= 0 ? method.Name : method.Name.Substring(0, method.Name.Length - index);
+                return index <= 0 ? method.Name : method.Name.Substring(0, index);
             });
             services.AddRepositoryFromAssembly(options =>
             {
