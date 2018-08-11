@@ -28,12 +28,15 @@ export class StartupService {
     private titleService: TitleService,
     private httpClient: HttpClient,
     private injector: Injector,
-  ) {}
+  ) { }
 
   load(): Promise<any> {
     // only works with promises
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
+
+      this.httpClient.get('api/auth').subscribe(res => { console.log(res) });
+
       zip(
         this.httpClient.get(`assets/tmp/i18n/${this.i18n.defaultLang}.json`),
         this.httpClient.get('assets/tmp/app-data.json'),
@@ -44,7 +47,7 @@ export class StartupService {
             resolve(null);
             return [langData, appData];
           }),
-        )
+      )
         .subscribe(
           ([langData, appData]) => {
             // setting language data
@@ -64,11 +67,11 @@ export class StartupService {
             // 设置页面标题的后缀
             this.titleService.suffix = res.app.name;
           },
-          () => {},
+          () => { },
           () => {
             resolve(null);
           },
-        );
+      );
     });
   }
 }

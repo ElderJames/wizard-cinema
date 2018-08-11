@@ -15,17 +15,10 @@ export class CinemaShowsComponent implements OnInit {
     loading = false;
 
     ngOnInit() {
-        this.showUserInfo();
     }
 
     searchCity() {
         this.http.get('api/cinema/city/g').subscribe((res: any) => {
-            console.log(res);
-        })
-    }
-
-    showUserInfo() {
-        this.http.get('api/auth').subscribe((res: any) => {
             console.log(res);
         })
     }
