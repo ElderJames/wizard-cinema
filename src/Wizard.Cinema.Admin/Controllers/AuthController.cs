@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using AngularASPNETCore2WebApiAuth.Auth;
-using AngularASPNETCore2WebApiAuth.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
 
@@ -27,7 +27,7 @@ namespace Wizard.Cinema.Admin.Controllers
         [HttpPut("Login")]
         public IActionResult Login([FromBody]User user)
         {
-            var identity = GetClaimsIdentity(user.Username, user.Password);
+            var identity = GetClaimsIdentity("elderjames", "12345678");
             if (identity == null)
             {
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
@@ -36,17 +36,17 @@ namespace Wizard.Cinema.Admin.Controllers
             return Ok(new
             {
                 id = identity.Claims.Single(c => c.Type == "id").Value,
-                auth_token = _jwtFactory.GenerateEncodedToken(user.Username, identity),
+                auth_token = _jwtFactory.GenerateEncodedToken(identity.Name, identity),
                 expires_in = (int)_jwtOptions.ValidFor.TotalSeconds
             });
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [HttpGet]
         public IActionResult GetUserInfo()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
-            return Ok(new { UserName = claimsIdentity.Name });
+            return Ok(new { UserName = claimsIdentity?.Name });
         }
 
         private ClaimsIdentity GetClaimsIdentity(string userName, string password)
@@ -62,7 +62,7 @@ namespace Wizard.Cinema.Admin.Controllers
             // check the credentials
             if (true)
             {
-                return _jwtFactory.GenerateClaimsIdentity(userName, userToVerify.ID.ToString());
+                return _jwtFactory.GenerateClaimsIdentity("elderjames", "123");
             }
 
             // Credentials are invalid, or account doesn't exist

@@ -1,8 +1,7 @@
 using System;
-using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AngularASPNETCore2WebApiAuth.Models
+namespace Wizard.Cinema.Admin.Models
 {
     public class JwtIssuerOptions
     {

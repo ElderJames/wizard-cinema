@@ -1,5 +1,4 @@
-﻿
-namespace AngularASPNETCore2WebApiAuth.Helpers
+﻿namespace Wizard.Cinema.Admin.Helpers
 {
     public static class Constants
     {

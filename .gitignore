@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /src/Wizard.Cinema.Collector/Wizard.Cinema.Collector.csproj.DotSettings
+/src/Wizard.Cinema.Admin/.vscode

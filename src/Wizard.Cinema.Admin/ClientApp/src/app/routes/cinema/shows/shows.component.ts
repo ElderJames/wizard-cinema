@@ -12,7 +12,21 @@ import { _HttpClient } from '@delon/theme';
 export class CinemaShowsComponent implements OnInit {
     constructor(private http: _HttpClient, public msg: NzMessageService) { }
 
-    ngOnInit() {
+    loading = false;
 
+    ngOnInit() {
+        this.showUserInfo();
+    }
+
+    searchCity() {
+        this.http.get('api/cinema/city/g').subscribe((res: any) => {
+            console.log(res);
+        })
+    }
+
+    showUserInfo() {
+        this.http.get('api/auth').subscribe((res: any) => {
+            console.log(res);
+        })
     }
 }

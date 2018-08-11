@@ -16,13 +16,14 @@ import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { environment } from '@env/environment';
+import { DA_SERVICE_TOKEN, JWTTokenModel } from '@delon/auth';
 
 /**
  * 默认HTTP拦截器，其注册细节见 `app.module.ts`
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) { }
 
   get msg(): NzMessageService {
     return this.injector.get(NzMessageService);
@@ -45,20 +46,24 @@ export class DefaultInterceptor implements HttpInterceptor {
         //  错误内容：{ status: 1, msg: '非法参数' }
         //  正确内容：{ status: 0, response: {  } }
         // 则以下代码片断可直接适用
-        // if (event instanceof HttpResponse) {
-        //     const body: any = event.body;
-        //     if (body && body.status !== 0) {
-        //         this.msg.error(body.msg);
-        //         // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
-        //         // this.http.get('/').subscribe() 并不会触发
-        //         return throwError({});
-        //     } else {
-        //         // 重新修改 `body` 内容为 `response` 内容，对于绝大多数场景已经无须再关心业务状态码
-        //         return of(new HttpResponse(Object.assign(event, { body: body.response })));
-        //         // 或者依然保持完整的格式
-        //         return of(event);
-        //     }
-        // }
+
+        /* ElderJames: 这里修改成 ApiResult 的格式*/
+        if (event instanceof HttpResponse) {
+          const body: any = event.body;
+
+          if (body && body.status)
+            if (body.status !== 1) {
+              this.msg.error(body.Message);
+              // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
+              // this.http.get('/').subscribe() 并不会触发
+              return throwError({});
+            } else {
+              // 重新修改 `body` 内容为 `response` 内容，对于绝大多数场景已经无须再关心业务状态码
+              return of(new HttpResponse(Object.assign(event, { body: body.result })));
+              // 或者依然保持完整的格式
+              // return of(event);
+            }
+        }
         break;
       case 401: // 未登录状态码
         this.goTo('/passport/login');
@@ -85,11 +90,11 @@ export class DefaultInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<
-    | HttpSentEvent
-    | HttpHeaderResponse
-    | HttpProgressEvent
-    | HttpResponse<any>
-    | HttpUserEvent<any>
+  | HttpSentEvent
+  | HttpHeaderResponse
+  | HttpProgressEvent
+  | HttpResponse<any>
+  | HttpUserEvent<any>
   > {
     // 统一加上服务端前缀
     let url = req.url;
@@ -97,9 +102,20 @@ export class DefaultInterceptor implements HttpInterceptor {
       url = environment.SERVER_URL + url;
     }
 
-    const newReq = req.clone({
+    let newReq = req.clone({
       url: url,
     });
+
+    // 设置JWT-Token
+    let model = this.injector.get(DA_SERVICE_TOKEN).get<JWTTokenModel>(JWTTokenModel);
+    if (model && model.token && !model.isExpired()) {
+      newReq = newReq.clone({
+        setHeaders: {
+          Authorization: `Bearer ${model.token}`
+        }
+      });
+    }
+
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {
         // 允许统一对请求错误处理，这是因为一个请求若是业务上错误的情况下其HTTP请求的状态是200的情况下需要

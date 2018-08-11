@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace AngularASPNETCore2WebApiAuth.Auth
+namespace Wizard.Cinema.Admin.Auth
 {
     public interface IJwtFactory
     {

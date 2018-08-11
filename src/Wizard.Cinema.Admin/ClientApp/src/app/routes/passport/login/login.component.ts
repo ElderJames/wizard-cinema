@@ -1,5 +1,6 @@
-import { SettingsService } from '@delon/theme';
+import { SettingsService, _HttpClient } from '@delon/theme';
 import { Component, OnDestroy, Inject, Optional } from '@angular/core';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
@@ -37,6 +38,7 @@ export class UserLoginComponent implements OnDestroy {
     private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: TokenService,
     private startupSrv: StartupService,
+    private http: HttpClient,
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(5)]],
@@ -104,33 +106,51 @@ export class UserLoginComponent implements OnDestroy {
     // 默认配置中对所有HTTP请求都会强制[校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-      if (this.type === 0) {
-        if (
-          this.userName.value !== 'admin' ||
-          this.password.value !== '888888'
-        ) {
-          this.error = `账户或密码错误`;
-          return;
-        }
-      }
+    // setTimeout(() => {
+    //   this.loading = false;
+    //   if (this.type === 0) {
+    //     if (
+    //       this.userName.value !== 'admin' ||
+    //       this.password.value !== '888888'
+    //     ) {
+    //       this.error = `账户或密码错误`;
+    //       return;
+    //     }
+    //   }
 
+    //   // 清空路由复用信息
+    //   this.reuseTabService.clear();
+    //   // 设置Token信息
+    //   this.tokenService.set({
+    //     token: '123456789',
+    //     name: this.userName.value,
+    //     email: `cipchk@qq.com`,
+    //     id: 10000,
+    //     time: +new Date(),
+    //   });
+    //   // 重新获取 StartupService 内容，若其包括 User 有关的信息的话
+    //   // this.startupSrv.load().then(() => this.router.navigate(['/']));
+    //   // 否则直接跳转
+    //   this.router.navigate(['/']);
+    // }, 1000);
+
+    this.http.put('api/Auth/Login', {
+      Username: this.userName.value,
+      Password: this.password.value
+    }).subscribe((res: any) => {
+      this.loading = false;
       // 清空路由复用信息
       this.reuseTabService.clear();
       // 设置Token信息
       this.tokenService.set({
-        token: '123456789',
-        name: this.userName.value,
-        email: `cipchk@qq.com`,
-        id: 10000,
-        time: +new Date(),
+        token: res.auth_token,
       });
       // 重新获取 StartupService 内容，若其包括 User 有关的信息的话
-      // this.startupSrv.load().then(() => this.router.navigate(['/']));
+      this.startupSrv.load().then(() => this.router.navigate(['/']));
       // 否则直接跳转
-      this.router.navigate(['/']);
-    }, 1000);
+      // this.router.navigate(['/']);
+    });
+
   }
 
   // region: social
