@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.ApplicationServices;
@@ -21,11 +22,14 @@ namespace Wizard.Cinema.Admin.Controllers
             this._cinemaService = cinemaService;
         }
 
-        [HttpGet("city/{keyword}")]
+        [HttpGet("city")]
         public IActionResult SearchCity(string keyword)
         {
+            if (keyword.IsNullOrEmpty())
+                return Ok(Array.Empty<object>());
+
             var citys = this._cityService.Search(keyword);
-            return new JsonResult(citys);
+            return new JsonResult(citys.Take(7));
         }
 
         [HttpGet("city/{cityId}/cinemas/{keyword}")]
