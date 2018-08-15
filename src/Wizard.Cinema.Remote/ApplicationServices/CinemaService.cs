@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Repository.Condition;
@@ -23,15 +24,19 @@ namespace Wizard.Cinema.Remote.ApplicationServices
         {
             if (condition.PageNow == 1)
             {
-                var cinemas = _cinemaRepository.QueryToList(condition);
-                var count = 0;
-                if (cinemas.IsNullOrEmpty())
+                var cinemas = Enumerable.Empty<Models.Cinema>();
+                var count = _cinemaRepository.QueryCount(condition.CityId);
+
+                if (count > 0)
+                    cinemas = _cinemaRepository.Query(condition);
+                else
                 {
                     lock (_locker)
                     {
-                        cinemas = _cinemaRepository.QueryToList(condition);
-
-                        if (cinemas.IsNullOrEmpty())
+                        count = _cinemaRepository.QueryCount(condition.CityId);
+                        if (count > 0)
+                            cinemas = _cinemaRepository.Query(condition);
+                        else
                         {
                             var data = _remoteCall.SendAsync(new CinemaRequest { CityId = condition.CityId }).Result;
                             cinemas = data.cinemas.Select(x => new Models.Cinema()
@@ -50,10 +55,8 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                         }
                     }
                 }
-
                 return new PagedData<Models.Cinema>() { PageNow = condition.PageNow, PageSize = condition.PageSize, TotalCount = count, Records = cinemas };
             }
-
             return _cinemaRepository.QueryPaged(condition);
         }
     }

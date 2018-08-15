@@ -67,7 +67,7 @@
           T.id Desc
         </Default>
       </Switch>
-      <IsNotNull Prepend="and" Property="PageSzie">
+      <IsNotNull Prepend="" Property="PageSize">
         <IsNotNull Prepend="" Property="StartIndex">
           LIMIT @StartIndex,@PageSize
         </IsNotNull>
@@ -84,7 +84,7 @@
     </Statement>
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
-      SELECT COUNT(1) FROM cinemas
+      SELECT COUNT(0) FROM cinemas
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
       SELECT * FROM cinemas
@@ -92,6 +92,15 @@
       <Include RefId="OrderAndPaged" />;
       SELECT @PageSize;
       SELECT @PageNow;
+    </Statement>
+
+    <Statement Id="QueryCount">
+      SELECT COUNT(1) FROM cinemas
+      <Where>
+        <IsNotNull Prepend="and" Property="CityId">
+          CityId = @CityId
+        </IsNotNull>
+      </Where>
     </Statement>
   </Statements>
 </SmartSqlMap>

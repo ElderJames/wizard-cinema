@@ -7,7 +7,7 @@ using Wizard.Cinema.Remote.Repository.Condition;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class CinemaController : BaseController
     {
@@ -29,10 +29,10 @@ namespace Wizard.Cinema.Admin.Controllers
                 return Ok(Array.Empty<object>());
 
             var citys = this._cityService.Search(keyword);
-            return new JsonResult(citys.Take(7));
+            return Ok(citys.Take(7));
         }
 
-        [HttpGet("city/{cityId}/cinemas/{keyword}")]
+        [HttpGet("city/{cityId}/cinemas")]
         public IActionResult SearchCinema(int cityId, string keyword, int page = 1, int size = 10)
         {
             var cinemas = this._cinemaService.GetByCityId(new SearchCinemaCondition()

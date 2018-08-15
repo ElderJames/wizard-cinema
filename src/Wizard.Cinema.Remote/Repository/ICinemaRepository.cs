@@ -10,9 +10,11 @@ namespace Wizard.Cinema.Remote.Repository
 
         int InsertBatch(IEnumerable<Models.Cinema> cinemas);
 
+        int QueryCount(long CityId);
+
         //int Update(Models.Cinema cinema);
 
-        IEnumerable<Models.Cinema> QueryToList(SearchCinemaCondition condition);
+        IEnumerable<Models.Cinema> Query(SearchCinemaCondition condition);
 
         PagedData<Models.Cinema> QueryPaged(SearchCinemaCondition condition);
     }
