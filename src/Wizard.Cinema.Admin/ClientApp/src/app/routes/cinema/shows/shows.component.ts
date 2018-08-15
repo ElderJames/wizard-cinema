@@ -20,11 +20,17 @@ export class CinemaShowsComponent implements OnInit {
     tempKeyword = '';
     cityTimer: NodeJS.Timer;
 
+    list: any[] = [];
+    q: any = {
+        ps: 8,
+        categories: [],
+        owners: ['zxx'],
+    };
     ngOnInit() {
+        this.getData();
     }
 
     onInput(value: string): void {
-        console.log(value, this.options);
 
         if (value == '') {
             this.options = [];
@@ -44,6 +50,28 @@ export class CinemaShowsComponent implements OnInit {
                     this.options = res;
                 })
         }, 500);
+    }
 
+    getData() {
+        this.loading = true;
+        this.http.get('/api/list', { count: this.q.ps }).subscribe((res: any) => {
+            this.list = res.map(item => {
+                item.activeUser = this.formatWan(item.activeUser);
+                return item;
+            });
+            this.loading = false;
+        });
+    }
+
+    private formatWan(val) {
+        const v = val * 1;
+        if (!v || isNaN(v)) return '';
+
+        let result = val;
+        if (val > 10000) {
+            result = Math.floor(val / 10000);
+            result = `${result}`;
+        }
+        return result;
     }
 }
