@@ -16,7 +16,7 @@
                     <input type="text" nz-input placeholder="input search text">
                 </nz-input-group>
                 <ng-template #suffixButton>
-                    <button nz-button nzType="primary" nzSearch>Search</button>
+                    <button nz-button nzType="primary" nzSearch (click)="openSeatSelector()">Search</button>
                 </ng-template>
             </div>
         </nz-input-group>
@@ -78,3 +78,7 @@
         </div>
     </ng-template>
 </nz-list>
+
+<ng-container *ngFor="let i of selectedSeats">
+    {{i.rowId}}-{{i.columnId}}
+</ng-container>

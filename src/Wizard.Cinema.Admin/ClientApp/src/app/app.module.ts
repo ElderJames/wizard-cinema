@@ -89,7 +89,7 @@ export function StartupServiceFactory(
       useFactory: StartupServiceFactory,
       deps: [StartupService],
       multi: true,
-    },
+    }
   ],
   bootstrap: [AppComponent],
 })

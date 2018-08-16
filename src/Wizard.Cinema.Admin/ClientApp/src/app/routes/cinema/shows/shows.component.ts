@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd';
 import { SimpleTableColumn } from '@delon/abc';
 import { getTimeDistance, yuan } from '@delon/util';
@@ -8,10 +8,10 @@ import { _HttpClient } from '@delon/theme';
     selector: 'app-dashboard-shows',
     templateUrl: './shows.component.html',
     encapsulation: ViewEncapsulation.None,
-    styleUrls: ['./shows.component.less'],
+    styleUrls: ['./shows.component.less']
 })
 export class CinemaShowsComponent implements OnInit {
-    constructor(private http: _HttpClient, public msg: NzMessageService) { }
+    constructor(private http: _HttpClient, public msg: NzMessageService, private cd: ChangeDetectorRef) { }
 
     loading = false;
     inputValue: string;
@@ -26,6 +26,9 @@ export class CinemaShowsComponent implements OnInit {
         categories: [],
         owners: ['zxx'],
     };
+
+    selectedSeats: any[] = [];
+
     ngOnInit() {
         this.getData();
     }
@@ -73,5 +76,26 @@ export class CinemaShowsComponent implements OnInit {
             result = `${result}`;
         }
         return result;
+    }
+
+    openSeatSelector() {
+        if (!window)
+            return;
+
+        var win = window.open("/SeatSelector", "", 'width=1200,height=630,left=300,top=100,location=no');
+        win.onload = () => {
+            var okbtn = win.document.getElementById('ok');
+            var selectSeats = win.document.getElementById('selected-seat');
+            okbtn.addEventListener('click', () => {
+                this.selectedSeats = [];
+                var json = selectSeats.getAttribute("value");
+                if (json)
+                    this.selectedSeats = JSON.parse(selectSeats.getAttribute("value"));
+            })
+        }
+        win.onunload = () => {
+            this.cd.markForCheck();
+            this.cd.detectChanges();
+        }
     }
 }
