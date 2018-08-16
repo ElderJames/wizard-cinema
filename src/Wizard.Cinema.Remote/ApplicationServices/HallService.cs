@@ -71,7 +71,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                                 Name = x.seatData.hall.hallName,
                                 CinemaId = x.seatData.cinema.cinemaId,
                                 SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
-                                SeatHtml = html.IsNullOrEmpty() ? null : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline),
+                                SeatHtml = html.IsNullOrEmpty() ? null : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline).Replace("seat sold", "seat selectable"),
                                 LastUpdateTime = DateTime.Now
                             };
                         }).ToList();
