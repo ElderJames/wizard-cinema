@@ -51,7 +51,6 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                             foreach (var arr in splitArr)
                                 _cinemaRepository.InsertBatch(arr);
                             count = cinemas.Count();
-                            cinemas = cinemas.Skip(condition.StartIndex).Take(condition.PageSize);
                         }
                     }
                 }
