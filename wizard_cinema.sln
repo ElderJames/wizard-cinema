@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wizard.Cinema.Collector", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7D4B310-B70B-47D7-B8C7-7EB64A96FE2D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		data.db = data.db
 		README.md = README.md
 	EndProjectSection
