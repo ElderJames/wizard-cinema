@@ -5,17 +5,15 @@ using Wizard.Cinema.Infrastructures.Exceptions;
 
 namespace Wizard.Cinema.Domain.Wizard
 {
+    /// <summary>
+    /// 巫师
+    /// </summary>
     public class Wizards
     {
         /// <summary>
         /// 巫师Id
         /// </summary>
         public long WizardId { get; private set; }
-
-        /// <summary>
-        /// 姓名
-        /// </summary>
-        public string Name { get; private set; }
 
         /// <summary>
         /// 手机号
@@ -33,29 +31,9 @@ namespace Wizard.Cinema.Domain.Wizard
         public string Password { get; private set; }
 
         /// <summary>
-        /// 头像Url
+        /// 巫师档案
         /// </summary>
-        public string PortraitUrl { get; private set; }
-
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public Gender Gender { get; private set; }
-
-        /// <summary>
-        /// 生日
-        /// </summary>
-        public DateTime Birthday { get; private set; }
-
-        /// <summary>
-        /// 个性签名
-        /// </summary>
-        public string Slogan { get; private set; }
-
-        /// <summary>
-        /// 学院
-        /// </summary>
-        public Houses House { get; private set; }
+        public WizardProfiles Profile { get; private set; }
 
         /// <summary>
         /// 注册时间
@@ -63,15 +41,17 @@ namespace Wizard.Cinema.Domain.Wizard
         public DateTime CreateTime { get; private set; }
 
         /// <summary>
-        /// 最后登录时间
+        /// 分部Id
         /// </summary>
-        public DateTime LastLoginTime { get; private set; }
+        public long DivisionId { get; private set; }
 
         /// <summary>
-        /// 最后登录ip
+        /// 创建巫师
         /// </summary>
-        public string LastLoginIpAddress { get; private set; }
-
+        /// <param name="wizardId"></param>
+        /// <param name="mobile"></param>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
         public Wizards(long wizardId, string mobile, string account, string password)
         {
             this.WizardId = wizardId;
@@ -79,8 +59,23 @@ namespace Wizard.Cinema.Domain.Wizard
             this.Account = account;
             this.Password = password.ToMd5();
             this.CreateTime = DateTime.Now;
+            this.Profile = new WizardProfiles(wizardId);
         }
 
+        /// <summary>
+        /// 设置或转移分部
+        /// </summary>
+        /// <param name="divisionId"></param>
+        public void ChangeDivision(long divisionId)
+        {
+            this.DivisionId = divisionId;
+        }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="oldPassward"></param>
+        /// <param name="newPassward"></param>
         public void ChangePassward(string oldPassward, string newPassward)
         {
             string passwardMd5 = Password.ToMd5();
@@ -88,15 +83,18 @@ namespace Wizard.Cinema.Domain.Wizard
                 throw new DomainException("旧密码匹配失败，请填写正确的密码");
         }
 
-        public void ChangeInfo(string name, string portraitUrl, Gender gender, DateTime birthday, string slogan,
-            Houses house)
+        /// <summary>
+        /// 修改档案
+        /// </summary>
+        /// <param name="nickName"></param>
+        /// <param name="portraitUrl"></param>
+        /// <param name="gender"></param>
+        /// <param name="birthday"></param>
+        /// <param name="slogan"></param>
+        /// <param name="house"></param>
+        public void ChangeInfo(string nickName, string portraitUrl, Gender gender, DateTime birthday, string slogan, Houses house)
         {
-            this.Name = name;
-            this.PortraitUrl = portraitUrl;
-            this.Gender = gender;
-            this.Birthday = birthday;
-            this.Slogan = slogan;
-            this.House = house;
+            this.Profile.Change(nickName, portraitUrl, gender, birthday, slogan, house);
         }
     }
 }
