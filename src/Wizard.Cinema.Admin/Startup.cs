@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Wizard.Cinema.Admin.Extensions;
+using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Remote;
 
 namespace Wizard.Cinema.Admin
@@ -28,6 +29,7 @@ namespace Wizard.Cinema.Admin
             };
 
             services.AddRemote();
+            services.AddApplicationService(Configuration);
 
             services.AddJwtAuthentication(Configuration);
 

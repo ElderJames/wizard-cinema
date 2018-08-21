@@ -8,12 +8,12 @@ namespace Wizard.Cinema.Domain.Wizard
     {
         int Create(Wizards wizard);
 
-        int ChangePassword(Wizards wizard);
+        int UpdatePassword(Wizards wizard);
 
-        int ChangeInfo(Wizards wizard);
+        int UpdateInfo(Wizards wizard);
 
-        int ChangeMobile(Wizards wizard);
+        int UpdateMobile(Wizards wizard);
 
-        int Get(long wizardId);
+        int Query(long wizardId);
     }
 }

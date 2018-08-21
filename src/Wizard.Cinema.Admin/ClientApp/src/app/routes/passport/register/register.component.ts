@@ -7,6 +7,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
+import { _HttpClient } from '@delon/theme';
 
 @Component({
   selector: 'passport-register',
@@ -31,11 +32,12 @@ export class UserRegisterComponent implements OnDestroy {
     fb: FormBuilder,
     private router: Router,
     public msg: NzMessageService,
+    private http: _HttpClient
   ) {
     this.form = fb.group({
-      mail: [null, [Validators.email]],
+      mail: ["shunjiey@hotmail.com", [Validators.email]],
       password: [
-        null,
+        "123456",
         [
           Validators.required,
           Validators.minLength(6),
@@ -43,16 +45,16 @@ export class UserRegisterComponent implements OnDestroy {
         ],
       ],
       confirm: [
-        null,
+        "123456",
         [
           Validators.required,
           Validators.minLength(6),
           UserRegisterComponent.passwordEquar,
         ],
       ],
-      mobilePrefix: ['+86'],
-      mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      captcha: [null, [Validators.required]],
+      // mobilePrefix: ['+86'],
+      // mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
+      // captcha: [null, [Validators.required]],
     });
   }
 
@@ -88,12 +90,12 @@ export class UserRegisterComponent implements OnDestroy {
   get confirm() {
     return this.form.controls.confirm;
   }
-  get mobile() {
-    return this.form.controls.mobile;
-  }
-  get captcha() {
-    return this.form.controls.captcha;
-  }
+  // get mobile() {
+  //   return this.form.controls.mobile;
+  // }
+  // get captcha() {
+  //   return this.form.controls.captcha;
+  // }
 
   // endregion
 
@@ -119,12 +121,25 @@ export class UserRegisterComponent implements OnDestroy {
       this.form.controls[i].updateValueAndValidity();
     }
     if (this.form.invalid) return;
+    console.log('valid')
+
     // mock http
     this.loading = true;
-    setTimeout(() => {
+    this.http.post("api/Account/sign-up", {
+      email: this.mail.value,
+      password: this.password.value
+    }).subscribe((res: any) => {
+      console.log('success');
       this.loading = false;
       this.router.navigate(['/passport/register-result']);
-    }, 1000);
+    }, (error) => {
+      this.loading = false;
+    });
+
+    // setTimeout(() => {
+    //   this.loading = false;
+    //   this.router.navigate(['/passport/register-result']);
+    // }, 1000);
   }
 
   ngOnDestroy(): void {

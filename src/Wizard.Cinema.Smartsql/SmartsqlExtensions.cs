@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartSql.Options;
 
@@ -11,7 +12,17 @@ namespace Wizard.Cinema.Smartsql
             //services.AddSmartSql();
             services.AddSmartSql(configuration.GetSection("SmartSql"));
 
-            services.AddRepositoryFactory();
+            services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
+            {
+                if (method.Name.StartsWith("Update"))
+                    return "Update";
+
+                int index = method.Name.IndexOf("By", StringComparison.Ordinal);
+                if (index <= 0)
+                    index = method.Name.IndexOf("To", StringComparison.Ordinal);
+
+                return index <= 0 ? method.Name : method.Name.Substring(0, index);
+            });
             services.AddRepositoryFromAssembly(options =>
             {
                 options.AssemblyString = "Wizard.Cinema.Domain";

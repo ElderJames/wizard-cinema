@@ -52,12 +52,12 @@ namespace Wizard.Cinema.Domain.Wizard
         /// <param name="mobile"></param>
         /// <param name="account"></param>
         /// <param name="password"></param>
-        public Wizards(long wizardId, string mobile, string account, string password)
+        public Wizards(long wizardId, string account, string password)
         {
             this.WizardId = wizardId;
-            this.Mobile = mobile;
             this.Account = account;
             this.Password = password.ToMd5();
+            this.Mobile = string.Empty;
             this.CreateTime = DateTime.Now;
             this.Profile = new WizardProfiles(wizardId);
         }

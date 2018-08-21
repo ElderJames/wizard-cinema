@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
+using Wizard.Cinema.Application.Services;
+using Wizard.Cinema.Application.Services.Dto.Response;
+using Wizard.Cinema.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
@@ -17,17 +20,19 @@ namespace Wizard.Cinema.Admin.Controllers
     {
         private readonly JwtIssuerOptions _jwtOptions;
         private readonly IJwtFactory _jwtFactory;
+        private readonly IWizardService _wizardService;
 
-        public AuthController(IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AuthController(IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions, IWizardService wizardService)
         {
             this._jwtOptions = jwtOptions.Value;
             this._jwtFactory = jwtFactory;
+            this._wizardService = wizardService;
         }
 
         [HttpPut("Login")]
         public IActionResult Login([FromBody]User user)
         {
-            var identity = GetClaimsIdentity("elderjames", "12345678");
+            ClaimsIdentity identity = GetClaimsIdentity(user.Email, user.Password);
             if (identity == null)
             {
                 return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
@@ -49,24 +54,16 @@ namespace Wizard.Cinema.Admin.Controllers
             return Ok(new { UserName = claimsIdentity?.Name });
         }
 
-        private ClaimsIdentity GetClaimsIdentity(string userName, string password)
+        private ClaimsIdentity GetClaimsIdentity(string account, string password)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password))
                 return null;
 
-            // get the user to verifty
-            var userToVerify = new User();
+            ApiResult<WizardResp> result = _wizardService.GetWizard(account, password);
+            if (result.Status != ResultStatus.SUCCESS || result.Result == null)
+                return null;
 
-            if (userToVerify == null) return null;
-
-            // check the credentials
-            if (true)
-            {
-                return _jwtFactory.GenerateClaimsIdentity("elderjames", "123");
-            }
-
-            // Credentials are invalid, or account doesn't exist
-            return null;
+            return _jwtFactory.GenerateClaimsIdentity(result.Result.Name, result.Result.WizardId);
         }
     }
 }

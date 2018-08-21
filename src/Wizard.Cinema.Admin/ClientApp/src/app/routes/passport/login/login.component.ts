@@ -135,7 +135,7 @@ export class UserLoginComponent implements OnDestroy {
     // }, 1000);
 
     this.http.put('api/Auth/Login', {
-      Username: this.userName.value,
+      Email: this.userName.value,
       Password: this.password.value
     }).subscribe((res: any) => {
       this.loading = false;

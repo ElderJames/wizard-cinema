@@ -6,6 +6,6 @@ namespace Wizard.Cinema.Admin.Auth
     {
         string GenerateEncodedToken(string userName, ClaimsIdentity identity);
 
-        ClaimsIdentity GenerateClaimsIdentity(string userName, string id);
+        ClaimsIdentity GenerateClaimsIdentity(string userName, long userId);
     }
 }

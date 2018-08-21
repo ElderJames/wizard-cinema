@@ -5,10 +5,10 @@ namespace Wizard.Cinema.QueryServices
 {
     public interface IWizardQueryService
     {
-        WizardInfo Get(string account, string passwardMd5);
+        WizardInfo Query(string account, string passwardMd5);
 
-        WizardInfo Get(long wizardId);
+        WizardInfo Query(long wizardId);
 
-        PagedData<WizardInfo> Search(PagedSearch search);
+        PagedData<WizardInfo> QueryPaged(PagedSearch search);
     }
 }

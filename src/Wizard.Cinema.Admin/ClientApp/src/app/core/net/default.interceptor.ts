@@ -53,7 +53,7 @@ export class DefaultInterceptor implements HttpInterceptor {
 
           if (body && body.status)
             if (body.status !== 1) {
-              this.msg.error(body.Message);
+              this.msg.error(body.message);
               // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：
               // this.http.get('/').subscribe() 并不会触发
               return throwError({});
