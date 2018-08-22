@@ -32,6 +32,8 @@ namespace Wizard.Cinema.Smartsql
                 options.AssemblyString = "Wizard.Cinema.QueryServices";
                 options.ScopeTemplate = "I{Scope}QueryService";
             });
+
+            services.AddSingleton<ISmartSqlTransaction, SmartSqlTransaction>();
         }
 
         public static IServiceCollection AddSmartSql(this IServiceCollection services, IConfiguration configuration)
