@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
@@ -19,5 +21,7 @@ namespace Wizard.Cinema.Admin.Controllers
         {
             return new JsonResult(Anonymous.ApiResult(ResultStatus.FAIL, msg));
         }
+
+        protected CurrentUser CurrentUser => new CurrentUser(User.Identity);
     }
 }

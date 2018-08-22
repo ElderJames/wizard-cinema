@@ -12,5 +12,10 @@ namespace Wizard.Cinema.Remote.ApplicationServices
         {
             return _cityhelper.Value.Search(keyword);
         }
+
+        public CityResponse.City GetById(int id)
+        {
+            return _cityhelper.Value.GetById(id);
+        }
     }
 }

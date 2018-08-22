@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Wizard"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMReuslt">
+      <Result Property="TotalCount" />
+      <Result Property="Records" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
+
+  <Statements>
+    <Statement Id="Create">
+      INSERT INTO divisions
+      (DivisionId
+      ,CityId
+      ,Name
+      ,TotalMember
+      ,CreatorId
+      ,CreateTime
+      )VALUES
+      (@DivisionId
+      ,@CityId
+      ,@Name
+      ,@TotalMember
+      ,@CreatorId
+      ,@CreateTime
+      )
+      ;SELECT last_insert_Id() as Id;
+    </Statement>
+
+    <Statement Id="Update">
+      UPDATE divisions SET
+      <Set>
+        <IsNotNull Prepend="," Property="Name">
+          Name = @Name
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="TotalMember">
+          TotalMember = @TotalMember
+        </IsNotNull>
+      </Set>
+      WHERE DivisionId = @DivisionId;
+    </Statement>
+
+    <Statement Id="OrderAndPaged">
+      <Switch Prepend="Order By" Property="OrderBy">
+        <Default>
+          T.id Desc
+        </Default>
+      </Switch>
+      <IsNotNull Prepend="and" Property="PageSize">
+        <IsNotNull Prepend="" Property="StartIndex">
+          LIMIT @StartIndex,@PageSize
+        </IsNotNull>
+        <IsNull Prepend="" Property="StartIndex">
+          LIMIT @PageSize
+        </IsNull>
+      </IsNotNull>
+    </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="AND" Property="CityId">
+          CityId = @CityId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="DivisionId">
+          DivisionId = @DivisionId
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query">
+      SELECT * FROM divisions
+      <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+      SELECT COUNT(1) FROM divisions
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT * FROM cinemas
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
+    </Statement>
+  </Statements>
+</SmartSqlMap>

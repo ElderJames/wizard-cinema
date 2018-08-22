@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-08-22 01:49:47
+Date: 2018-08-23 00:28:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,6 +28,23 @@ CREATE TABLE `cinemas` (
   `LastUpdateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `UNQ_CinemaId` (`CinemaId`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Table structure for divisions
+-- ----------------------------
+DROP TABLE IF EXISTS `divisions`;
+CREATE TABLE `divisions` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `DivisionId` bigint(20) DEFAULT NULL,
+  `CityId` bigint(20) DEFAULT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `TotalMember` int(11) DEFAULT NULL,
+  `CreatorId` bigint(20) DEFAULT NULL,
+  `CreateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UNQ_DivisionId` (`DivisionId`),
+  UNIQUE KEY `UNQ_CityId` (`CityId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
@@ -68,13 +85,13 @@ DROP TABLE IF EXISTS `wizards`;
 CREATE TABLE `wizards` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `WizardId` bigint(20) NOT NULL,
-  `Mobile` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Account` char(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Email` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Account` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `CreateTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_WizardId` (`WizardId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for wizard_profiles

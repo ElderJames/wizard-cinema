@@ -33,5 +33,10 @@ namespace Wizard.Cinema.Remote
 
             return CityLsit.Where(x => x.nm.Contains(keyword) || x.py.Contains(keyword)).OrderBy(x => x.nm.IndexOf(keyword));
         }
+
+        public CityResponse.City GetById(int id)
+        {
+            return CityLsit.FirstOrDefault(x => x.id == id);
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Wizard.Cinema.Infrastructures
 
     using static Expression;
 
-    public static class Mapper<TSource, TTarget> where TSource : class where TTarget : class
+    internal static class Mapper<TSource, TTarget> where TSource : class where TTarget : class
     {
         private static Func<TSource, TTarget> MapFunc { get; set; }
 
