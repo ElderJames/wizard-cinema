@@ -35,6 +35,11 @@ export class UserRegisterComponent implements OnDestroy {
     private http: _HttpClient
   ) {
     this.form = fb.group({
+      account: [null,
+        [
+          Validators.required,
+        ]
+      ],
       mail: ["shunjiey@hotmail.com", [Validators.email]],
       password: [
         "123456",
@@ -80,6 +85,9 @@ export class UserRegisterComponent implements OnDestroy {
   }
 
   // region: fields
+  get account() {
+    return this.form.controls.account;
+  }
 
   get mail() {
     return this.form.controls.mail;
@@ -126,6 +134,7 @@ export class UserRegisterComponent implements OnDestroy {
     // mock http
     this.loading = true;
     this.http.post("api/Account/sign-up", {
+      account: this.account.value,
       email: this.mail.value,
       password: this.password.value
     }).subscribe((res: any) => {

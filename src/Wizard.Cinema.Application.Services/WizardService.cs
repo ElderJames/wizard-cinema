@@ -17,8 +17,7 @@ namespace Wizard.Cinema.Application.Services
         private readonly IWizardRepository _wizardRepository;
         private readonly IWizardQueryService _wizardQueryService;
 
-        public WizardService(IWizardRepository wizardRepository,
-            IWizardQueryService wizardQueryService)
+        public WizardService(IWizardRepository wizardRepository, IWizardQueryService wizardQueryService)
         {
             this._wizardRepository = wizardRepository;
             this._wizardQueryService = wizardQueryService;
@@ -26,9 +25,15 @@ namespace Wizard.Cinema.Application.Services
 
         public ApiResult<bool> Register(RegisterWizardReqs request)
         {
+            if (_wizardQueryService.Query(request.Account) != null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "用户名已存在");
+
+            if (_wizardQueryService.QueryByEmail(request.Email) != null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "邮箱已被注册");
+
             long wizardId = NewId.GenerateId();
 
-            var wizard = new Wizards(wizardId, request.Email, request.Passward);
+            var wizard = new Wizards(wizardId, request.Account, request.Email, request.Passward);
 
             if (_wizardRepository.Create(wizard) <= 0)
                 return new ApiResult<bool>(ResultStatus.FAIL, "保存时发生异常，请稍后再试");

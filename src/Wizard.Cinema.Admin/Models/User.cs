@@ -9,6 +9,8 @@ namespace Wizard.Cinema.Admin.Models
     {
         public long? UserId { get; set; }
 
+        public string Account { get; set; }
+
         public string Email { get; set; }
 
         public string Password { get; set; }

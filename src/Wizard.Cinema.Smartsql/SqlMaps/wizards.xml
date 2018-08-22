@@ -16,13 +16,13 @@
     <Statement Id="Create">
       INSERT INTO wizards
       (WizardId
-      ,Mobile
+      ,Email
       ,Account
       ,Password
       ,CreateTime
       )VALUES(
       @WizardId
-      ,@Mobile
+      ,@Email
       ,@Account
       ,@Password
       ,@CreateTime
@@ -33,8 +33,8 @@
     <Statement Id="Update">
       UPDATE wizards SET
       <Set>
-        <IsNotNull Prepend="," Property="Mobile">
-          Mobile = @Mobile
+        <IsNotNull Prepend="," Property="Email">
+          Email = @Email
         </IsNotNull>
         <IsNotNull Prepend="," Property="Password">
           Password = @Password
@@ -79,7 +79,7 @@
     </Statement>
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
-      SELECT COUNT(1) FROM meeting_datum
+      SELECT COUNT(1) FROM wizards
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
       SELECT * FROM cinemas

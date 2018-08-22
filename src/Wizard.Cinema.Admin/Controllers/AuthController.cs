@@ -9,6 +9,7 @@ using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.Services;
+using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Infrastructures;
 
@@ -29,14 +30,30 @@ namespace Wizard.Cinema.Admin.Controllers
             this._wizardService = wizardService;
         }
 
+        [HttpPost("sign-up")]
+        public IActionResult Register([FromBody]User model)
+        {
+            if (!ModelState.IsValid)
+                return Fail(ModelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage);
+
+            ApiResult<bool> result = _wizardService.Register(new RegisterWizardReqs()
+            {
+                Account = model.Account,
+                Email = model.Email,
+                Passward = model.Password
+            });
+            if (result.Status != ResultStatus.SUCCESS)
+                return Fail(result.Message);
+
+            return Ok();
+        }
+
         [HttpPut("Login")]
         public IActionResult Login([FromBody]User user)
         {
             ClaimsIdentity identity = GetClaimsIdentity(user.Email, user.Password);
             if (identity == null)
-            {
-                return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
-            }
+                return Fail("用户名或密码不正确");
 
             return Ok(new
             {

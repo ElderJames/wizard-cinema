@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Wizard.Cinema.Admin.Auth;
@@ -26,23 +25,5 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         // POST api/accounts
-        [HttpPost("sign-up")]
-        public IActionResult Register([FromBody]User model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            ApiResult<bool> result = _wizardService.Register(new RegisterWizardReqs()
-            {
-                Email = model.Email,
-                Passward = model.Password
-            });
-            if (result.Status != ResultStatus.SUCCESS)
-                return Fail(result.Message);
-
-            return Ok();
-        }
     }
 }

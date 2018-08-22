@@ -15,7 +15,7 @@ namespace Wizard.Cinema.QueryServices.DTOs
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Mobile { get; set; }
+        public string EMail { get; set; }
 
         /// <summary>
         /// 帐户

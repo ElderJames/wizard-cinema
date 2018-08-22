@@ -4,6 +4,16 @@
   <nz-form-item>
     <nz-form-control>
       <nz-input-group nzSize="large" nzAddonBeforeIcon="anticon anticon-user">
+        <input nz-input formControlName="account" placeholder="用户名">
+      </nz-input-group>
+      <ng-container *ngIf="account.dirty && account.errors">
+        <nz-form-explain *ngIf="account.errors?.required">请输入用户名</nz-form-explain>
+      </ng-container>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <nz-input-group nzSize="large" nzAddonBeforeIcon="anticon anticon-mail">
         <input nz-input formControlName="mail" placeholder="邮箱">
       </nz-input-group>
       <ng-container *ngIf="mail.dirty && mail.errors">

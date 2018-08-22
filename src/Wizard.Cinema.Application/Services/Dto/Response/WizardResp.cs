@@ -14,7 +14,7 @@ namespace Wizard.Cinema.Application.Services.Dto.Response
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Mobile { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// 帐户

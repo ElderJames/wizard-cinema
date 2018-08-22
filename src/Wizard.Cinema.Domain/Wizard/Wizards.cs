@@ -16,9 +16,9 @@ namespace Wizard.Cinema.Domain.Wizard
         public long WizardId { get; private set; }
 
         /// <summary>
-        /// 手机号
+        /// 电子邮箱
         /// </summary>
-        public string Mobile { get; private set; }
+        public string Email { get; private set; }
 
         /// <summary>
         /// 帐户
@@ -49,15 +49,15 @@ namespace Wizard.Cinema.Domain.Wizard
         /// 创建巫师
         /// </summary>
         /// <param name="wizardId"></param>
-        /// <param name="mobile"></param>
         /// <param name="account"></param>
+        /// <param name="email"></param>
         /// <param name="password"></param>
-        public Wizards(long wizardId, string account, string password)
+        public Wizards(long wizardId, string account, string email, string password)
         {
             this.WizardId = wizardId;
             this.Account = account;
             this.Password = password.ToMd5();
-            this.Mobile = string.Empty;
+            this.Email = email;
             this.CreateTime = DateTime.Now;
             this.Profile = new WizardProfiles(wizardId);
         }

@@ -14,6 +14,6 @@ namespace Wizard.Cinema.Domain.Wizard
 
         int UpdateMobile(Wizards wizard);
 
-        int Query(long wizardId);
+        Wizards Query(long wizardId);
     }
 }
