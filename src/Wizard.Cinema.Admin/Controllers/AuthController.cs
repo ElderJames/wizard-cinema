@@ -63,7 +63,7 @@ namespace Wizard.Cinema.Admin.Controllers
             if (result.Status != ResultStatus.SUCCESS || result.Result == null)
                 return null;
 
-            return _jwtFactory.GenerateClaimsIdentity(result.Result.Name, result.Result.WizardId);
+            return _jwtFactory.GenerateClaimsIdentity(result.Result.Account, result.Result.WizardId);
         }
     }
 }
