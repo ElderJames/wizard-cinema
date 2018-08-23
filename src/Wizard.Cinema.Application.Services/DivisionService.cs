@@ -18,14 +18,14 @@ namespace Wizard.Cinema.Application.Services
     {
         private readonly IDivisionQueryService _divisionQueryService;
         private readonly IWizardRepository _wizardRepository;
-        private readonly ISmartSqlTransaction _smartSqlTransaction;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IDivisionRepository _divisionRepository;
 
-        public DivisionService(IDivisionQueryService divisionQueryService, IWizardRepository wizardRepository, ISmartSqlTransaction smartSqlTransaction, IDivisionRepository divisionRepository)
+        public DivisionService(IDivisionQueryService divisionQueryService, IWizardRepository wizardRepository, ITransactionRepository transactionRepository, IDivisionRepository divisionRepository)
         {
             this._divisionQueryService = divisionQueryService;
             this._wizardRepository = wizardRepository;
-            this._smartSqlTransaction = smartSqlTransaction;
+            this._transactionRepository = transactionRepository;
             this._divisionRepository = divisionRepository;
         }
 
@@ -43,7 +43,7 @@ namespace Wizard.Cinema.Application.Services
             var division = new Divisions(divisionId, request.CityId, request.Name, request.CreatorId);
             wizard.ChangeDivision(divisionId);
 
-            _smartSqlTransaction.UseTran(IsolationLevel.ReadUncommitted, () =>
+            _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
             {
                 if (_wizardRepository.UpdateInfo(wizard) <= 0)
                     throw new Exception("保存时出错，请稍后再试（1）");

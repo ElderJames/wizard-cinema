@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Data;
 using SmartSql.Abstractions;
+using Wizard.Cinema.Infrastructures;
 
 namespace Wizard.Cinema.Smartsql
 {
-    public interface ISmartSqlTransaction
-    {
-        void UseTran(IsolationLevel level, Action action);
-    }
-
-    public class SmartSqlTransaction : ISmartSqlTransaction
+    public class SmartSqlTransactionRepository : ITransactionRepository
     {
         private readonly ITransaction _transaction;
 
-        public SmartSqlTransaction(ITransaction transaction)
+        public SmartSqlTransactionRepository(ITransaction transaction)
         {
             this._transaction = transaction;
         }
 
-        public void UseTran(IsolationLevel level, Action action)
+        public void UseTransaction(IsolationLevel level, Action action)
         {
             try
             {
