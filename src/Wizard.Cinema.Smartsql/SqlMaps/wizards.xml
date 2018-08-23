@@ -82,7 +82,7 @@
       SELECT COUNT(1) FROM wizards
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
-      SELECT * FROM cinemas
+      SELECT * FROM wizards
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
       SELECT @PageSize;
