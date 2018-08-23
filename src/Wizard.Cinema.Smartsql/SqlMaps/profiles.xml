@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SmartSqlMap Scope="Wizard"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+<SmartSqlMap Scope="WizardProfile"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
@@ -13,33 +13,52 @@
   </MultipleResultMaps>
 
   <Statements>
-    <Statement Id="Create">
-      INSERT INTO wizards
+    <Statement Id="Insert">
+      INSERT INTO wizard_profiles
       (WizardId
-      ,Email
-      ,Account
-      ,Password
-      ,DivisionId
-      ,CreateTime
-      )VALUES(
-      @WizardId
-      ,@Email
-      ,@Account
-      ,@Password
-      ,@DivisionId
-      ,@CreateTime
+      ,NickName
+      ,PortraitUrl
+      ,Mobile
+      ,Gender
+      ,Birthday
+      ,Slogan
+      ,House
+      )VALUES
+      (@WizardId
+      ,@NickName
+      ,@PortraitUrl
+      ,@Mobile
+      ,@Gender
+      ,@Birthday
+      ,@Slogan
+      ,@House
       )
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
     <Statement Id="Update">
-      UPDATE wizards SET
+      UPDATE wizard_profiles SET
       <Set>
-        <IsNotNull Prepend="," Property="Email">
-          Email = @Email
+        <IsNotNull Prepend="," Property="NickName">
+          NickName = @NickName
         </IsNotNull>
-        <IsNotNull Prepend="," Property="Password">
-          Password = @Password
+        <IsNotNull Prepend="," Property="PortraitUrl">
+          PortraitUrl = @PortraitUrl
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Mobile">
+          Mobile = @Mobile
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Gender">
+          Gender = @Gender
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Birthday">
+          Birthday = @Birthday
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Slogan">
+          Slogan = @Slogan
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="House">
+          House = @House
         </IsNotNull>
       </Set>
       WHERE WizardId = @WizardId;
@@ -66,25 +85,28 @@
         <IsNotNull Prepend="AND" Property="WizardId">
           WizardId = @WizardId
         </IsNotNull>
-        <IsNotNull Prepend="AND" Property="Account">
-          Account = @Account
+        <IsNotNull Prepend="AND" Property="Mobile">
+          Mobile = @Mobile
         </IsNotNull>
-        <IsNotNull Prepend="AND" Property="PasswardMd5">
-          Password = @PasswardMd5
+        <IsNotNull Prepend="AND" Property="Gender">
+          Gender = @Gender
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="House">
+          House = @House
         </IsNotNull>
       </Where>
     </Statement>
 
     <Statement Id="Query">
-      SELECT * FROM wizards
+      SELECT * FROM wizard_profiles
       <Include RefId="QueryParams"></Include>
     </Statement>
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
-      SELECT COUNT(1) FROM wizards
+      SELECT COUNT(1) FROM wizard_profiles
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
-      SELECT * FROM wizards
+      SELECT * FROM wizard_profiles
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
       SELECT @PageSize;

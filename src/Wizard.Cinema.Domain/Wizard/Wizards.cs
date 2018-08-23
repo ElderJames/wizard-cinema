@@ -60,6 +60,7 @@ namespace Wizard.Cinema.Domain.Wizard
             this.Email = email;
             this.CreateTime = DateTime.Now;
             this.Profile = new WizardProfiles(wizardId);
+            this.DivisionId = 0;
         }
 
         /// <summary>
@@ -88,13 +89,14 @@ namespace Wizard.Cinema.Domain.Wizard
         /// </summary>
         /// <param name="nickName"></param>
         /// <param name="portraitUrl"></param>
+        /// <param name="mobile"></param>
         /// <param name="gender"></param>
         /// <param name="birthday"></param>
         /// <param name="slogan"></param>
         /// <param name="house"></param>
-        public void ChangeInfo(string nickName, string portraitUrl, Gender gender, DateTime birthday, string slogan, Houses house)
+        public void ChangeInfo(string nickName, string portraitUrl, string mobile, Gender gender, DateTime birthday, string slogan, Houses house)
         {
-            this.Profile.Change(nickName, portraitUrl, gender, birthday, slogan, house);
+            this.Profile.Change(nickName, portraitUrl, mobile, gender, birthday, slogan, house);
         }
     }
 }

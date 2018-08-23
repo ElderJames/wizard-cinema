@@ -23,6 +23,11 @@ namespace Wizard.Cinema.Domain.Wizard
         public string PortraitUrl { get; private set; }
 
         /// <summary>
+        /// 手机号码
+        /// </summary>
+        public string Mobile { get; private set; }
+
+        /// <summary>
         /// 性别
         /// </summary>
         public Gender Gender { get; private set; }
@@ -42,15 +47,16 @@ namespace Wizard.Cinema.Domain.Wizard
         /// </summary>
         public Houses House { get; private set; }
 
-        public WizardProfiles(long wizardId)
+        internal WizardProfiles(long wizardId)
         {
             this.WizardId = wizardId;
         }
 
-        public void Change(string nickName, string portraitUrl, Gender gender, DateTime birthday, string slogan, Houses house)
+        public void Change(string nickName, string portraitUrl, string mobile, Gender gender, DateTime birthday, string slogan, Houses house)
         {
             this.NickName = nickName;
             this.PortraitUrl = portraitUrl;
+            this.Mobile = mobile;
             this.Gender = gender;
             this.Birthday = birthday;
             this.Slogan = slogan;

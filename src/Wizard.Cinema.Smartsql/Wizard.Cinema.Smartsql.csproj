@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SqlMaps\profiles.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SqlMaps\wizards.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -133,7 +133,7 @@ export class UserRegisterComponent implements OnDestroy {
 
     // mock http
     this.loading = true;
-    this.http.post("api/Account/sign-up", {
+    this.http.post("api/Auth/sign-up", {
       account: this.account.value,
       email: this.mail.value,
       password: this.password.value
@@ -141,9 +141,10 @@ export class UserRegisterComponent implements OnDestroy {
       console.log('success');
       this.loading = false;
       this.router.navigate(['/passport/register-result']);
-    }, (error) => {
-      this.loading = false;
-    });
+    }, null,
+      () => {
+        this.loading = false;
+      });
 
     // setTimeout(() => {
     //   this.loading = false;

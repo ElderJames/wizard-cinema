@@ -13,5 +13,9 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<bool> Register(RegisterWizardReqs request);
 
         ApiResult<PagedData<WizardResp>> Search(PagedSearch search);
+
+        ApiResult<ProfileResp> GetPrpfile(long wizardId);
+
+        ApiResult<ProfileResp> ChangeProfile(ChangeProfilepReqs request);
     }
 }
