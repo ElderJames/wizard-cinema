@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-08-23 00:28:03
+Date: 2018-08-24 01:46:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,10 +88,11 @@ CREATE TABLE `wizards` (
   `Email` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Account` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `DivisionId` bigint(20) DEFAULT NULL,
   `CreateTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_WizardId` (`WizardId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for wizard_profiles
@@ -102,11 +103,12 @@ CREATE TABLE `wizard_profiles` (
   `WizardId` bigint(20) NOT NULL,
   `NickName` varchar(50) DEFAULT NULL,
   `PortraitUrl` char(255) DEFAULT NULL,
+  `Mobile` char(12) DEFAULT NULL,
   `Gender` tinyint(4) DEFAULT NULL,
   `Birthday` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `Slogan` varchar(255) DEFAULT NULL,
   `House` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_WizardId` (`WizardId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 SET FOREIGN_KEY_CHECKS=1;
