@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Application;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote.ApplicationServices
 {

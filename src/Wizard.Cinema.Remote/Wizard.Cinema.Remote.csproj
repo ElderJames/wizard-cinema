@@ -27,10 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wizard.Cinema.Infrastructures\Wizard.Cinema.Infrastructures.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="SmartSqlConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -45,5 +41,9 @@
   <ItemGroup>
     <Folder Include="Application\Request\" />
     <Folder Include="Application\Response\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wizard.Cinema.Infrastructures\Wizard.Infrastructures.csproj" />
   </ItemGroup>
 </Project>

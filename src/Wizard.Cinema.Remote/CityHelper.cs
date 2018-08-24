@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Spider.Response;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote
 {

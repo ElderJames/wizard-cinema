@@ -1,4 +1,4 @@
-﻿using Wizard.Cinema.Infrastructures;
+﻿using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote.Repository.Condition
 {

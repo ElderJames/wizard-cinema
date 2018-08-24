@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Repository.Condition;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote.ApplicationServices
 {

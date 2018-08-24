@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Models;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote.Repository
 {

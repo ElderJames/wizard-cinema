@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using SmartSql.Abstractions;
-using Wizard.Cinema.Infrastructures;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Smartsql
 {

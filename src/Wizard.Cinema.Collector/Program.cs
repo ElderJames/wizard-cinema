@@ -12,10 +12,10 @@ using Serilog;
 using Serilog.Events;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
-using Wizard.Cinema.Infrastructures;
 using Wizard.Cinema.Remote.Application;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Collector
 {
