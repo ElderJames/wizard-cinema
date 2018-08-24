@@ -5,8 +5,8 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Wizard.Cinema.Infrastructures.Attributes;
 using Wizard.Cinema.Smartsql;
+using Wizard.Infrastructures.Attributes;
 
 namespace Wizard.Cinema.Application.Services
 {

@@ -1,5 +1,5 @@
-﻿using Wizard.Cinema.Infrastructures;
-using Wizard.Cinema.QueryServices.DTOs;
+﻿using Wizard.Cinema.QueryServices.DTOs;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.QueryServices
 {

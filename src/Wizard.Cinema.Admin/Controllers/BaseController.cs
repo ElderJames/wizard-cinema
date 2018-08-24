@@ -1,7 +1,6 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Admin.Helpers;
-using Wizard.Cinema.Infrastructures;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Models;
-using Wizard.Cinema.Infrastructures.Encrypt;
+using Wizard.Infrastructures.Encrypt;
 
 namespace Wizard.Cinema.Admin.Extensions
 {
@@ -16,8 +16,7 @@ namespace Wizard.Cinema.Admin.Extensions
         {
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
-            // jwt wire up
-            // Get options from app settings
+            // jwt wire up Get options from app settings
             var jwtAppSettingOptions = configuration.GetSection(nameof(JwtIssuerOptions));
 
             var secret = jwtAppSettingOptions["Secret"];

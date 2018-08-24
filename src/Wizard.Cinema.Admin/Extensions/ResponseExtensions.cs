@@ -1,9 +1,9 @@
-using System.Net;
+﻿using System.Net;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using Wizard.Cinema.Infrastructures;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Extensions
 {

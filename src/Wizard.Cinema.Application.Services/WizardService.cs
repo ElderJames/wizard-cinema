@@ -7,11 +7,12 @@ using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.Domain.Wizard.EnumTypes;
-using Wizard.Cinema.Infrastructures;
-using Wizard.Cinema.Infrastructures.Attributes;
-using Wizard.Cinema.Infrastructures.Encrypt.Extensions;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
+using Wizard.Infrastructures;
+using Wizard.Infrastructures.Attributes;
+using Wizard.Infrastructures.Encrypt.Extensions;
+using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace Wizard.Cinema.Application.Services
 {
@@ -62,7 +63,7 @@ namespace Wizard.Cinema.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("注册时异常", ex);
+                LoggerExtensions.LogError(_logger, "注册时异常", ex);
                 return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
             }
         }

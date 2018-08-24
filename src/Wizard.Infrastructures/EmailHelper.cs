@@ -9,22 +9,24 @@ namespace Wizard.Infrastructures
     {
         #region field
 
-        private readonly string serverProdiver = null;
-        private readonly string userName = null;
-        private readonly string password = null;
-        private readonly string from = null;
-        private readonly int port = 0;
-        private readonly ILogger<EmailHelper> logger = null;
+        private readonly string _serverProdiver;
+        private readonly string _userName;
+        private readonly string password;
+        private readonly string _from;
+        private readonly int _port;
+        private readonly ILogger<EmailHelper> _logger;
 
-        #endregion field
-
-        #region ctor
-
-        static EmailHelper()
+        public EmailHelper(string serverProdiver, string userName, string password, string @from, int port, ILogger<EmailHelper> logger)
         {
+            _serverProdiver = serverProdiver;
+            _userName = userName;
+            this.password = password;
+            _from = @from;
+            _port = port;
+            _logger = logger;
         }
 
-        #endregion ctor
+        #endregion field
 
         /// <summary>
         /// 发送邮件
@@ -34,14 +36,14 @@ namespace Wizard.Infrastructures
         /// <param name="subject">主题</param>
         /// <param name="body">内容</param>
         /// <param name="attachments">附件</param>
-        public static void Send(MailAddress sender, string to, string subject, string body, params Attachment[] attachments)
+        public void Send(MailAddress sender, string to, string subject, string body, params Attachment[] attachments)
         {
-            SmtpClient mailClient = new SmtpClient(serverProdiver);
-            if (port > 0)
-                mailClient.Port = port;
+            SmtpClient mailClient = new SmtpClient(_serverProdiver);
+            if (_port > 0)
+                mailClient.Port = _port;
 
             mailClient.UseDefaultCredentials = true;
-            mailClient.Credentials = new System.Net.NetworkCredential(userName, password);
+            mailClient.Credentials = new System.Net.NetworkCredential(_userName, password);
 
             try
             {
@@ -62,7 +64,7 @@ namespace Wizard.Infrastructures
             }
             catch (Exception ex)
             {
-                logger?.Error("发送邮件出错了", ex);
+                _logger?.LogError("发送邮件出错了", ex);
             }
         }
 
@@ -74,14 +76,14 @@ namespace Wizard.Infrastructures
         /// <param name="subject">主题</param>
         /// <param name="body">内容</param>
         /// <param name="attachments">附件</param>
-        public static void Send(MailAddress sender, string to, string subject, AlternateView body, params Attachment[] attachments)
+        public void Send(MailAddress sender, string to, string subject, AlternateView body, params Attachment[] attachments)
         {
-            SmtpClient mailClient = new SmtpClient(serverProdiver);
-            if (port > 0)
-                mailClient.Port = port;
+            SmtpClient mailClient = new SmtpClient(_serverProdiver);
+            if (_port > 0)
+                mailClient.Port = _port;
 
             mailClient.UseDefaultCredentials = true;
-            mailClient.Credentials = new System.Net.NetworkCredential(userName, password);
+            mailClient.Credentials = new System.Net.NetworkCredential(_userName, password);
 
             try
             {
@@ -102,7 +104,7 @@ namespace Wizard.Infrastructures
             }
             catch (Exception ex)
             {
-                logger?.Error("发送邮件出错了", ex);
+                _logger?.LogError("发送邮件出错了", ex);
             }
         }
 
@@ -113,18 +115,18 @@ namespace Wizard.Infrastructures
         /// <param name="subject">主题</param>
         /// <param name="body">内容</param>
         /// <param name="attachments">附件</param>
-        public static void Send(string to, string subject, string body, params Attachment[] attachments)
+        public void Send(string to, string subject, string body, params Attachment[] attachments)
         {
-            SmtpClient mailClient = new SmtpClient(serverProdiver);
-            if (port > 0)
-                mailClient.Port = port;
+            SmtpClient mailClient = new SmtpClient(_serverProdiver);
+            if (_port > 0)
+                mailClient.Port = _port;
 
             mailClient.UseDefaultCredentials = true;
-            mailClient.Credentials = new System.Net.NetworkCredential(userName, password);
+            mailClient.Credentials = new System.Net.NetworkCredential(_userName, password);
 
             try
             {
-                using (var mailMessage = new MailMessage(from, to, subject, body))
+                using (var mailMessage = new MailMessage(_from, to, subject, body))
                 {
                     mailMessage.IsBodyHtml = true;
                     mailMessage.BodyEncoding = Encoding.UTF8;
@@ -139,7 +141,7 @@ namespace Wizard.Infrastructures
             }
             catch (Exception ex)
             {
-                logger?.Error("发送邮件出错了", ex);
+                _logger?.LogError("发送邮件出错了", ex);
             }
         }
     }

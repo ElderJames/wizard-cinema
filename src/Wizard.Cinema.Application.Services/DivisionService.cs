@@ -5,11 +5,11 @@ using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Domain.Ministry;
 using Wizard.Cinema.Domain.Wizard;
-using Wizard.Cinema.Infrastructures;
-using Wizard.Cinema.Infrastructures.Attributes;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
 using Wizard.Cinema.Smartsql;
+using Wizard.Infrastructures;
+using Wizard.Infrastructures.Attributes;
 
 namespace Wizard.Cinema.Application.Services
 {

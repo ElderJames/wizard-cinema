@@ -11,7 +11,7 @@ using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
-using Wizard.Cinema.Infrastructures;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
