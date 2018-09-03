@@ -24,5 +24,10 @@ namespace Wizard.Infrastructures
         public int TotalCount { get; set; }
 
         public IEnumerable<TRecord> Records { get; set; }
+
+        public override string ToString()
+        {
+            return $"PageSize={PageSize},PageNow={PageNow},TotalCount={TotalCount},Records.Count={Records.Count()}";
+        }
     }
 }
