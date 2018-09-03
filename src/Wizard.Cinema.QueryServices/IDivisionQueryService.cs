@@ -9,6 +9,6 @@ namespace Wizard.Cinema.QueryServices
     {
         DivisionInfo QueryByCityId(long cityId);
 
-        DivisionInfo QueryById(long id);
+        DivisionInfo QueryById(long divisionId);
     }
 }

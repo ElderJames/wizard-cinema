@@ -10,6 +10,7 @@ using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Request;
+using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Infrastructures;
 
@@ -31,7 +32,7 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpPost("sign-up")]
-        public IActionResult Register([FromBody]User model)
+        public IActionResult Register([FromBody]WizardModel model)
         {
             if (!ModelState.IsValid)
                 return Fail(ModelState.Values.FirstOrDefault()?.Errors.FirstOrDefault()?.ErrorMessage);
@@ -49,9 +50,9 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpPut("Login")]
-        public IActionResult Login([FromBody]User user)
+        public IActionResult Login([FromBody]WizardLoginModel user)
         {
-            ClaimsIdentity identity = GetClaimsIdentity(user.Email, user.Password);
+            ClaimsIdentity identity = GetClaimsIdentity(user.Account, user.Password);
             if (identity == null)
                 return Fail("用户名或密码不正确");
 

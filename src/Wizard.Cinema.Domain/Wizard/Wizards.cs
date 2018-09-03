@@ -46,6 +46,16 @@ namespace Wizard.Cinema.Domain.Wizard
         public long DivisionId { get; private set; }
 
         /// <summary>
+        /// 是否管理员
+        /// </summary>
+        public bool IsAdmin { get; private set; }
+
+        /// <summary>
+        /// 创建者id
+        /// </summary>
+        public long CreatorId { get; private set; }
+
+        /// <summary>
         /// 创建巫师
         /// </summary>
         /// <param name="wizardId"></param>
@@ -64,12 +74,39 @@ namespace Wizard.Cinema.Domain.Wizard
         }
 
         /// <summary>
+        /// 创建巫师
+        /// </summary>
+        /// <param name="wizardId"></param>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        public Wizards(long wizardId, string account, string password, long creatorId)
+        {
+            this.WizardId = wizardId;
+            this.Account = account;
+            this.Password = password.ToMd5();
+            this.CreateTime = DateTime.Now;
+            this.Profile = new WizardProfiles(wizardId);
+            this.DivisionId = 0;
+            this.IsAdmin = true;
+            this.CreatorId = creatorId;
+        }
+
+        /// <summary>
         /// 设置或转移分部
         /// </summary>
         /// <param name="divisionId"></param>
         public void ChangeDivision(long divisionId)
         {
             this.DivisionId = divisionId;
+        }
+
+        public void Change(long divisionId, string passward)
+        {
+            if (this.DivisionId != divisionId)
+                this.DivisionId = divisionId;
+
+            if (this.Password != passward.ToMd5())
+                this.Password = passward.ToMd5();
         }
 
         /// <summary>
@@ -79,9 +116,10 @@ namespace Wizard.Cinema.Domain.Wizard
         /// <param name="newPassward"></param>
         public void ChangePassward(string oldPassward, string newPassward)
         {
-            string passwardMd5 = Password.ToMd5();
-            if (oldPassward != passwardMd5)
+            if (oldPassward.ToMd5() != Password)
                 throw new DomainException("旧密码匹配失败，请填写正确的密码");
+
+            this.Password = newPassward.ToMd5();
         }
 
         /// <summary>
@@ -97,6 +135,11 @@ namespace Wizard.Cinema.Domain.Wizard
         public void ChangeInfo(string nickName, string portraitUrl, string mobile, Gender gender, DateTime birthday, string slogan, Houses house)
         {
             this.Profile.Change(nickName, portraitUrl, mobile, gender, birthday, slogan, house);
+        }
+
+        public void SetAdmin()
+        {
+            this.IsAdmin = true;
         }
     }
 }

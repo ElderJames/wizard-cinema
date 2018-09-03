@@ -3,12 +3,16 @@ using System.Data;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Wizard.Cinema.Application.DTOs.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Request;
+using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
+using Wizard.Cinema.Domain.Ministry;
 using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.Domain.Wizard.EnumTypes;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
+using Wizard.Cinema.QueryServices.DTOs.Wizards;
 using Wizard.Infrastructures;
 using Wizard.Infrastructures.Attributes;
 using Wizard.Infrastructures.Encrypt.Extensions;
@@ -24,9 +28,12 @@ namespace Wizard.Cinema.Application.Services
         private readonly IWizardProfileRepository _wizardPRofileRepository;
         private readonly IWizardProfileQueryService _wizardProfileQueryService;
         private readonly ITransactionRepository _transactionRepository;
+
+        private readonly IDivisionQueryService divisionQueryService;
+        private readonly IDivisionRepository divisionRepository;
         private readonly ILogger<WizardService> _logger;
 
-        public WizardService(IWizardRepository wizardRepository, IWizardQueryService wizardQueryService, IWizardProfileRepository wizardPRofileRepository, IWizardProfileQueryService wizardProfileQueryService, ITransactionRepository transactionRepository, ILogger<WizardService> logger)
+        public WizardService(IWizardRepository wizardRepository, IWizardQueryService wizardQueryService, IWizardProfileRepository wizardPRofileRepository, IWizardProfileQueryService wizardProfileQueryService, ITransactionRepository transactionRepository, ILogger<WizardService> logger, IDivisionQueryService divisionQueryService, IDivisionRepository divisionRepository)
         {
             this._wizardRepository = wizardRepository;
             this._wizardQueryService = wizardQueryService;
@@ -34,6 +41,8 @@ namespace Wizard.Cinema.Application.Services
             this._wizardProfileQueryService = wizardProfileQueryService;
             this._transactionRepository = transactionRepository;
             this._logger = logger;
+            this.divisionQueryService = divisionQueryService;
+            this.divisionRepository = divisionRepository;
         }
 
         public ApiResult<bool> Register(RegisterWizardReqs request)
@@ -86,9 +95,9 @@ namespace Wizard.Cinema.Application.Services
             return new ApiResult<WizardResp>(ResultStatus.SUCCESS, Mapper.Map<WizardInfo, WizardResp>(wizard));
         }
 
-        public ApiResult<PagedData<WizardResp>> Search(PagedSearch search)
+        public ApiResult<PagedData<WizardResp>> Search(SearchWizardReqs search)
         {
-            PagedData<WizardInfo> wizards = _wizardQueryService.QueryPaged(search);
+            PagedData<WizardInfo> wizards = _wizardQueryService.QueryPaged(Mapper.Map<SearchWizardReqs, WizardSearch>(search));
             return new ApiResult<PagedData<WizardResp>>(ResultStatus.SUCCESS, new PagedData<WizardResp>()
             {
                 PageSize = wizards.PageSize,
@@ -122,6 +131,46 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<ProfileResp>(ResultStatus.FAIL, "保存时出错，请稍后再试");
 
             return new ApiResult<ProfileResp>(ResultStatus.SUCCESS, Mapper.Map<WizardProfiles, ProfileResp>(profile));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public ApiResult<bool> CreateWizard(CreateWizardReqs request)
+        {
+            if (string.IsNullOrEmpty(request.Account))
+                return new ApiResult<bool>(ResultStatus.FAIL, "巫师名未提交");
+
+            if (_wizardRepository.Query(request.Account) != null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "巫师名重复了");
+
+            long wizardId = NewId.GenerateId();
+            var wizard = new Wizards(wizardId, request.Account, request.Passward.ToMd5(), request.CreatorId);
+
+            if (_wizardRepository.Create(wizard) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常，请稍后再试");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> UpdateWizard(UpdateWizardReqs request)
+        {
+            var wizard = _wizardRepository.Query(request.WizardId);
+            if (wizard == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "找不到这名巫师的记录");
+
+            var division = divisionRepository.Query(request.DivisionId);
+            if (division == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "分部不存在");
+
+            if (request.DivisionId != wizard.DivisionId)
+                wizard.Change(request.DivisionId, request.Passward);
+
+            if (_wizardRepository.Update(wizard) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }
     }
 }

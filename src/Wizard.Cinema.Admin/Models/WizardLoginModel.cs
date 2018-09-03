@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace Wizard.Cinema.Admin.Models
 {
-    public class User
+    public class WizardLoginModel
     {
-        public long? UserId { get; set; }
-
         public string Account { get; set; }
-
-        public string Email { get; set; }
 
         public string Password { get; set; }
     }

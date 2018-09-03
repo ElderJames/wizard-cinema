@@ -7,5 +7,7 @@ namespace Wizard.Cinema.Domain.Ministry
     public interface IDivisionRepository
     {
         int Insert(Divisions divisions);
+
+        Divisions Query(long divisionId);
     }
 }

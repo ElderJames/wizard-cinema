@@ -21,6 +21,11 @@ namespace Wizard.Cinema.Admin.Controllers
             return new JsonResult(Anonymous.ApiResult<object>(ResultStatus.FAIL, msg));
         }
 
+        public IActionResult Json(object value)
+        {
+            return new JsonResult(value);
+        }
+
         protected CurrentUser CurrentUser => new CurrentUser(User.Identity);
     }
 }

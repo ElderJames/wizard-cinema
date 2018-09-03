@@ -8,6 +8,8 @@ namespace Wizard.Cinema.Domain.Wizard
     {
         int Create(Wizards wizard);
 
+        int Update(Wizards wizard);
+
         int UpdatePassword(Wizards wizard);
 
         int UpdateInfo(Wizards wizard);
@@ -15,5 +17,7 @@ namespace Wizard.Cinema.Domain.Wizard
         int UpdateMobile(Wizards wizard);
 
         Wizards Query(long wizardId);
+
+        Wizards Query(string account);
     }
 }

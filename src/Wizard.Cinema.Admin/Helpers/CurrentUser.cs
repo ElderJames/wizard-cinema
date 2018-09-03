@@ -14,8 +14,7 @@ namespace Wizard.Cinema.Admin.Helpers
             if (identity is ClaimsIdentity claimsIdentity)
             {
                 UserName = claimsIdentity.Name;
-                UserId = long.TryParse(claimsIdentity.FindFirst(x => x.Type == Constants.Strings.JwtClaimIdentifiers.Id)?.Value, out long userId) && userId > 0
-                    ? userId : 0;
+                UserId = long.TryParse(claimsIdentity.FindFirst(x => x.Type == Constants.Strings.JwtClaimIdentifiers.Id)?.Value, out long userId) && userId > 0 ? userId : 0;
             }
         }
     }

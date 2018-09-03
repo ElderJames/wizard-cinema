@@ -1,9 +1,8 @@
 ﻿using System;
-using Wizard.Cinema.Application.Services.Dto.EnumTypes;
 
-namespace Wizard.Cinema.QueryServices.DTOs
+namespace Wizard.Cinema.Application.Services.Dto.Response
 {
-    public class WizardInfo
+    public class WizardResp
     {
         /// <summary>
         /// 巫师Id
@@ -19,11 +18,6 @@ namespace Wizard.Cinema.QueryServices.DTOs
         /// 帐户
         /// </summary>
         public string Account { get; private set; }
-
-        /// <summary>
-        /// 巫师档案
-        /// </summary>
-        public ProfileInfo Profile { get; private set; }
 
         /// <summary>
         /// 注册时间

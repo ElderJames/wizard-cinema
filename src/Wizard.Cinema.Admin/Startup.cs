@@ -8,6 +8,7 @@ using Newtonsoft.Json.Serialization;
 using Wizard.Cinema.Admin.Extensions;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Remote;
+using Wizard.Infrastructures.JsonConverters;
 
 namespace Wizard.Cinema.Admin
 {
@@ -39,7 +40,14 @@ namespace Wizard.Cinema.Admin
             //    options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
             //});
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.Converters.Add(new Int64JsonConverter());//解决js不支持int64的问题
+                    options.SerializerSettings.Converters.Add(new NullableInt64JsonConverter());
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -78,8 +86,7 @@ namespace Wizard.Cinema.Admin
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
 

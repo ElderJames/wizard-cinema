@@ -1,4 +1,6 @@
-﻿using Wizard.Cinema.Application.Services.Dto.Request;
+﻿using Wizard.Cinema.Application.DTOs.Request.Wizards;
+using Wizard.Cinema.Application.Services.Dto.Request;
+using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Infrastructures;
 
@@ -12,7 +14,11 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<bool> Register(RegisterWizardReqs request);
 
-        ApiResult<PagedData<WizardResp>> Search(PagedSearch search);
+        ApiResult<bool> CreateWizard(CreateWizardReqs request);
+
+        ApiResult<bool> UpdateWizard(UpdateWizardReqs request);
+
+        ApiResult<PagedData<WizardResp>> Search(SearchWizardReqs search);
 
         ApiResult<ProfileResp> GetPrpfile(long wizardId);
 

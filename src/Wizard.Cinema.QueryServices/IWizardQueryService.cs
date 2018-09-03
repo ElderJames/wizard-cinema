@@ -1,4 +1,5 @@
 ﻿using Wizard.Cinema.QueryServices.DTOs;
+using Wizard.Cinema.QueryServices.DTOs.Wizards;
 using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.QueryServices
@@ -13,6 +14,6 @@ namespace Wizard.Cinema.QueryServices
 
         WizardInfo Query(long wizardId);
 
-        PagedData<WizardInfo> QueryPaged(PagedSearch search);
+        PagedData<WizardInfo> QueryPaged(WizardSearch search);
     }
 }
