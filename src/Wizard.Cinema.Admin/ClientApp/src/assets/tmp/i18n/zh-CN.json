@@ -6,8 +6,11 @@
   "cinema_shows": "观影场次",
   "activity": "活动管理",
   "signed_up_wizards": "活动报名",
-  "wizards": "巫师名单",
-
+  "wizard-list": "巫师名单",
+  "wizards": "巫师",
+  "wizard-manager": "巫师管理",
+  "head-wizards": "管理员",
+  "normal-wizards": "普通巫师",
   "settings": "设置",
   "profile": "个人资料",
   "login": "登录",

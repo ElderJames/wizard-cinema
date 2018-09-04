@@ -33,9 +33,10 @@
               "i18n": "signed_up_wizards"
             }
           ]
-        }, {
+        },
+        {
           "text": "巫师管理",
-          "i18n": "watch-film",
+          "i18n": "wizard-manager",
           "icon": "icon-speedometer",
           "children": [{
               "text": "管理员",
