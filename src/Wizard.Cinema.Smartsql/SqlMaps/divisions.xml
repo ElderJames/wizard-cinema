@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SmartSqlMap Scope="Wizard"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+<SmartSqlMap Scope="Division"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
@@ -13,7 +13,7 @@
   </MultipleResultMaps>
 
   <Statements>
-    <Statement Id="Create">
+    <Statement Id="Insert">
       INSERT INTO divisions
       (DivisionId
       ,CityId

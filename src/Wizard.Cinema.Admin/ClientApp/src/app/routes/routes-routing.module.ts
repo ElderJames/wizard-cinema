@@ -24,13 +24,19 @@ import { Exception500Component } from './exception/500.component';
 //cinema pages
 import { CinemaShowsComponent } from './cinema/shows/shows.component';
 
+import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
+
+import { JWTGuard } from '@delon/auth';
+
 const routes: Routes = [
   {
     path: '',
     component: LayoutDefaultComponent,
     children: [
-      { path: '', redirectTo: 'cinema/shows', pathMatch: 'full' },
+      { path: '', redirectTo: 'cinema/shows', pathMatch: 'full', canActivate: [JWTGuard] },
       { path: 'cinema/shows', component: CinemaShowsComponent },
+      { path: 'wizards/head-wizards', component: HeadWizardsComponent },
+
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
       { path: 'dashboard/v1', component: DashboardV1Component },
       { path: 'dashboard/analysis', component: DashboardAnalysisComponent },

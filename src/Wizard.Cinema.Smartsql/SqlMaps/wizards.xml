@@ -10,6 +10,11 @@
       <Result Property="PageSize" />
       <Result Property="PageNow" />
     </MultipleResultMap>
+
+    <MultipleResultMap Id="QueryReusltMap">
+      <Root />
+      <Result Property="WizardProfiles" />
+    </MultipleResultMap>
   </MultipleResultMaps>
 
   <Statements>
@@ -20,14 +25,18 @@
       ,Account
       ,Password
       ,DivisionId
+      ,IsAdmin
       ,CreateTime
+      ,CreatorId
       )VALUES(
       @WizardId
       ,@Email
       ,@Account
       ,@Password
       ,@DivisionId
+      ,@IsAdmin
       ,@CreateTime
+      ,@CreatorId
       )
       ;SELECT last_insert_Id() as Id;
     </Statement>
@@ -40,6 +49,9 @@
         </IsNotNull>
         <IsNotNull Prepend="," Property="Password">
           Password = @Password
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="IsAdmin">
+          IsAdmin = @IsAdmin
         </IsNotNull>
       </Set>
       WHERE WizardId = @WizardId;
@@ -72,12 +84,20 @@
         <IsNotNull Prepend="AND" Property="PasswardMd5">
           Password = @PasswardMd5
         </IsNotNull>
+        <IsNotNull Prepend="," Property="IsAdmin">
+          IsAdmin = @IsAdmin
+        </IsNotNull>
       </Where>
     </Statement>
 
     <Statement Id="Query">
       SELECT * FROM wizards
       <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryAll" MultipleResultMap="QueryReusltMap">
+      SELECT * FROM wizards WHERE WizardId = @WizardId;
+      SELECT * FROM wizard_profiles WHERE WizardId = @WizardId;
     </Statement>
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">

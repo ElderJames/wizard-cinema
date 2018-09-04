@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { map, catchError } from 'rxjs/operators';
+
 import {
   SocialService,
   SocialOpenType,
@@ -38,7 +40,7 @@ export class UserLoginComponent implements OnDestroy {
     private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: TokenService,
     private startupSrv: StartupService,
-    private http: HttpClient,
+    public http: _HttpClient,
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(5)]],
@@ -150,7 +152,6 @@ export class UserLoginComponent implements OnDestroy {
       // 否则直接跳转
       // this.router.navigate(['/']);
     });
-
   }
 
   // region: social

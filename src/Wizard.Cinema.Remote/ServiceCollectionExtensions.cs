@@ -17,20 +17,18 @@ namespace Wizard.Cinema.Remote
             services.AddSingleton<CinemaService>();
             services.AddSingleton<HallService>();
 
-            services.AddSmartSql();
-            services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
-            {
-                var index = method.Name.IndexOf("By", StringComparison.Ordinal);
-                if (index <= 0)
-                    index = method.Name.IndexOf("To", StringComparison.Ordinal);
+            //services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
+            //{
+            //    var index = method.Name.IndexOf("By", StringComparison.Ordinal);
+            //    if (index <= 0)
+            //        index = method.Name.IndexOf("To", StringComparison.Ordinal);
 
-                return index <= 0 ? method.Name : method.Name.Substring(0, index);
-            });
-            services.AddRepositoryFromAssembly(options =>
-            {
-                options.GetSmartSql = sp => new SmartSqlMapper(sp.GetRequiredService<ILoggerFactory>(), "SmartSqlConfig.xml");
-                options.AssemblyString = "Wizard.Cinema.Remote";
-            });
+            //    return index <= 0 ? method.Name : method.Name.Substring(0, index);
+            //});
+            //services.AddRepositoryFromAssembly(options =>
+            //{
+            //    options.AssemblyString = "Wizard.Cinema.Remote";
+            //});
         }
     }
 }

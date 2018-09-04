@@ -33,6 +33,21 @@
               "i18n": "signed_up_wizards"
             }
           ]
+        }, {
+          "text": "巫师管理",
+          "i18n": "watch-film",
+          "icon": "icon-speedometer",
+          "children": [{
+              "text": "管理员",
+              "link": "/wizards/head-wizards",
+              "i18n": "head-wizards"
+            },
+            {
+              "text": "普通巫师",
+              "link": "/wizards/normal-wizards",
+              "i18n": "normal-wizards"
+            }
+          ]
         },
         {
           "text": "活动管理",

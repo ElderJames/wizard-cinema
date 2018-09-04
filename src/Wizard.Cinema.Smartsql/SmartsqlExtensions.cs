@@ -32,6 +32,10 @@ namespace Wizard.Cinema.Smartsql
                 options.AssemblyString = "Wizard.Cinema.QueryServices";
                 options.ScopeTemplate = "I{Scope}QueryService";
             });
+            services.AddRepositoryFromAssembly(options =>
+            {
+                options.AssemblyString = "Wizard.Cinema.Remote";
+            });
 
             services.AddSingleton<Infrastructures.ITransactionRepository, SmartSqlTransactionRepository>();
         }
@@ -39,7 +43,6 @@ namespace Wizard.Cinema.Smartsql
         public static IServiceCollection AddSmartSql(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
-            services.AddSmartSql();
             services.AddSmartSqlOption();
             services.Configure<SmartSqlConfigOptions>(configuration);
             return services;

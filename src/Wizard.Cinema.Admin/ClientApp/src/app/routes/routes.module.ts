@@ -21,6 +21,8 @@ import { Exception500Component } from './exception/500.component';
 //cinema pages
 import { CinemaShowsComponent } from './cinema/shows/shows.component';
 
+import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
+
 const COMPONENTS = [
   DashboardV1Component,
   DashboardAnalysisComponent,
@@ -37,7 +39,8 @@ const COMPONENTS = [
   Exception404Component,
   Exception500Component,
   //cinema pages
-  CinemaShowsComponent
+  CinemaShowsComponent,
+  HeadWizardsComponent
 ];
 const COMPONENTS_NOROUNT = [];
 
@@ -46,4 +49,4 @@ const COMPONENTS_NOROUNT = [];
   declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT],
   entryComponents: COMPONENTS_NOROUNT
 })
-export class RoutesModule {}
+export class RoutesModule { }
