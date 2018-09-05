@@ -42,8 +42,11 @@
     </Statement>
 
     <Statement Id="Update">
-      UPDATE wizards SET
+      UPDATE wizards
       <Set>
+        <IsNotNull Prepend="," Property="Account">
+          Account = @Account
+        </IsNotNull>
         <IsNotNull Prepend="," Property="Email">
           Email = @Email
         </IsNotNull>
@@ -60,10 +63,10 @@
     <Statement Id="OrderAndPaged">
       <Switch Prepend="Order By" Property="OrderBy">
         <Default>
-          T.id Desc
+          id Desc
         </Default>
       </Switch>
-      <IsNotNull Prepend="and" Property="PageSize">
+      <IsNotNull Prepend="" Property="PageSize">
         <IsNotNull Prepend="" Property="StartIndex">
           LIMIT @StartIndex,@PageSize
         </IsNotNull>
@@ -102,8 +105,7 @@
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
       SELECT COUNT(1) FROM wizards
-      <Include RefId="QueryParams" />
-      <Include RefId="OrderAndPaged" />;
+      <Include RefId="QueryParams" />;
       SELECT * FROM wizards
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;

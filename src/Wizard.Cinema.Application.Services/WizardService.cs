@@ -146,7 +146,7 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<bool>(ResultStatus.FAIL, "巫师名重复了");
 
             long wizardId = NewId.GenerateId();
-            var wizard = new Wizards(wizardId, request.Account, request.Passward.ToMd5(), request.CreatorId);
+            var wizard = new Wizards(wizardId, request.Account, request.Passward, request.DivisionId, request.CreatorId);
 
             if (_wizardRepository.Create(wizard) <= 0)
                 return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常，请稍后再试");
@@ -156,19 +156,18 @@ namespace Wizard.Cinema.Application.Services
 
         public ApiResult<bool> UpdateWizard(UpdateWizardReqs request)
         {
-            var wizard = _wizardRepository.Query(request.WizardId);
+            Wizards wizard = _wizardRepository.Query(request.WizardId);
             if (wizard == null)
                 return new ApiResult<bool>(ResultStatus.FAIL, "找不到这名巫师的记录");
 
-            var division = divisionRepository.Query(request.DivisionId);
+            Divisions division = divisionRepository.Query(request.DivisionId);
             if (division == null)
-                return new ApiResult<bool>(ResultStatus.FAIL, "分部不存在");
+                return new ApiResult<bool>(ResultStatus.FAIL, "所选分部不存在");
 
-            if (request.DivisionId != wizard.DivisionId)
-                wizard.Change(request.DivisionId, request.Passward);
+            wizard.Change(request.Account, request.DivisionId, request.Passward);
 
             if (_wizardRepository.Update(wizard) <= 0)
-                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+                return new ApiResult<bool>(ResultStatus.FAIL, "没有更新任何信息");
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }

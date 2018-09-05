@@ -43,7 +43,7 @@ namespace Wizard.Cinema.Admin
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.Converters.Add(new Int64JsonConverter());//解决js不支持int64的问题
                     options.SerializerSettings.Converters.Add(new NullableInt64JsonConverter());
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";

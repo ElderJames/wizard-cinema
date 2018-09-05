@@ -92,7 +92,7 @@
       </ng-template>
     </nz-alert>
   </div>
-  <simple-table #st [columns]="columns" [data]="data" [loading]="loading" (checkboxChange)="checkboxChange($event)"
+  <simple-table #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (checkboxChange)="checkboxChange($event)"
     (filterChange)="getData()">
     <ng-template st-row="status" let-i>
       <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
@@ -101,9 +101,21 @@
 </nz-card>
 <ng-template #modalContent>
   <nz-form-item>
-    <nz-form-label nzFor="no">描述</nz-form-label>
+    <nz-form-label nzFor="account">登录名</nz-form-label>
     <nz-form-control>
-      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no">
+      <input nz-input [(ngModel)]="wizard.account" name="account" placeholder="请填写登录名" id="account">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="city">分部城市</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="wizard.divisionId" name="city" placeholder="请选择分部城市" id="city">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="pwd">密码</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="wizard.passward" name="passward" placeholder="留空不修改" id="pwd">
     </nz-form-control>
   </nz-form-item>
 </ng-template>

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
+using Wizard.Cinema.Application.DTOs.Request.Wizards;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Request.Wizards;

@@ -1,4 +1,5 @@
-﻿using Wizard.Cinema.Application.Services.Dto.Request;
+﻿using System.Collections.Generic;
+using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Infrastructures;
 
@@ -8,8 +9,10 @@ namespace Wizard.Cinema.Application.Services
     {
         ApiResult<bool> CreateDivision(CreateDivisionReqs request);
 
-        ApiResult<DivisionResp> GetById(long id);
+        ApiResult<DivisionResp> GetById(long divisionId);
 
         ApiResult<DivisionResp> GetByCityId(long cityId);
+
+        ApiResult<IEnumerable<DivisionResp>> GetByIds(long[] divisionIds);
     }
 }

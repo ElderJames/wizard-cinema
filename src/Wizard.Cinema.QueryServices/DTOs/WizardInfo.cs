@@ -1,5 +1,4 @@
 ﻿using System;
-using Wizard.Cinema.Application.Services.Dto.EnumTypes;
 
 namespace Wizard.Cinema.QueryServices.DTOs
 {

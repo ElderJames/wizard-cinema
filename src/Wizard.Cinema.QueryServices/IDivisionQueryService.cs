@@ -10,5 +10,7 @@ namespace Wizard.Cinema.QueryServices
         DivisionInfo QueryByCityId(long cityId);
 
         DivisionInfo QueryById(long divisionId);
+
+        IEnumerable<DivisionInfo> QueryByIds(long[] divisionIds);
     }
 }

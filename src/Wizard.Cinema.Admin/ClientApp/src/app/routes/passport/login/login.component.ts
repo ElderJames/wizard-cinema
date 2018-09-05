@@ -138,7 +138,8 @@ export class UserLoginComponent implements OnDestroy {
 
     this.http.put('api/Auth/Login', {
       Account: this.userName.value,
-      Password: this.password.value
+      Password: this.password.value,
+      //  RememberMe: this.form.controls.remember
     }).subscribe((res: any) => {
       this.loading = false;
       // 清空路由复用信息

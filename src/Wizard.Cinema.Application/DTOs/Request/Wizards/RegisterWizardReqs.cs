@@ -1,4 +1,4 @@
-﻿namespace Wizard.Cinema.Application.Services.Dto.Request.Wizards
+﻿namespace Wizard.Cinema.Application.DTOs.Request.Wizards
 {
     public class RegisterWizardReqs
     {

@@ -66,8 +66,14 @@
         <IsNotNull Prepend="AND" Property="CityId">
           CityId = @CityId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="CityIds">
+          CityId in @CityIds
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="DivisionId">
           DivisionId = @DivisionId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="DivisionIds">
+          DivisionId = @DivisionIds
         </IsNotNull>
       </Where>
     </Statement>

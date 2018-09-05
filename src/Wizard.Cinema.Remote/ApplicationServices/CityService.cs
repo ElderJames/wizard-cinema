@@ -17,5 +17,10 @@ namespace Wizard.Cinema.Remote.ApplicationServices
         {
             return _cityhelper.Value.GetById(id);
         }
+
+        public IEnumerable<CityResponse.City> Find(Func<CityResponse.City, bool> predicate)
+        {
+            return _cityhelper.Value.Find(predicate);
+        }
     }
 }

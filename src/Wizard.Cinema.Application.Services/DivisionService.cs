@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Wizard.Cinema.Application.Services.Dto.Request;
@@ -7,7 +8,6 @@ using Wizard.Cinema.Domain.Ministry;
 using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
-using Wizard.Cinema.Smartsql;
 using Wizard.Infrastructures;
 using Wizard.Infrastructures.Attributes;
 
@@ -71,6 +71,13 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<DivisionResp>(ResultStatus.SUCCESS, default(DivisionResp));
 
             return new ApiResult<DivisionResp>(ResultStatus.SUCCESS, Mapper.Map<DivisionInfo, DivisionResp>(division));
+        }
+
+        public ApiResult<IEnumerable<DivisionResp>> GetByIds(long[] divisionIds)
+        {
+            IEnumerable<DivisionInfo> division = _divisionQueryService.QueryByIds(divisionIds);
+
+            return new ApiResult<IEnumerable<DivisionResp>>(ResultStatus.SUCCESS, Mapper.Map<DivisionInfo, DivisionResp>(division));
         }
     }
 }

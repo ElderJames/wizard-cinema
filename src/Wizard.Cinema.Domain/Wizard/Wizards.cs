@@ -55,6 +55,10 @@ namespace Wizard.Cinema.Domain.Wizard
         /// </summary>
         public long CreatorId { get; private set; }
 
+        private Wizards()
+        {
+        }
+
         /// <summary>
         /// 创建巫师
         /// </summary>
@@ -79,14 +83,20 @@ namespace Wizard.Cinema.Domain.Wizard
         /// <param name="wizardId"></param>
         /// <param name="account"></param>
         /// <param name="password"></param>
-        public Wizards(long wizardId, string account, string password, long creatorId)
+        public Wizards(long wizardId, string account, string password, long divisionId, long creatorId)
         {
+            if (string.IsNullOrEmpty(password))
+                throw new DomainException("未填写密码");
+
+            if (string.IsNullOrEmpty(account))
+                throw new DomainException("未填巫师名");
+
             this.WizardId = wizardId;
             this.Account = account;
             this.Password = password.ToMd5();
             this.CreateTime = DateTime.Now;
             this.Profile = new WizardProfiles(wizardId);
-            this.DivisionId = 0;
+            this.DivisionId = divisionId;
             this.IsAdmin = true;
             this.CreatorId = creatorId;
         }
@@ -100,12 +110,11 @@ namespace Wizard.Cinema.Domain.Wizard
             this.DivisionId = divisionId;
         }
 
-        public void Change(long divisionId, string passward)
+        public void Change(string account, long divisionId, string passward)
         {
-            if (this.DivisionId != divisionId)
-                this.DivisionId = divisionId;
-
-            if (this.Password != passward.ToMd5())
+            this.DivisionId = divisionId;
+            this.Account = account;
+            if (!string.IsNullOrEmpty(passward))
                 this.Password = passward.ToMd5();
         }
 

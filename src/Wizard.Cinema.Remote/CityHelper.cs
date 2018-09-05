@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Newtonsoft.Json;
 using Wizard.Cinema.Remote.Spider.Response;
@@ -37,6 +39,16 @@ namespace Wizard.Cinema.Remote
         public CityResponse.City GetById(int id)
         {
             return CityLsit.FirstOrDefault(x => x.id == id);
+        }
+
+        public CityResponse.City GetById(long id)
+        {
+            return CityLsit.FirstOrDefault(x => x.id == id);
+        }
+
+        public IEnumerable<CityResponse.City> Find(Func<CityResponse.City, bool> predicate)
+        {
+            return CityLsit.Where(predicate);
         }
     }
 }

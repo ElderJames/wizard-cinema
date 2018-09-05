@@ -21,6 +21,10 @@ namespace Wizard.Cinema.Domain.Ministry
 
         public DateTime CreateTime { get; set; }
 
+        private Divisions()
+        {
+        }
+
         public Divisions(long divisionId, long cityId, string name, long creatorId)
         {
             this.DivisionId = divisionId;

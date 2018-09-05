@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService, NzModalComponent } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap, map } from 'rxjs/operators';
 import {
@@ -35,39 +35,23 @@ export class HeadWizardsComponent implements OnInit {
     { index: 3, text: '异常', value: false, type: 'error', checked: false },
   ];
   @ViewChild('st') st: SimpleTableComponent;
+  @ViewChild('modalContent') modal: TemplateRef<{}>;
+
   columns: SimpleTableColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
-    { title: '规则编号', index: 'no' },
-    { title: '描述', index: 'description' },
-    {
-      title: '服务调用次数',
-      index: 'callNo',
-      type: 'number',
-      format: (item: any) => `${item.callNo} 万`,
-      sorter: (a: any, b: any) => a.callNo - b.callNo,
-    },
-    {
-      title: '状态',
-      index: 'status',
-      render: 'status',
-      filters: this.status,
-      filter: () => true,
-    },
-    {
-      title: '更新时间',
-      index: 'updatedAt',
-      type: 'date',
-      sorter: (a: any, b: any) => a.updatedAt - b.updatedAt,
-    },
+    { title: '登录名', index: 'account' },
+    { title: '邮箱', index: 'email' },
+    { title: '分部城市', index: 'city' },
+    { title: '注册时间', index: 'createTime' },
     {
       title: '操作',
       buttons: [
         {
-          text: '配置',
-          click: (item: any) => this.msg.success(`配置${item.no}`),
+          text: '编辑',
+          click: (item: any) => this.update(item),//this.msg.success(`配置${item.no}`),
         },
         {
-          text: '订阅警报',
+          text: '巫师信息',
           click: (item: any) => this.msg.success(`订阅警报${item.no}`),
         },
       ],
@@ -77,6 +61,15 @@ export class HeadWizardsComponent implements OnInit {
   description = '';
   totalCallNo = 0;
   expandForm = false;
+  total = 0;
+
+  wizard = {
+    wizardId: null,
+    account: '',
+    passward: '',
+    email: '',
+    divisionId: 0,
+  }
 
   constructor(
     private http: _HttpClient,
@@ -96,19 +89,28 @@ export class HeadWizardsComponent implements OnInit {
     if (this.q.status !== null && this.q.status > -1)
       this.q.statusList.push(this.q.status);
     this.http
-      .get('/rule', this.q)
+      .get('api/wizard',
+        {
+          PageNow: this.q.pi,
+          PageSize: this.q.ps,
+        }
+      )
       .pipe(
-        map((list: any[]) =>
-          list.map(i => {
-            const statusItem = this.status[i.status];
-            i.statusText = statusItem.text;
-            i.statusType = statusItem.type;
-            return i;
-          }),
+        map((res: any) => res
+          // list.records.map(i => {
+          //   return i;
+          //   // const statusItem = this.status[i.status];
+          //   // i.statusText = statusItem.text;
+          //   // i.statusType = statusItem.type;
+          //   // return i;
+          // }),
         ),
         tap(() => (this.loading = false)),
       )
-      .subscribe(res => (this.data = res));
+      .subscribe(res => {
+        this.total = res.totalCount;
+        this.data = res.records;
+      });
   }
 
   checkboxChange(list: SimpleTableData[]) {
@@ -133,13 +135,46 @@ export class HeadWizardsComponent implements OnInit {
   }
 
   add(tpl: TemplateRef<{}>) {
+    this.wizard = {
+      wizardId: null,
+      account: '',
+      passward: '',
+      email: '',
+      divisionId: 0,
+    };
     this.modalSrv.create({
-      nzTitle: '新建规则',
+      nzTitle: '添加巫师',
       nzContent: tpl,
       nzOnOk: () => {
         this.loading = true;
         this.http
-          .post('/rule', { description: this.description })
+          .post('api/wizard', {
+            WizardId: this.wizard.wizardId,
+            Account: this.wizard.account,
+            Password: this.wizard.passward,
+            DivisionId: this.wizard.divisionId
+          })
+          .subscribe(() => {
+            this.getData();
+          });
+      },
+    });
+  }
+
+  update(data: any) {
+    this.wizard = data;
+    this.modalSrv.create({
+      nzTitle: '修改巫师信息',
+      nzContent: this.modal,
+      nzOnOk: () => {
+        this.loading = true;
+        this.http
+          .post('api/wizard', {
+            WizardId: this.wizard.wizardId,
+            Account: this.wizard.account,
+            Password: this.wizard.passward,
+            DivisionId: this.wizard.divisionId
+          })
           .subscribe(() => {
             this.getData();
           });
