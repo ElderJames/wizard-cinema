@@ -30,10 +30,10 @@
     <None Update="SmartSqlConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Repository\SqlMaps\cinemas.xml">
+    <None Update="SqlMaps\cinemas.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Repository\SqlMaps\halls.xml">
+    <None Update="SqlMaps\halls.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

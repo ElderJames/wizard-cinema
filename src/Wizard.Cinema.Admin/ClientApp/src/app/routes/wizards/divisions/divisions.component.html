@@ -1,0 +1,52 @@
+<page-header [title]="'分部列表'"></page-header>
+<nz-card [nzBordered]="false">
+  <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+    <i class="anticon anticon-plus"></i>
+    <span>新建</span>
+  </button>
+  <ng-container *ngIf="selectedRows.length > 0">
+    <button nz-button class="ml-sm">批量操作</button>
+    <nz-dropdown [nzPlacement]="'bottomLeft'">
+      <button nz-button nz-dropdown class="ml-sm">
+        更多操作
+        <i class="anticon anticon-down"></i>
+      </button>
+      <ul nz-menu>
+        <li nz-menu-item (click)="remove()">删除</li>
+        <li nz-menu-item (click)="approval()">批量审批</li>
+      </ul>
+    </nz-dropdown>
+  </ng-container>
+  <simple-table #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (checkboxChange)="checkboxChange($event)"
+    (filterChange)="getData()">
+    <ng-template st-row="status" let-i>
+      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+    </ng-template>
+  </simple-table>
+</nz-card>
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="name">分部名</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="division.name" name="name" placeholder="请填写分部名" id="name">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="cityId">分部城市</nz-form-label>
+    <nz-form-control>
+      <input nz-input nz-input [(ngModel)]="division.cityId" name="cityId" placeholder="输入城市" (input)="onInput($event.target?.value)"
+        id="cityId" [nzAutocomplete]="auto">
+      <nz-autocomplete nzBackfill #auto>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option.id" [nzLabel]="option.nm">
+          {{option.nm}}
+        </nz-auto-option>
+      </nz-autocomplete>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="createTime">成立时间</nz-form-label>
+    <nz-form-control>
+      <nz-date-picker nzPlaceHolder="选择成立日期" [(ngModel)]="division.createTime"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

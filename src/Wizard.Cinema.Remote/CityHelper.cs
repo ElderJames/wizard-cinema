@@ -33,7 +33,7 @@ namespace Wizard.Cinema.Remote
             if (keyword.IsNullOrEmpty())
                 return Enumerable.Empty<CityResponse.City>();
 
-            return CityLsit.Where(x => x.nm.Contains(keyword) || x.py.Contains(keyword)).OrderBy(x => x.nm.IndexOf(keyword));
+            return CityLsit.Where(x => x.nm.StartsWith(keyword) || x.py.StartsWith(keyword)).OrderBy(x => x.nm.IndexOf(keyword, StringComparison.Ordinal));
         }
 
         public CityResponse.City GetById(int id)

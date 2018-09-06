@@ -8,6 +8,10 @@ namespace Wizard.Cinema.Domain.Ministry
     {
         int Insert(Divisions divisions);
 
+        int Update(Divisions divisions);
+
         Divisions Query(long divisionId);
+
+        Divisions QueryByCityId(long cityId);
     }
 }

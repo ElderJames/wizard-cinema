@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Wizard.Cinema.Application.Services.Dto.Request
+namespace Wizard.Cinema.Application.DTOs.Request.Division
 {
     public class CreateDivisionReqs
     {
@@ -11,5 +9,7 @@ namespace Wizard.Cinema.Application.Services.Dto.Request
         public string Name { get; set; }
 
         public long CreatorId { get; set; }
+
+        public DateTime CreateTime { get; set; }
     }
 }

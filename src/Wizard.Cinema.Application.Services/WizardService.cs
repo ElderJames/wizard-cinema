@@ -29,11 +29,18 @@ namespace Wizard.Cinema.Application.Services
         private readonly IWizardProfileQueryService _wizardProfileQueryService;
         private readonly ITransactionRepository _transactionRepository;
 
-        private readonly IDivisionQueryService divisionQueryService;
-        private readonly IDivisionRepository divisionRepository;
+        private readonly IDivisionQueryService _divisionQueryService;
+        private readonly IDivisionRepository _divisionRepository;
         private readonly ILogger<WizardService> _logger;
 
-        public WizardService(IWizardRepository wizardRepository, IWizardQueryService wizardQueryService, IWizardProfileRepository wizardPRofileRepository, IWizardProfileQueryService wizardProfileQueryService, ITransactionRepository transactionRepository, ILogger<WizardService> logger, IDivisionQueryService divisionQueryService, IDivisionRepository divisionRepository)
+        public WizardService(IWizardRepository wizardRepository,
+            IWizardQueryService wizardQueryService,
+            IWizardProfileRepository wizardPRofileRepository,
+            IWizardProfileQueryService wizardProfileQueryService,
+            ITransactionRepository transactionRepository,
+            ILogger<WizardService> logger,
+            IDivisionQueryService divisionQueryService,
+            IDivisionRepository divisionRepository)
         {
             this._wizardRepository = wizardRepository;
             this._wizardQueryService = wizardQueryService;
@@ -41,8 +48,8 @@ namespace Wizard.Cinema.Application.Services
             this._wizardProfileQueryService = wizardProfileQueryService;
             this._transactionRepository = transactionRepository;
             this._logger = logger;
-            this.divisionQueryService = divisionQueryService;
-            this.divisionRepository = divisionRepository;
+            this._divisionQueryService = divisionQueryService;
+            this._divisionRepository = divisionRepository;
         }
 
         public ApiResult<bool> Register(RegisterWizardReqs request)
@@ -133,10 +140,6 @@ namespace Wizard.Cinema.Application.Services
             return new ApiResult<ProfileResp>(ResultStatus.SUCCESS, Mapper.Map<WizardProfiles, ProfileResp>(profile));
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
         public ApiResult<bool> CreateWizard(CreateWizardReqs request)
         {
             if (string.IsNullOrEmpty(request.Account))
@@ -160,7 +163,7 @@ namespace Wizard.Cinema.Application.Services
             if (wizard == null)
                 return new ApiResult<bool>(ResultStatus.FAIL, "找不到这名巫师的记录");
 
-            Divisions division = divisionRepository.Query(request.DivisionId);
+            Divisions division = _divisionRepository.Query(request.DivisionId);
             if (division == null)
                 return new ApiResult<bool>(ResultStatus.FAIL, "所选分部不存在");
 

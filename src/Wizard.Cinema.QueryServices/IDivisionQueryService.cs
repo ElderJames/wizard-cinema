@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Wizard.Cinema.QueryServices.DTOs;
+using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.QueryServices
 {
@@ -12,5 +13,7 @@ namespace Wizard.Cinema.QueryServices
         DivisionInfo QueryById(long divisionId);
 
         IEnumerable<DivisionInfo> QueryByIds(long[] divisionIds);
+
+        PagedData<DivisionInfo> QueryPaged(PagedSearch search);
     }
 }

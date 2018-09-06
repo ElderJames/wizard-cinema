@@ -33,7 +33,7 @@
     </Statement>
 
     <Statement Id="Update">
-      UPDATE divisions SET
+      UPDATE divisions
       <Set>
         <IsNotNull Prepend="," Property="Name">
           Name = @Name
@@ -48,10 +48,10 @@
     <Statement Id="OrderAndPaged">
       <Switch Prepend="Order By" Property="OrderBy">
         <Default>
-          T.id Desc
+          CreateTime Desc
         </Default>
       </Switch>
-      <IsNotNull Prepend="and" Property="PageSize">
+      <IsNotNull Prepend="" Property="PageSize">
         <IsNotNull Prepend="" Property="StartIndex">
           LIMIT @StartIndex,@PageSize
         </IsNotNull>
@@ -73,7 +73,7 @@
           DivisionId = @DivisionId
         </IsNotNull>
         <IsNotNull Prepend="AND" Property="DivisionIds">
-          DivisionId = @DivisionIds
+          DivisionId IN @DivisionIds
         </IsNotNull>
       </Where>
     </Statement>
@@ -85,8 +85,7 @@
 
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
       SELECT COUNT(1) FROM divisions
-      <Include RefId="QueryParams" />
-      <Include RefId="OrderAndPaged" />;
+      <Include RefId="QueryParams" />;
       SELECT * FROM divisions
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;

@@ -34,9 +34,11 @@ namespace Wizard.Cinema.Domain.Ministry
             this.CreateTime = DateTime.Now;
         }
 
-        public void ChangeName(string name)
+        public void Change(string name, long cityId, DateTime createTime)
         {
             this.Name = name;
+            this.CityId = cityId;
+            this.CreateTime = createTime;
         }
 
         public void AddMember()

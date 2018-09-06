@@ -51,6 +51,16 @@
           ]
         },
         {
+          "text": "组织管理",
+          "i18n": "org-manager",
+          "icon": "icon-speedometer",
+          "children": [{
+            "text": "各城市分部",
+            "link": "/divisions",
+            "i18n": "divisions"
+          }]
+        },
+        {
           "text": "活动管理",
           "i18n": "activity",
           "icon": "icon-speedometer",

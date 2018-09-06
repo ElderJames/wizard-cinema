@@ -22,6 +22,7 @@ import { Exception500Component } from './exception/500.component';
 import { CinemaShowsComponent } from './cinema/shows/shows.component';
 
 import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
+import { DivisionsComponent } from './wizards/divisions/divisions.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -40,7 +41,8 @@ const COMPONENTS = [
   Exception500Component,
   //cinema pages
   CinemaShowsComponent,
-  HeadWizardsComponent
+  HeadWizardsComponent,
+  DivisionsComponent
 ];
 const COMPONENTS_NOROUNT = [];
 
