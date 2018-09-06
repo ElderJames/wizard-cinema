@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 本地
 Source Server Version : 80011
 Source Host           : localhost:3306
 Source Database       : wizard_cinema
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-08-24 01:46:54
+Date: 2018-09-06 16:08:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,20 @@ CREATE TABLE `cinemas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
+-- Table structure for cities
+-- ----------------------------
+DROP TABLE IF EXISTS `cities`;
+CREATE TABLE `cities` (
+  `Id` int(11) NOT NULL,
+  `CityId` int(11) DEFAULT NULL,
+  `Name` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Pinyin` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `CinemaCount` int(11) DEFAULT NULL,
+  `LastUpdateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
 -- Table structure for divisions
 -- ----------------------------
 DROP TABLE IF EXISTS `divisions`;
@@ -41,11 +55,11 @@ CREATE TABLE `divisions` (
   `Name` varchar(50) DEFAULT NULL,
   `TotalMember` int(11) DEFAULT NULL,
   `CreatorId` bigint(20) DEFAULT NULL,
-  `CreateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `CreateTime` date DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_DivisionId` (`DivisionId`),
   UNIQUE KEY `UNQ_CityId` (`CityId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for halls
@@ -85,14 +99,16 @@ DROP TABLE IF EXISTS `wizards`;
 CREATE TABLE `wizards` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `WizardId` bigint(20) NOT NULL,
-  `Email` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Email` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `Account` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` char(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `DivisionId` bigint(20) DEFAULT NULL,
+  `DivisionId` bigint(20) NOT NULL,
+  `IsAdmin` bit(1) NOT NULL,
   `CreateTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `CreatorId` bigint(20) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_WizardId` (`WizardId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Table structure for wizard_profiles
@@ -110,5 +126,5 @@ CREATE TABLE `wizard_profiles` (
   `House` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_WizardId` (`WizardId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 SET FOREIGN_KEY_CHECKS=1;
