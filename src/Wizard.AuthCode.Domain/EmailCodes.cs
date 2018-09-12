@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Infrastructures.Exceptions;
+using System;
 using Wizard.AuthCode.Domain.EnumTypess;
-using Wizard.Infrastructures.Exceptions;
 
 namespace Wizard.AuthCode.Domain
 {

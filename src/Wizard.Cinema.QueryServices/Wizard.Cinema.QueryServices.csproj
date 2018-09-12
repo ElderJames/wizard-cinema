@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Infrastructures\Infrastructures.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.Application\Wizard.Cinema.Application.csproj" />
   </ItemGroup>
 

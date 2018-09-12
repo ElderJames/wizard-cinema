@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructures;
 using Wizard.Cinema.QueryServices.DTOs;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.QueryServices
 {

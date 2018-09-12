@@ -1,7 +1,7 @@
 ﻿using System;
 using Wizard.Cinema.Domain.Wizard.EnumTypes;
-using Wizard.Infrastructures.Encrypt.Extensions;
-using Wizard.Infrastructures.Exceptions;
+using Infrastructures.Encrypt.Extensions;
+using Infrastructures.Exceptions;
 
 namespace Wizard.Cinema.Domain.Wizard
 {

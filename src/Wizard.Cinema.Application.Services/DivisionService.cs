@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Infrastructures;
+using Infrastructures.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 using Wizard.Cinema.Application.DTOs.Request;
 using Wizard.Cinema.Application.DTOs.Request.Division;
@@ -10,8 +12,6 @@ using Wizard.Cinema.Domain.Ministry;
 using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
-using Wizard.Infrastructures;
-using Wizard.Infrastructures.Attributes;
 
 namespace Wizard.Cinema.Application.Services
 {

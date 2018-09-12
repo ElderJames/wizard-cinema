@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Infrastructures;
 using Wizard.Cinema.Application.DTOs.Request;
 using Wizard.Cinema.Application.DTOs.Request.Division;
 using Wizard.Cinema.Application.Services.Dto.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Application.Services
 {

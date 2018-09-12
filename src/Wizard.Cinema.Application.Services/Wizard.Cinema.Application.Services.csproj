@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wizard.Cinema.Application\Wizard.Cinema.Application.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.Domain\Wizard.Cinema.Domain.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.QueryServices\Wizard.Cinema.QueryServices.csproj" />
     <ProjectReference Include="..\Wizard.Cinema.Smartsql\Wizard.Cinema.Smartsql.csproj" />

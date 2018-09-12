@@ -1,8 +1,8 @@
-﻿using Wizard.Cinema.Application.DTOs.Request.Wizards;
+﻿using Infrastructures;
+using Wizard.Cinema.Application.DTOs.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Application.Services
 {

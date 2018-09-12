@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using Infrastructures;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,6 @@ using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {

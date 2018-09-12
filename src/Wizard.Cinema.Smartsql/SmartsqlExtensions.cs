@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartSql.Options;
@@ -37,7 +38,7 @@ namespace Wizard.Cinema.Smartsql
                 options.AssemblyString = "Wizard.Cinema.Remote";
             });
 
-            services.AddSingleton<Infrastructures.ITransactionRepository, SmartSqlTransactionRepository>();
+            services.AddSingleton<ITransactionRepository, SmartSqlTransactionRepository>();
         }
 
         public static IServiceCollection AddSmartSql(this IServiceCollection services, IConfiguration configuration)

@@ -1,4 +1,4 @@
-﻿using Wizard.Infrastructures;
+﻿using Infrastructures;
 
 namespace Wizard.Cinema.Application.Services.Dto.Request.Wizards
 {

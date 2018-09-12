@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Activity"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMReuslt">
+      <Result Property="TotalCount" />
+      <Result Property="Records" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
+
+  <Statements>
+    <Statement Id="Create">
+      INSERT INTO activity
+      (ActivityId
+      ,Name
+      ,Description
+      ,Address
+      ,Type
+      ,Status
+      ,BeginTime
+      ,FinishTime
+      ,RegistrationBeginTime
+      ,RegistrationFinishTime
+      ,Price
+      ,CreatorId
+      ,CreateTime
+      )VALUES
+      (@ActivityId
+      ,@Name
+      ,@Description
+      ,@Address
+      ,@Type
+      ,@Status
+      ,@BeginTime
+      ,@FinishTime
+      ,@RegistrationBeginTime
+      ,@RegistrationFinishTime
+      ,@Price
+      ,@CreatorId
+      ,@CreateTime
+      )
+      ;SELECT last_insert_Id() as Id;
+    </Statement>
+
+    <Statement Id="Update">
+      UPDATE activity
+      <Set>
+        <IsNotNull Prepend="," Property="Name">
+          Name = @Name
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Description">
+          Description = @Description
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Address">
+          Address = @Address
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Type">
+          Type = @Type
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Status">
+          Status = @Status
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="BeginTime">
+          BeginTime = @BeginTime
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="FinishTime">
+          FinishTime = @FinishTime
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="RegistrationBeginTime">
+          RegistrationBeginTime = @RegistrationBeginTime
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="RegistrationFinishTime">
+          RegistrationFinishTime = @RegistrationFinishTime
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Price">
+          Price = @Price
+        </IsNotNull>
+      </Set>
+      WHERE ActivityId = @ActivityId;
+    </Statement>
+
+    <Statement Id="OrderAndPaged">
+      <Switch Prepend="Order By" Property="OrderBy">
+        <Default>
+          id Desc
+        </Default>
+      </Switch>
+      <IsNotNull Prepend="" Property="PageSize">
+        <IsNotNull Prepend="" Property="StartIndex">
+          LIMIT @StartIndex,@PageSize
+        </IsNotNull>
+        <IsNull Prepend="" Property="StartIndex">
+          LIMIT @PageSize
+        </IsNull>
+      </IsNotNull>
+    </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="AND" Property="ActivityId">
+          ActivityId = @ActivityId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="Status">
+          Status = @Status
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query">
+      SELECT * FROM activity
+      <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+      SELECT COUNT(1) FROM activity
+      <Include RefId="QueryParams" />;
+      SELECT * FROM activity
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
+    </Statement>
+  </Statements>
+</SmartSqlMap>

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infrastructures;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {

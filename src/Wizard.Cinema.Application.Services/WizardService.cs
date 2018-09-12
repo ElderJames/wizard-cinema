@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using Infrastructures;
+using Infrastructures.Attributes;
+using Infrastructures.Encrypt.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Request.Wizards;
@@ -13,9 +16,6 @@ using Wizard.Cinema.Domain.Wizard.EnumTypes;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs;
 using Wizard.Cinema.QueryServices.DTOs.Wizards;
-using Wizard.Infrastructures;
-using Wizard.Infrastructures.Attributes;
-using Wizard.Infrastructures.Encrypt.Extensions;
 using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace Wizard.Cinema.Application.Services

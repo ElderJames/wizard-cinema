@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infrastructures;
+using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Admin.Helpers;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {

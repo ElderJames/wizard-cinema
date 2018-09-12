@@ -9,7 +9,7 @@ using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
-using Wizard.Infrastructures;
+using Infrastructures;
 
 namespace Wizard.Cinema.Remote.ApplicationServices
 {

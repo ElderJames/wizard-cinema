@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text;
+using Infrastructures.Encrypt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Wizard.Cinema.Admin.Auth;
 using Wizard.Cinema.Admin.Models;
-using Wizard.Infrastructures.Encrypt;
 
 namespace Wizard.Cinema.Admin.Extensions
 {

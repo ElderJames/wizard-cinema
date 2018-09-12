@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Infrastructures.Attributes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Wizard.Cinema.Smartsql;
-using Wizard.Infrastructures.Attributes;
 
 namespace Wizard.Cinema.Application.Services
 {

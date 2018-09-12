@@ -1,5 +1,5 @@
-﻿using Wizard.AuthCode.Application.Services.DTOs;
-using Wizard.Infrastructures;
+﻿using Infrastructures;
+using Wizard.AuthCode.Application.Services.DTOs;
 
 namespace Wizard.AuthCode.Application.Services
 {

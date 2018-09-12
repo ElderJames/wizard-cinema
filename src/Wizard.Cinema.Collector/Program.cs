@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using Infrastructures;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Wizard.Cinema.Remote;
@@ -15,7 +16,6 @@ using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Application;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Collector
 {

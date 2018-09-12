@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Infrastructures.JsonConverters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,6 @@ using Newtonsoft.Json.Serialization;
 using Wizard.Cinema.Admin.Extensions;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Remote;
-using Wizard.Infrastructures.JsonConverters;
 
 namespace Wizard.Cinema.Admin
 {

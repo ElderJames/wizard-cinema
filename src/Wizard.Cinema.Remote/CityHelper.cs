@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Infrastructures;
 using Newtonsoft.Json;
 using Wizard.Cinema.Remote.Spider.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Remote
 {

@@ -24,12 +24,15 @@
     <None Update="SqlMaps\profiles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SqlMaps\acitivity.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SqlMaps\wizards.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wizard.Infrastructures\Wizard.Infrastructures.csproj" />
+    <ProjectReference Include="..\Infrastructures\Infrastructures.csproj" />
   </ItemGroup>
 </Project>

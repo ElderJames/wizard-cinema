@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Wizards;
@@ -8,7 +9,6 @@ using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Spider.Response;
-using Wizard.Infrastructures;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
