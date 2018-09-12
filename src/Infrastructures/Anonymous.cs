@@ -22,5 +22,14 @@ namespace Infrastructures
 
             return apiResult.Value as ApiResult<TResult>;
         }
+
+        public static ApiResult<object> ApiResult(ResultStatus status, string message)
+        {
+            apiResult.Value.Result = null;
+            apiResult.Value.Message = message;
+            apiResult.Value.Status = status;
+
+            return apiResult.Value;
+        }
     }
 }

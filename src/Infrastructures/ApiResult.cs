@@ -6,10 +6,6 @@
 
         public string Message { get; set; }
 
-        public ApiResult()
-        {
-        }
-
         public ApiResult(ResultStatus status, TResult result)
         {
             this.Result = result;
@@ -24,13 +20,4 @@
 
         public TResult Result { get; set; }
     }
-
-    //public abstract class ApiResult
-    //{
-    //    public ResultStatus Status { get; set; }
-
-    // public string Message { get; set; }
-
-    //    public virtual dynamic Result { get; set; }
-    //}
 }
