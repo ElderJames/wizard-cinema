@@ -62,17 +62,17 @@
         },
         {
           "text": "活动管理",
-          "i18n": "activity",
+          "i18n": "activity_manager",
           "icon": "icon-speedometer",
           "children": [{
-              "text": "巫师名单",
-              "link": "/cinema/wizards",
-              "i18n": "wizards"
+              "text": "活动列表",
+              "link": "/activity",
+              "i18n": "activity_list"
             },
             {
               "text": "活动报名",
-              "link": "/cinema/signed-up-wizards",
-              "i18n": "signed_up_wizards"
+              "link": "/activity/applicants",
+              "i18n": "activity_applicants"
             }
           ]
         },

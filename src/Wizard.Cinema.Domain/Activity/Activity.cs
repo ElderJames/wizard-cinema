@@ -15,6 +15,11 @@ namespace Wizard.Cinema.Domain.Activity
         public long ActivityId { get; private set; }
 
         /// <summary>
+        /// 举办分部Id
+        /// </summary>
+        public long DivisionId { get; private set; }
+
+        /// <summary>
         /// 活动名称
         /// </summary>
         public string Name { get; private set; }
@@ -78,11 +83,12 @@ namespace Wizard.Cinema.Domain.Activity
         {
         }
 
-        public Activity(long activityId, string name, string description, string address,
+        public Activity(long activityId, long divisionId, string name, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
-            decimal price, long creatorId, DateTime createTime)
+            decimal price, long creatorId)
         {
             this.ActivityId = activityId;
+            this.DivisionId = divisionId;
             this.Name = name;
             this.Description = description;
             this.Address = address;
@@ -92,17 +98,18 @@ namespace Wizard.Cinema.Domain.Activity
             this.RegistrationFinishTime = registrationFinishTime;
             this.Price = price;
             this.CreatorId = creatorId;
-            this.CreateTime = createTime;
+            this.CreateTime = DateTime.Now;
             this.Status = ActivityStatus.未启动;
         }
 
-        public void Change(string name, string description, string address,
+        public void Change(long divisionId, string name, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
-            decimal price, long creatorId, DateTime createTime)
+            decimal price)
         {
             if (this.Status != ActivityStatus.未启动)
                 throw new DomainException("进行中不能修改");
 
+            this.DivisionId = divisionId;
             this.Name = name;
             this.Description = description;
             this.Address = address;
@@ -111,9 +118,6 @@ namespace Wizard.Cinema.Domain.Activity
             this.RegistrationBeginTime = registrationBeginTime;
             this.RegistrationFinishTime = registrationFinishTime;
             this.Price = price;
-            this.CreatorId = creatorId;
-            this.CreateTime = createTime;
-            this.Status = ActivityStatus.未启动;
         }
     }
 }

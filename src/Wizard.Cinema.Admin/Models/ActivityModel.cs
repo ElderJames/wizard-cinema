@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Wizard.Cinema.Application.DTOs.EnumTypes;
 
-namespace Wizard.Cinema.Application.DTOs.Request.Activity
+namespace Wizard.Cinema.Admin.Models
 {
-    public class UpdateActivityReqs
+    public class ActivityModel
     {
         /// <summary>
         /// 活动Id
         /// </summary>
-        public long ActivityId { get; set; }
+        public long? ActivityId { get; set; }
 
         /// <summary>
         /// 举办分部Id

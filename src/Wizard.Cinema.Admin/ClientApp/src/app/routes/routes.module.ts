@@ -23,6 +23,8 @@ import { CinemaShowsComponent } from './cinema/shows/shows.component';
 
 import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
+import { ActivityListComponent } from './activity/list/activity-list.component';
+import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -42,7 +44,9 @@ const COMPONENTS = [
   //cinema pages
   CinemaShowsComponent,
   HeadWizardsComponent,
-  DivisionsComponent
+  DivisionsComponent,
+  ActivityListComponent,
+  ActivityDetailComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

@@ -6,6 +6,11 @@ namespace Wizard.Cinema.Application.DTOs.Request.Activity
     public class CreateActivityReqs
     {
         /// <summary>
+        /// 举办分部Id
+        /// </summary>
+        public long DivisionId { get; set; }
+
+        /// <summary>
         /// 活动名称
         /// </summary>
         public string Name { get; set; }

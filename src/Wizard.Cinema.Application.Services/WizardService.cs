@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Infrastructures;
@@ -91,6 +92,15 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<WizardResp>(ResultStatus.FAIL, "用户不能存在或密码不正确");
 
             return new ApiResult<WizardResp>(ResultStatus.SUCCESS, Mapper.Map<WizardInfo, WizardResp>(wizard));
+        }
+
+        public ApiResult<IEnumerable<WizardResp>> GetWizards(long[] wizardIds)
+        {
+            IEnumerable<WizardInfo> wizard = _wizardQueryService.Query(wizardIds);
+            if (wizard == null)
+                return new ApiResult<IEnumerable<WizardResp>>(ResultStatus.FAIL, "用户不能存在或密码不正确");
+
+            return new ApiResult<IEnumerable<WizardResp>>(ResultStatus.SUCCESS, Mapper.Map<WizardInfo, WizardResp>(wizard));
         }
 
         public ApiResult<WizardResp> GetWizard(long wizardId)

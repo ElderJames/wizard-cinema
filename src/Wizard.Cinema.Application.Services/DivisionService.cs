@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
 using Microsoft.Extensions.DependencyInjection;
@@ -88,7 +89,10 @@ namespace Wizard.Cinema.Application.Services
 
         public ApiResult<IEnumerable<DivisionResp>> GetByIds(long[] divisionIds)
         {
-            IEnumerable<DivisionInfo> division = _divisionQueryService.QueryByIds(divisionIds);
+            if (divisionIds.Length <= 0)
+                return new ApiResult<IEnumerable<DivisionResp>>(ResultStatus.FAIL, "没有任何Id" +
+                                                                                   "");
+            IEnumerable<DivisionInfo> division = _divisionQueryService.Query(divisionIds);
 
             return new ApiResult<IEnumerable<DivisionResp>>(ResultStatus.SUCCESS, Mapper.Map<DivisionInfo, DivisionResp>(division));
         }

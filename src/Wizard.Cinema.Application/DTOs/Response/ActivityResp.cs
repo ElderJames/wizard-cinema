@@ -13,6 +13,11 @@ namespace Wizard.Cinema.Application.DTOs.Response
         public long ActivityId { get; set; }
 
         /// <summary>
+        /// 举办分部Id
+        /// </summary>
+        public long DivisionId { get; set; }
+
+        /// <summary>
         /// 活动名称
         /// </summary>
         public string Name { get; set; }

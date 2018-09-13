@@ -8,7 +8,7 @@ namespace Wizard.Cinema.Application.Services
     {
         ApiResult<bool> Create(CreateActivityReqs request);
 
-        ApiResult<bool> Change(CreateActivityReqs request);
+        ApiResult<bool> Change(UpdateActivityReqs request);
 
         ApiResult<ActivityResp> GetById(long activityId);
 

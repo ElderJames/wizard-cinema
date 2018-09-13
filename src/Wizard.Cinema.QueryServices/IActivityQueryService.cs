@@ -7,6 +7,6 @@ namespace Wizard.Cinema.QueryServices
     {
         ActivityInfo Query(long activityId);
 
-        PagedData<ActivityInfo> Query(PagedSearch search);
+        PagedData<ActivityInfo> QueryPaged(PagedSearch search);
     }
 }

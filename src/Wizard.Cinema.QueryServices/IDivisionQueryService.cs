@@ -12,7 +12,7 @@ namespace Wizard.Cinema.QueryServices
 
         DivisionInfo QueryById(long divisionId);
 
-        IEnumerable<DivisionInfo> QueryByIds(long[] divisionIds);
+        IEnumerable<DivisionInfo> Query(long[] divisionIds);
 
         PagedData<DivisionInfo> QueryPaged(PagedSearch search);
     }

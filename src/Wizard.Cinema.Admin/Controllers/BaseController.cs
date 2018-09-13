@@ -26,6 +26,8 @@ namespace Wizard.Cinema.Admin.Controllers
             return new JsonResult(value);
         }
 
-        protected CurrentUser CurrentUser => new CurrentUser(User.Identity);
+        private CurrentUser _currentUser;
+
+        protected CurrentUser CurrentUser => _currentUser ?? (_currentUser = new CurrentUser(User.Identity));
     }
 }

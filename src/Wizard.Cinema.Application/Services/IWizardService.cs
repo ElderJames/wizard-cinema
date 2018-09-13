@@ -1,4 +1,5 @@
-﻿using Infrastructures;
+﻿using System.Collections.Generic;
+using Infrastructures;
 using Wizard.Cinema.Application.DTOs.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
@@ -11,6 +12,8 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<WizardResp> GetWizard(string account, string passward);
 
         ApiResult<WizardResp> GetWizard(long wizardId);
+
+        ApiResult<IEnumerable<WizardResp>> GetWizards(long[] wizardId);
 
         ApiResult<bool> Register(RegisterWizardReqs request);
 

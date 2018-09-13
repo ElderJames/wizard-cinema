@@ -6,7 +6,6 @@ using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request;
 using Wizard.Cinema.Application.DTOs.Request.Division;
 using Wizard.Cinema.Application.Services;
-using Wizard.Cinema.Application.Services.Dto.Request;
 using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Spider.Response;
