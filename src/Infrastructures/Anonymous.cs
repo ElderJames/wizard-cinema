@@ -4,7 +4,8 @@ namespace Infrastructures
 {
     public static class Anonymous
     {
-        private static readonly Lazy<ApiResult<dynamic>> apiResult = new Lazy<ApiResult<dynamic>>();
+        private static readonly Lazy<ApiResult<dynamic>> apiResult =
+            new Lazy<ApiResult<dynamic>>(() => new ApiResult<dynamic>(ResultStatus.SUCCESS, null));
 
         public static ApiResult<TResult> ApiResult<TResult>(ResultStatus status, TResult result)
         {

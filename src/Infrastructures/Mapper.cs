@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Infrastructures
 {
-    public static class Mapper<TSource, TTarget> where TSource : class where TTarget : class
+    internal static class Mapper<TSource, TTarget> where TSource : class where TTarget : class
     {
         private static Func<TSource, TTarget> MapFunc { get; set; }
 
@@ -72,7 +72,7 @@ namespace Infrastructures
                 if (!sourceItem.PropertyType.IsValueType && sourceItem.PropertyType != targetItem.PropertyType)
                 {
                     //判断都是(非泛型)class
-                    if (sourceItem.PropertyType.IsClass && targetItem.PropertyType.IsClass && !sourceItem.PropertyType.IsGenericType && !targetItem.PropertyType.IsGenericType)
+                    if (sourceItem.PropertyType.IsClass && targetItem.PropertyType.IsClass && !sourceItem.PropertyType.IsArray && !targetItem.PropertyType.IsArray && !sourceItem.PropertyType.IsGenericType && !targetItem.PropertyType.IsGenericType)
                     {
                         var expression = GetClassExpression(sourceProperty, sourceItem.PropertyType, targetItem.PropertyType);
                         memberBindings.Add(Expression.Bind(targetItem, expression));
@@ -232,7 +232,7 @@ namespace Infrastructures
             }
             else if (targetType.IsArray)//数组类型调用ToArray()方法
             {
-                iftrue = Expression.Call(mapperExecMap, mapperExecMap.Type.GetMethod("ToArray"));
+                iftrue = Expression.Call(typeof(Enumerable), nameof(Enumerable.ToArray), new[] { mapperExecMap.Type.GenericTypeArguments[0] }, mapperExecMap);
             }
             else if (typeof(IDictionary).IsAssignableFrom(targetType))
             {
