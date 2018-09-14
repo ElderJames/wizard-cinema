@@ -14,23 +14,25 @@ namespace Wizard.Cinema.Application.Services
     [Impl]
     public class ActivityService : IActivityService
     {
-        private ILogger<IActivityService> _logger;
+        private readonly ILogger<IActivityService> _logger;
 
-        private IActivityRepository _activityRepository;
-        private IActivityQueryService _activityQueryService;
+        private readonly IActivityRepository _activityRepository;
+        private readonly IActivityQueryService _activityQueryService;
 
-        private IWizardQueryService _wizardQueryService;
-        private IDivisionRepository divisionRepository;
+        private readonly IWizardQueryService _wizardQueryService;
+        private readonly IDivisionRepository divisionRepository;
 
         public ActivityService(ILogger<IActivityService> logger,
             IActivityRepository activityRepository,
             IActivityQueryService activityQueryService,
-            IWizardQueryService wizardQueryService)
+            IWizardQueryService wizardQueryService,
+            IDivisionRepository divisionRepository)
         {
             this._logger = logger;
             this._activityRepository = activityRepository;
             this._activityQueryService = activityQueryService;
             this._wizardQueryService = wizardQueryService;
+            this.divisionRepository = divisionRepository;
         }
 
         public ApiResult<bool> Create(CreateActivityReqs request)
@@ -75,7 +77,7 @@ namespace Wizard.Cinema.Application.Services
                     request.RegistrationFinishTime,
                     request.Price);
 
-                if (_activityRepository.Insert(activity) <= 0)
+                if (_activityRepository.Update(activity) <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "保存时出现问题，请稍后再试");
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);

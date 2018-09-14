@@ -16,6 +16,7 @@
     <Statement Id="Insert">
       INSERT INTO activity
       (ActivityId
+      ,DivisionId
       ,Name
       ,Description
       ,Address
@@ -30,6 +31,7 @@
       ,CreateTime
       )VALUES
       (@ActivityId
+      ,@DivisionId
       ,@Name
       ,@Description
       ,@Address
