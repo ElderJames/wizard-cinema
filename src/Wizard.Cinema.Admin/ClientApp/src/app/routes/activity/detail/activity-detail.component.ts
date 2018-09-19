@@ -11,6 +11,7 @@ import { _HttpClient } from '@delon/theme';
 export class ActivityDetailComponent implements OnInit {
   form: FormGroup;
   submitting = false;
+  divisions: any[];
   activity = {
     activityId: null,
     divisionId: 0,
@@ -28,24 +29,30 @@ export class ActivityDetailComponent implements OnInit {
     private fb: FormBuilder,
     private msg: NzMessageService,
     private route: ActivatedRoute,
+    private router: Router,
     private http: _HttpClient,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({
+      name: [null, [Validators.required]],
+      divisionId: [null, [Validators.required]],
+      address: [null, [Validators.required]],
+      date: [null, [Validators.required]],
+      description: [null, [Validators.required]],
+      price: [null, [Validators.required]],
+      registrationTime: [null, [Validators.required]],
+    });
+
+    this.getDivisions();
+
     this.route.params.subscribe((params: Params) => {
       const activityId = params['id'];
       console.log(activityId);
-      this.activity.activityId = activityId;
-
+      if (!activityId)
+        return;
       this.getActivity(activityId);
-      this.form = this.fb.group({
-        name: [null, [Validators.required]],
-        address: [null, [Validators.required]],
-        date: [null, [Validators.required]],
-        description: [null, [Validators.required]],
-        price: [null, [Validators.required]],
-        registrationTime: [null, [Validators.required]],
-      });
+      this.activity.activityId = activityId;
     });
   }
 
@@ -69,6 +76,15 @@ export class ActivityDetailComponent implements OnInit {
     });
   }
 
+  getDivisions() {
+    this.http.get('api/division', { PageSize: 1000 })
+      .subscribe((res: any) => {
+        this.divisions = res.records;
+      })
+  }
+
+  loadMore() { }
+
   submit() {
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
@@ -78,12 +94,8 @@ export class ActivityDetailComponent implements OnInit {
 
     this.activity['beginTime'] = this.activity['date'][0];
     this.activity['finishTime'] = this.activity['date'][1];
-    this.activity['registrationBeginTime'] = this.activity[
-      'registrationTime'
-    ][0];
-    this.activity['registrationFinishTime'] = this.activity[
-      'registrationTime'
-    ][1];
+    this.activity['registrationBeginTime'] = this.activity['registrationTime'][0];
+    this.activity['registrationFinishTime'] = this.activity['registrationTime'][1];
 
     if (this.form.invalid) return;
     this.submitting = true;
@@ -92,6 +104,7 @@ export class ActivityDetailComponent implements OnInit {
     this.http.post('api/activity', this.activity).subscribe((res: any) => {
       this.submitting = false;
       this.msg.success(`提交成功`);
+      this.router.navigate(['activity']);
     });
   }
 }

@@ -6,6 +6,8 @@
 
         public string Message { get; set; }
 
+        public TResult Result { get; set; }
+
         public ApiResult(ResultStatus status, TResult result)
         {
             this.Result = result;
@@ -17,7 +19,5 @@
             this.Status = status;
             this.Message = message;
         }
-
-        public TResult Result { get; set; }
     }
 }

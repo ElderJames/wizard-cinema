@@ -11,6 +11,18 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
+      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="name">主办分部</nz-form-label>
+      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+        <nz-select style="width: 100%;" formControlName="divisionId" (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择主办分部"
+          nzAllowClear>
+          <nz-option *ngFor="let o of divisions" [nzValue]="o.divisionId" [nzLabel]="o.name"></nz-option>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
       <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="活动地址">活动地址</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
         <input nz-input formControlName="address" id="address" placeholder="给活动起个名字">

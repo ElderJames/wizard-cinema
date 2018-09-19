@@ -41,6 +41,7 @@ const routes: Routes = [
       { path: 'wizards/head-wizards', component: HeadWizardsComponent },
       { path: 'activity', component: ActivityListComponent },
       { path: 'activity/detail/:id', component: ActivityDetailComponent },
+      { path: 'activity/add', component: ActivityDetailComponent },
       { path: 'activity/applicants', component: ActivityListComponent },
       { path: 'divisions', component: DivisionsComponent },
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
