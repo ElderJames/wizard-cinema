@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : localhost
 Source Server Version : 80011
 Source Host           : localhost:3306
 Source Database       : wizard_cinema
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-09-19 20:52:00
+Date: 2018-09-20 01:40:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,12 +38,35 @@ CREATE TABLE `activity` (
   PRIMARY KEY (`Id`),
   UNIQUE KEY `UNQ_ActivityId` (`ActivityId`),
   KEY `IDX_DivisionId` (`DivisionId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
-INSERT INTO `activity` VALUES ('1', '1', '1', '吃鸡', '<p>吃鸡吃鸡吃鸡afd&nbsp;</p>', '鸡场', '1', '0', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '100.00', '1', '2018-09-14 18:28:45');
+INSERT INTO `activity` VALUES ('1', '1', '1', '吃鸡2', '<p>吃鸡吃鸡吃鸡afd&nbsp;</p>', '鸡场', '1', '0', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '100.00', '1', '2018-09-19 21:29:30');
+INSERT INTO `activity` VALUES ('4', '1042414403380576256', '1', '观影活动', '<p>观影观影</p>', 'k11', '0', '0', '2018-09-19 14:05:19', '2018-09-20 14:05:19', '2018-09-19 14:05:26', '2018-09-21 14:05:26', '11.00', '1032831325616209920', '2018-09-19 22:12:08');
+
+-- ----------------------------
+-- Table structure for applicants
+-- ----------------------------
+DROP TABLE IF EXISTS `applicants`;
+CREATE TABLE `applicants` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ApplicantId` bigint(20) DEFAULT NULL,
+  `WizardId` bigint(20) DEFAULT NULL,
+  `DivisionId` bigint(20) DEFAULT NULL,
+  `ActivityId` bigint(20) DEFAULT NULL,
+  `RealName` varchar(20) DEFAULT NULL,
+  `Mobile` char(12) DEFAULT NULL,
+  `Status` tinyint(4) DEFAULT NULL,
+  `ApplyTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of applicants
+-- ----------------------------
+INSERT INTO `applicants` VALUES ('1', '1', '1037288287334563840', '1', '1042414403380576256', 'yyy', '152100000000', '0', '2018-09-20 01:25:51');
 
 -- ----------------------------
 -- Table structure for cinemas
