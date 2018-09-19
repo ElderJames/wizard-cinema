@@ -28,7 +28,7 @@ import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.compon
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
-
+import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
 import { JWTGuard } from '@delon/auth';
 
 const routes: Routes = [
@@ -42,7 +42,7 @@ const routes: Routes = [
       { path: 'activity', component: ActivityListComponent },
       { path: 'activity/detail/:id', component: ActivityDetailComponent },
       { path: 'activity/add', component: ActivityDetailComponent },
-      { path: 'activity/applicants', component: ActivityListComponent },
+      { path: 'applicants', component: ApplicantListComponent },
       { path: 'divisions', component: DivisionsComponent },
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
       { path: 'dashboard/v1', component: DashboardV1Component },

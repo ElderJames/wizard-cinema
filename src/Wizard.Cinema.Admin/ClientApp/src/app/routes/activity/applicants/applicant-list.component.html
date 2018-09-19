@@ -1,0 +1,54 @@
+<page-header [title]="'活动报名'"></page-header>
+<nz-card [nzBordered]="false">
+  <button nz-button routerLink="activity/add" [nzType]="'primary'">
+    <i class="anticon anticon-plus"></i>
+    <span>新建</span>
+  </button>
+  <ng-container *ngIf="selectedRows.length > 0">
+    <button nz-button class="ml-sm">批量操作</button>
+    <nz-dropdown [nzPlacement]="'bottomLeft'">
+      <button nz-button nz-dropdown class="ml-sm">
+        更多操作
+        <i class="anticon anticon-down"></i>
+      </button>
+      <ul nz-menu>
+        <li nz-menu-item (click)="remove()">删除</li>
+        <li nz-menu-item (click)="approval()">批量审批</li>
+      </ul>
+    </nz-dropdown>
+  </ng-container>
+  <simple-table #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (checkboxChange)="checkboxChange($event)"
+    (filterChange)="getData()">
+    <ng-template st-row="status" let-i>
+      <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+    </ng-template>
+  </simple-table>
+</nz-card>
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="name">活动名</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="activity.name" name="name" placeholder="请填写分部名" id="name">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="divisionId">举办分部</nz-form-label>
+    <nz-form-control>
+      <nz-select [(ngModel)]="activity.divisionId" id="divisionId">
+        <nz-option *ngFor="let p of divisionData" [nzValue]="p.divisionId" [nzLabel]="p.name"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="name">详情</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="activity.name" name="name" placeholder="请填写分部名" id="name">
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="beginTime">开始时间</nz-form-label>
+    <nz-form-control>
+      <nz-date-picker nzPlaceHolder="选择开始日期" [(ngModel)]="activity.beginTime"></nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

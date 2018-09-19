@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
@@ -93,7 +94,7 @@ namespace Wizard.Cinema.Admin.Controllers
         {
             ApiResult<PagedData<ActivityResp>> activitys = _activityService.Search(search);
             ApiResult<IEnumerable<DivisionResp>> divisionResult = _divisionService.GetByIds(activitys.Result.Records.Select(x => x.DivisionId).ToArray());
-            ApiResult<IEnumerable<WizardResp>> users = _wizardService.GetWizards(activitys.Result.Records.Select(x => x.CreatorId).ToArray());
+            ApiResult<IEnumerable<WizardResp>> wizards = _wizardService.GetWizards(activitys.Result.Records.Select(x => x.CreatorId).ToArray());
 
             return Ok(new
             {
@@ -103,7 +104,7 @@ namespace Wizard.Cinema.Admin.Controllers
                 Records = activitys.Result.Records.Select(x =>
                 {
                     DivisionResp division = divisionResult.Result.FirstOrDefault(d => d.DivisionId == x.DivisionId);
-                    WizardResp creator = users.Result.FirstOrDefault(u => u.WizardId == x.CreatorId);
+                    WizardResp creator = wizards.Result.FirstOrDefault(u => u.WizardId == x.CreatorId);
                     return new
                     {
                         x.ActivityId,
@@ -116,6 +117,55 @@ namespace Wizard.Cinema.Admin.Controllers
                         Status = x.Status.GetName(),
                         Division = division?.Name,
                         Creator = creator?.Account
+                    };
+                })
+            });
+        }
+
+        [HttpGet("applicants/{id:long}")]
+        public IActionResult GetApplicant(long id)
+        {
+            if (id <= 0)
+                return Fail("请选择正确的报名者");
+
+            ApiResult<ApplicantResp> applicantApi = _activityService.GetApplicant(id);
+            if (applicantApi.Result == null)
+                return Fail("找不到该报名者");
+
+            return Ok(applicantApi.Result);
+        }
+
+        [HttpGet("applicants")]
+        public IActionResult SearchApplicant([FromQuery]PagedSearch search)
+        {
+            ApiResult<PagedData<ApplicantResp>> applicantApi = _activityService.SearchApplicant(search);
+            if (!applicantApi.Result.Records.Any())
+                return Ok(applicantApi);
+
+            ApiResult<IEnumerable<DivisionResp>> divisionResult = _divisionService.GetByIds(applicantApi.Result.Records.Select(x => x.DivisionId).ToArray());
+            ApiResult<IEnumerable<WizardResp>> wizards = _wizardService.GetWizards(applicantApi.Result.Records.Select(x => x.WizardId).ToArray());
+            ApiResult<IEnumerable<ActivityResp>> activitys = _activityService.GetByIds(applicantApi.Result.Records.Select(x => x.ActivityId).ToArray());
+
+            return Ok(new
+            {
+                applicantApi.Result.PageNow,
+                applicantApi.Result.PageSize,
+                applicantApi.Result.TotalCount,
+                Records = applicantApi.Result.Records.Select(x =>
+                {
+                    DivisionResp division = divisionResult.Result.FirstOrDefault(d => d.DivisionId == x.DivisionId);
+                    WizardResp wizard = wizards.Result.FirstOrDefault(u => u.WizardId == x.WizardId);
+                    ActivityResp activity = activitys.Result.FirstOrDefault(a => a.ActivityId == x.ActivityId);
+                    return new
+                    {
+                        x.ApplicantId,
+                        Activity = activity?.Name,
+                        WizardName = wizard?.Account,
+                        Division = division?.Name,
+                        x.ApplyTime,
+                        x.Mobile,
+                        x.RealName,
+                        Status = x.Status.GetName()
                     };
                 })
             });

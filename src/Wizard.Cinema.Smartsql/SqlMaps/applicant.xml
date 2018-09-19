@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SmartSqlMap Scope="Wizard"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+<SmartSqlMap Scope="Applicant"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
@@ -10,54 +10,40 @@
       <Result Property="PageSize" />
       <Result Property="PageNow" />
     </MultipleResultMap>
-
-    <MultipleResultMap Id="QueryReusltMap">
-      <Root />
-      <Result Property="WizardProfiles" />
-    </MultipleResultMap>
   </MultipleResultMaps>
 
   <Statements>
-    <Statement Id="Create">
-      INSERT INTO wizards
-      (WizardId
-      ,Email
-      ,Account
-      ,Password
+    <Statement Id="Insert">
+      INSERT INTO applicants
+      (ApplicantId
+      ,WizardId
       ,DivisionId
-      ,IsAdmin
-      ,CreateTime
-      ,CreatorId
-      )VALUES(
-      @WizardId
-      ,@Email
-      ,@Account
-      ,@Password
+      ,ActivityId
+      ,RealName
+      ,Mobile
+      ,Status
+      ,ApplyTime
+      )VALUES
+      (@ApplicantId
+      ,@WizardId
       ,@DivisionId
-      ,@IsAdmin
-      ,@CreateTime
-      ,@CreatorId
+      ,@ActivityId
+      ,@RealName
+      ,@Mobile
+      ,@Status
+      ,@ApplyTime
       )
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
     <Statement Id="Update">
-      UPDATE wizards
+      UPDATE applicants
       <Set>
-        <IsNotNull Prepend="," Property="Account">
-          Account = @Account
-        </IsNotNull>
-        <IsNotNull Prepend="," Property="Email">
-          Email = @Email
-        </IsNotNull>
-        <IsNotNull Prepend="," Property="Password">
-          Password = @Password
-        </IsNotNull>
-        <IsNotNull Prepend="," Property="IsAdmin">
-          IsAdmin = @IsAdmin
+        <IsNotNull Prepend="," Property="Status">
+          Status = @Status
         </IsNotNull>
       </Set>
-      WHERE WizardId = @WizardId;
+      WHERE ApplicantId = @ApplicantId;
     </Statement>
 
     <Statement Id="OrderAndPaged">
@@ -78,38 +64,33 @@
 
     <Statement Id="QueryParams">
       <Where>
+        <IsNotNull Prepend="AND" Property="ApplicantId">
+          ApplicantId = @ApplicantId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="ActivityId">
+          ActivityId = @ActivityId
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="WizardId">
           WizardId = @WizardId
         </IsNotNull>
-        <IsNotNull Prepend="AND" Property="WizardIds">
-          WizardId IN @WizardIds
+        <IsNotNull Prepend="AND" Property="Mobile">
+          Mobile = @Mobile
         </IsNotNull>
-        <IsNotNull Prepend="AND" Property="Account">
-          Account = @Account
-        </IsNotNull>
-        <IsNotNull Prepend="AND" Property="PasswardMd5">
-          Password = @PasswardMd5
-        </IsNotNull>
-        <IsNotNull Prepend="," Property="IsAdmin">
-          IsAdmin = @IsAdmin
+        <IsNotNull Prepend="AND" Property="Status">
+          Status = @Status
         </IsNotNull>
       </Where>
     </Statement>
 
     <Statement Id="Query">
-      SELECT * FROM wizards
+      SELECT * FROM applicants
       <Include RefId="QueryParams"></Include>
     </Statement>
 
-    <Statement Id="QueryAll" MultipleResultMap="QueryReusltMap">
-      SELECT * FROM wizards WHERE WizardId = @WizardId;
-      SELECT * FROM wizard_profiles WHERE WizardId = @WizardId;
-    </Statement>
-
     <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
-      SELECT COUNT(1) FROM wizards
+      SELECT COUNT(1) FROM applicants
       <Include RefId="QueryParams" />;
-      SELECT * FROM wizards
+      SELECT * FROM applicants
       <Include RefId="QueryParams" />
       <Include RefId="OrderAndPaged" />;
       SELECT @PageSize;

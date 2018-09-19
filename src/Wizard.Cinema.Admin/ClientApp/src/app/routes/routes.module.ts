@@ -25,6 +25,7 @@ import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.compon
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
+import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -46,7 +47,8 @@ const COMPONENTS = [
   HeadWizardsComponent,
   DivisionsComponent,
   ActivityListComponent,
-  ActivityDetailComponent
+  ActivityDetailComponent,
+  ApplicantListComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

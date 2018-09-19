@@ -27,7 +27,7 @@ namespace Infrastructures
 
         public int TotalCount { get; set; }
 
-        public IEnumerable<TRecord> Records { get; set; }
+        public IEnumerable<TRecord> Records { get; set; } = Enumerable.Empty<TRecord>();
 
         public override string ToString()
         {

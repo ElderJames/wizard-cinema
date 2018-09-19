@@ -199,5 +199,10 @@ namespace Infrastructures
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
+
+        public static bool IsEnumerable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>);
+        }
     }
 }

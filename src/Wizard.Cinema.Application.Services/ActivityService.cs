@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
 using Microsoft.Extensions.Logging;
@@ -20,26 +22,30 @@ namespace Wizard.Cinema.Application.Services
         private readonly IActivityQueryService _activityQueryService;
 
         private readonly IWizardQueryService _wizardQueryService;
-        private readonly IDivisionRepository divisionRepository;
+        private readonly IDivisionRepository _divisionRepository;
+
+        private readonly IApplicantQueryService _applicantQueryService;
 
         public ActivityService(ILogger<IActivityService> logger,
             IActivityRepository activityRepository,
             IActivityQueryService activityQueryService,
             IWizardQueryService wizardQueryService,
-            IDivisionRepository divisionRepository)
+            IDivisionRepository divisionRepository,
+            IApplicantQueryService applicantQueryService)
         {
             this._logger = logger;
             this._activityRepository = activityRepository;
             this._activityQueryService = activityQueryService;
             this._wizardQueryService = wizardQueryService;
-            this.divisionRepository = divisionRepository;
+            this._divisionRepository = divisionRepository;
+            this._applicantQueryService = applicantQueryService;
         }
 
         public ApiResult<bool> Create(CreateActivityReqs request)
         {
             try
             {
-                Divisions division = divisionRepository.Query(request.DivisionId);
+                Divisions division = _divisionRepository.Query(request.DivisionId);
                 if (division == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到分部");
 
@@ -64,7 +70,7 @@ namespace Wizard.Cinema.Application.Services
         {
             try
             {
-                Divisions division = divisionRepository.Query(request.DivisionId);
+                Divisions division = _divisionRepository.Query(request.DivisionId);
                 if (division == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到分部");
 
@@ -101,6 +107,16 @@ namespace Wizard.Cinema.Application.Services
             return new ApiResult<ActivityResp>(ResultStatus.SUCCESS, Mapper.Map<ActivityInfo, ActivityResp>(activity));
         }
 
+        public ApiResult<IEnumerable<ActivityResp>> GetByIds(long[] activityIds)
+        {
+            if (!activityIds.Any())
+                return new ApiResult<IEnumerable<ActivityResp>>(ResultStatus.FAIL, "请选择正确的活动");
+
+            IEnumerable<ActivityInfo> activity = _activityQueryService.Query(activityIds);
+
+            return new ApiResult<IEnumerable<ActivityResp>>(ResultStatus.SUCCESS, Mapper.Map<ActivityInfo, ActivityResp>(activity));
+        }
+
         public ApiResult<PagedData<ActivityResp>> Search(PagedSearch search)
         {
             try
@@ -112,6 +128,39 @@ namespace Wizard.Cinema.Application.Services
             {
                 _logger.LogError("查询活动列表异常", ex);
                 return new ApiResult<PagedData<ActivityResp>>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public ApiResult<ApplicantResp> GetApplicant(long applicantId)
+        {
+            try
+            {
+                ApplicantInfo applicant = _applicantQueryService.Query(applicantId);
+                if (applicant == null)
+                    return new ApiResult<ApplicantResp>(ResultStatus.FAIL, "该报名者不存在");
+
+                return new ApiResult<ApplicantResp>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicant));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<ApplicantResp>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public ApiResult<PagedData<ApplicantResp>> SearchApplicant(PagedSearch search)
+        {
+            try
+            {
+                PagedData<ApplicantInfo> applicant = _applicantQueryService.QueryPaged(search);
+
+                return new ApiResult<PagedData<ApplicantResp>>(ResultStatus.SUCCESS,
+                    Mapper.Map<PagedData<ApplicantInfo>, PagedData<ApplicantResp>>(applicant));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<PagedData<ApplicantResp>>(ResultStatus.EXCEPTION, new PagedData<ApplicantResp>(), ex.Message);
             }
         }
     }
