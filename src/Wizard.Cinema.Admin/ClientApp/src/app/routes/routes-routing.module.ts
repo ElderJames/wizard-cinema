@@ -38,7 +38,7 @@ const routes: Routes = [
     path: '',
     component: LayoutDefaultComponent,
     children: [
-      { path: '', redirectTo: 'cinema/shows', pathMatch: 'full', canActivate: [JWTGuard] },
+      { path: '', redirectTo: 'cinema/shows1', pathMatch: 'full', canActivate: [JWTGuard] },
       { path: 'cinema/shows1', component: CinemaShows1Component },
       { path: 'cinema/sessions', component: SessionComponent },
       { path: 'wizards/head-wizards', component: HeadWizardsComponent },
