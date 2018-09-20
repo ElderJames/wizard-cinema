@@ -22,6 +22,11 @@
           "children": [
             {
               "text": "观影场次",
+              "link": "/cinema/sessions",
+              "i18n": "cinema_session"
+            },
+            {
+              "text": "观影场次2",
               "link": "/cinema/shows",
               "i18n": "cinema_shows"
             },

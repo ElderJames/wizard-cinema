@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Session"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMReuslt">
+      <Result Property="TotalCount" />
+      <Result Property="Records"  MapId="QuerySessionResultMap" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
+
+  <ParameterMaps>
+    <ParameterMap Id="SessionParamMap">
+      <Parameter Property="Seats" TypeHandler="Json" />
+    </ParameterMap>
+  </ParameterMaps>
+
+  <ResultMaps>
+    <ResultMap Id="QuerySessionResultMap">
+      <Result Column="Seats" Property="Seats" TypeHandler="Json" />
+    </ResultMap>
+  </ResultMaps>
+
+  <Statements>
+    <Statement Id="Insert" ParameterMap="SessionParamMap">
+      INSERT INTO sessions
+      (SessionId
+      ,DivisionId
+      ,Cinema
+      ,Hall
+      ,Seats
+      ,Status
+      )VALUES
+      (@SessionId
+      ,@DivisionId
+      ,@Cinema
+      ,@Hall
+      ,@Seats
+      ,@Status
+      )
+      ;SELECT last_insert_Id() as Id;
+    </Statement>
+
+    <Statement Id="Update" ParameterMap="SessionParamMap">
+      UPDATE sessions
+      <Set>
+        <IsNotNull Prepend="," Property="Cinema">
+          Cinema = @Cinema
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Hall">
+          Hall = @Hall
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Seats">
+          Seats = @Seats
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Status">
+          Status = @Status
+        </IsNotNull>
+      </Set>
+      WHERE SessionId = @SessionId;
+    </Statement>
+
+    <Statement Id="OrderAndPaged">
+      <Switch Prepend="Order By" Property="OrderBy">
+        <Default>
+          id Desc
+        </Default>
+      </Switch>
+      <IsNotNull Prepend="" Property="PageSize">
+        <IsNotNull Prepend="" Property="StartIndex">
+          LIMIT @StartIndex,@PageSize
+        </IsNotNull>
+        <IsNull Prepend="" Property="StartIndex">
+          LIMIT @PageSize
+        </IsNull>
+      </IsNotNull>
+    </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="AND" Property="ActivityId">
+          ActivityId = @ActivityId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="Status">
+          Status = @Status
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query" ResultMap="QuerySessionResultMap">
+      SELECT * FROM sessions
+      <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+      SELECT COUNT(1) FROM sessions
+      <Include RefId="QueryParams" />;
+      SELECT * FROM sessions
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
+    </Statement>
+  </Statements>
+</SmartSqlMap>

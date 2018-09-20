@@ -19,13 +19,14 @@ import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
 //cinema pages
-import { CinemaShowsComponent } from './cinema/shows/shows.component';
+import { CinemaShows1Component } from './cinema/shows1/shows1.component';
 
 import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
+import { SessionComponent } from './cinema/sessions/session.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -43,12 +44,13 @@ const COMPONENTS = [
   Exception404Component,
   Exception500Component,
   //cinema pages
-  CinemaShowsComponent,
+  CinemaShows1Component,
   HeadWizardsComponent,
   DivisionsComponent,
   ActivityListComponent,
   ActivityDetailComponent,
-  ApplicantListComponent
+  ApplicantListComponent,
+  SessionComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Wizard.Cinema.Admin.Extensions;
-using Wizard.Cinema.Application.Services;
+using Wizard.Cinema.Application.Services.Extensions;
 using Wizard.Cinema.Remote;
 
 namespace Wizard.Cinema.Admin

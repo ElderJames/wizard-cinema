@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Wizard.Cinema.Smartsql;
 
-namespace Wizard.Cinema.Application.Services
+namespace Wizard.Cinema.Application.Services.Extensions
 {
     public static class ServiceCollectionExtensions
     {

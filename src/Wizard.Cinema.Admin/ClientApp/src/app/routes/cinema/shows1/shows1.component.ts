@@ -6,11 +6,11 @@ import { _HttpClient } from '@delon/theme';
 
 @Component({
     selector: 'app-dashboard-shows',
-    templateUrl: './shows.component.html',
+    templateUrl: './shows1.component.html',
     encapsulation: ViewEncapsulation.None,
-    styleUrls: ['./shows.component.less']
+    styleUrls: ['./shows1.component.less']
 })
-export class CinemaShowsComponent implements OnInit {
+export class CinemaShows1Component implements OnInit {
     constructor(private http: _HttpClient, public msg: NzMessageService, private cd: ChangeDetectorRef) { }
 
     loading = false;

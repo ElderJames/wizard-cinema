@@ -12,42 +12,42 @@ namespace Wizard.Cinema.Domain.Activity
         /// <summary>
         /// 报名者Id
         /// </summary>
-        public long ApplicantId { get; set; }
+        public long ApplicantId { get; private set; }
 
         /// <summary>
         /// 巫师Id
         /// </summary>
-        public long WizardId { get; set; }
+        public long WizardId { get; private set; }
 
         /// <summary>
         /// 分部Id
         /// </summary>
-        public long DivisionId { get; set; }
+        public long DivisionId { get; private set; }
 
         /// <summary>
         /// 活动Id
         /// </summary>
-        public long ActivityId { get; set; }
+        public long ActivityId { get; private set; }
 
         /// <summary>
         /// 真实姓名
         /// </summary>
-        public string RealName { get; set; }
+        public string RealName { get; private set; }
 
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Mobile { get; set; }
+        public string Mobile { get; private set; }
 
         /// <summary>
         /// 报名者状态
         /// </summary>
-        public ApplicantStatus Status { get; set; }
+        public ApplicantStatus Status { get; private set; }
 
         /// <summary>
         /// 申请时间
         /// </summary>
-        public DateTime ApplyTime { get; set; }
+        public DateTime ApplyTime { get; private set; }
 
         public Applicant(long applicantId, long wizardId, Activity activity, string realName, string mobile)
         {

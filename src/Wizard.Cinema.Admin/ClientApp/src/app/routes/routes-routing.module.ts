@@ -22,13 +22,15 @@ import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
 //cinema pages
-import { CinemaShowsComponent } from './cinema/shows/shows.component';
+import { CinemaShows1Component } from './cinema/shows1/shows1.component';
 
 import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
+import { SessionComponent } from './cinema/sessions/session.component';
+
 import { JWTGuard } from '@delon/auth';
 
 const routes: Routes = [
@@ -37,7 +39,8 @@ const routes: Routes = [
     component: LayoutDefaultComponent,
     children: [
       { path: '', redirectTo: 'cinema/shows', pathMatch: 'full', canActivate: [JWTGuard] },
-      { path: 'cinema/shows', component: CinemaShowsComponent },
+      { path: 'cinema/shows1', component: CinemaShows1Component },
+      { path: 'cinema/sessions', component: SessionComponent },
       { path: 'wizards/head-wizards', component: HeadWizardsComponent },
       { path: 'activity', component: ActivityListComponent },
       { path: 'activity/detail/:id', component: ActivityDetailComponent },
