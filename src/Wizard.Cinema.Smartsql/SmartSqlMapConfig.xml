@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMapConfig xmlns="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd SqlMaps/smartsql/SmartSqlMapConfig.xsd">
+
+  <Settings IsWatchConfigFile="true" IgnoreParameterCase="true" ParameterPrefix="@" />
+  <Database>
+    <!--ParameterPrefix:[SqlServer:@ | MySQL:? |Oracle::] -->
+    <DbProvider Name="MySqlClientFactory" ParameterPrefix="@" Type="MySql.Data.MySqlClient.MySqlClientFactory,MySql.Data" />
+    <Write Name="WriteDB" ConnectionString="server=localhost;port=3306; initial catalog=wizard_cinema;uid=root;" />
+  </Database>
+
+  <TypeHandlers>
+    <TypeHandler Name="Json" Type="SmartSql.TypeHandler.JsonTypeHandler,SmartSql.TypeHandler" />
+    <TypeHandler Name="Xml" Type="SmartSql.TypeHandler.XmlTypeHandler,SmartSql.TypeHandler" />
+  </TypeHandlers>
+
+  <SmartSqlMaps>
+    <SmartSqlMap Path="SqlMaps" Type="Directory" ></SmartSqlMap>
+  </SmartSqlMaps>
+</SmartSqlMapConfig>

@@ -11,9 +11,9 @@ namespace Wizard.Cinema.Smartsql
         public static void AddSmartSqlStorage(this IServiceCollection services, IConfiguration configuration)
         {
             //services.AddSmartSql();
-            services.AddSmartSql(configuration.GetSection("SmartSql"));
+            //services.AddSmartSql(configuration.GetSection("SmartSql"));
 
-            services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
+            services.AddSmartSqlRepositoryFactory(sqlIdNamingConvert: (type, method) =>
             {
                 if (method.Name.StartsWith("Update"))
                     return "Update";
