@@ -4,14 +4,14 @@
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
   <MultipleResultMaps>
-    <MultipleResultMap Id="QueryByPageMReuslt">
+    <MultipleResultMap Id="QueryByPageMResult">
       <Result Property="TotalCount" />
       <Result Property="Records" />
       <Result Property="PageSize" />
       <Result Property="PageNow" />
     </MultipleResultMap>
 
-    <MultipleResultMap Id="QueryReusltMap">
+    <MultipleResultMap Id="QueryResultMap">
       <Root />
       <Result Property="WizardProfiles" />
     </MultipleResultMap>
@@ -101,12 +101,12 @@
       <Include RefId="QueryParams"></Include>
     </Statement>
 
-    <Statement Id="QueryAll" MultipleResultMap="QueryReusltMap">
+    <Statement Id="QueryAll" MultipleResultMap="QueryResultMap">
       SELECT * FROM wizards WHERE WizardId = @WizardId;
       SELECT * FROM wizard_profiles WHERE WizardId = @WizardId;
     </Statement>
 
-    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMResult">
       SELECT COUNT(1) FROM wizards
       <Include RefId="QueryParams" />;
       SELECT * FROM wizards

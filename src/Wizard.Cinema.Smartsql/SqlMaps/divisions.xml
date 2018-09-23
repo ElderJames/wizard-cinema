@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
   <MultipleResultMaps>
-    <MultipleResultMap Id="QueryByPageMReuslt">
+    <MultipleResultMap Id="QueryByPageMResult">
       <Result Property="TotalCount" />
       <Result Property="Records" />
       <Result Property="PageSize" />
@@ -83,7 +83,7 @@
       <Include RefId="QueryParams"></Include>
     </Statement>
 
-    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMReuslt">
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMResult">
       SELECT COUNT(1) FROM divisions
       <Include RefId="QueryParams" />;
       SELECT * FROM divisions
