@@ -11,9 +11,9 @@ namespace Wizard.Cinema.Application.DTOs.Request.Cinema
 
         public long DivisionId { get; set; }
 
-        public string Cinema { get; set; }
+        public int CinemaId { get; set; }
 
-        public string Hall { get; set; }
+        public int HallId { get; set; }
 
         public IEnumerable<long[]> Seats { get; set; }
 

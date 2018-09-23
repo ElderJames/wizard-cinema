@@ -9,9 +9,9 @@ namespace Wizard.Cinema.Application.DTOs.Response
 
         public long DivisionId { get; set; }
 
-        public string Cinema { get; set; }
+        public long CinemaId { get; set; }
 
-        public string Hall { get; set; }
+        public long HallId { get; set; }
 
         public int[][] Seats { get; set; }
 

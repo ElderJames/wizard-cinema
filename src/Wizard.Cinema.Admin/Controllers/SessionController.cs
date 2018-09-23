@@ -48,8 +48,9 @@ namespace Wizard.Cinema.Admin.Controllers
                     DivisionResp division = divisions.Result.FirstOrDefault(o => o.DivisionId == x.DivisionId);
                     return new
                     {
-                        x.Cinema,
-                        x.Hall,
+                        x.SessionId,
+                        Cinema = x.CinemaId,
+                        Hall = x.HallId,
                         Division = division?.Name,
                         Status = x.Status.GetName(),
                     };

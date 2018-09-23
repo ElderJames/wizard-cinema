@@ -26,7 +26,8 @@ import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
-import { SessionComponent } from './cinema/sessions/session.component';
+import { SessionListComponent } from './cinema/sessions/session-list/session-list.component';
+import { SessionEditComponent } from './cinema/sessions/session-edit/session-edit.component';;
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -50,7 +51,8 @@ const COMPONENTS = [
   ActivityListComponent,
   ActivityDetailComponent,
   ApplicantListComponent,
-  SessionComponent
+  SessionListComponent,
+  SessionEditComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

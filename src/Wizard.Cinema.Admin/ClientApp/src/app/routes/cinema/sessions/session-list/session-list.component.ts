@@ -10,9 +10,9 @@ import {
 
 @Component({
   selector: 'session',
-  templateUrl: './session.component.html',
+  templateUrl: './session-list.component.html',
 })
-export class SessionComponent implements OnInit {
+export class SessionListComponent implements OnInit {
   q: any = {
     pi: 1,
     ps: 10,
@@ -49,8 +49,7 @@ export class SessionComponent implements OnInit {
         {
           text: '编辑',
           type: 'link',
-          click: (item: any) => `/activity/detail/${item.activityId}`
-          //click: (item: any) => this.update(item),//this.msg.success(`配置${item.no}`),
+          click: (item: any) => `cinema/sessions/${item.sessionId}`
         },
         {
           text: '详情',

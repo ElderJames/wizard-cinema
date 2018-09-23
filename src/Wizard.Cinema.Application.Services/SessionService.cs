@@ -30,7 +30,7 @@ namespace Wizard.Cinema.Application.Services
             try
             {
                 long sessionId = NewId.GenerateId();
-                var session = new Session(sessionId, request.SessionId, request.Cinema, request.Hall, request.Seats);
+                var session = new Session(sessionId, request.SessionId, request.CinemaId, request.HallId, request.Seats);
                 if (_sessionRepository.Insert(session) <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常,请稍后再试");
 

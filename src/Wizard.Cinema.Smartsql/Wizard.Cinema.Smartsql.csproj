@@ -22,6 +22,9 @@
     <None Update="SmartSqlMapConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SqlMaps\acitivity.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SqlMaps\applicant.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

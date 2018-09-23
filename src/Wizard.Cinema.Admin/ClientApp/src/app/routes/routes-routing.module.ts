@@ -29,7 +29,8 @@ import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
-import { SessionComponent } from './cinema/sessions/session.component';
+import { SessionListComponent } from './cinema/sessions/session-list/session-list.component';
+import { SessionEditComponent } from './cinema/sessions/session-edit/session-edit.component';;
 
 import { JWTGuard } from '@delon/auth';
 
@@ -40,10 +41,11 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'cinema/shows1', pathMatch: 'full', canActivate: [JWTGuard] },
       { path: 'cinema/shows1', component: CinemaShows1Component },
-      { path: 'cinema/sessions', component: SessionComponent },
+      { path: 'cinema/sessions', component: SessionListComponent },
+      { path: 'cinema/sessions/:id', component: SessionEditComponent },
       { path: 'wizards/head-wizards', component: HeadWizardsComponent },
       { path: 'activity', component: ActivityListComponent },
-      { path: 'activity/detail/:id', component: ActivityDetailComponent },
+      { path: 'activity/:id', component: ActivityDetailComponent },
       { path: 'activity/add', component: ActivityDetailComponent },
       { path: 'applicants', component: ApplicantListComponent },
       { path: 'divisions', component: DivisionsComponent },

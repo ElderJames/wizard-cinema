@@ -29,15 +29,15 @@
       INSERT INTO sessions
       (SessionId
       ,DivisionId
-      ,Cinema
-      ,Hall
+      ,CinemaIsd
+      ,HallId
       ,Seats
       ,Status
       )VALUES
       (@SessionId
       ,@DivisionId
-      ,@Cinema
-      ,@Hall
+      ,@CinemaId
+      ,@HallId
       ,@Seats
       ,@Status
       )
@@ -47,11 +47,11 @@
     <Statement Id="Update" ParameterMap="SessionParamMap">
       UPDATE sessions
       <Set>
-        <IsNotNull Prepend="," Property="Cinema">
-          Cinema = @Cinema
+        <IsNotNull Prepend="," Property="CinemaId">
+          CinemaId = @CinemaId
         </IsNotNull>
-        <IsNotNull Prepend="," Property="Hall">
-          Hall = @Hall
+        <IsNotNull Prepend="," Property="HallId">
+          HallId = @HallId
         </IsNotNull>
         <IsNotNull Prepend="," Property="Seats">
           Seats = @Seats

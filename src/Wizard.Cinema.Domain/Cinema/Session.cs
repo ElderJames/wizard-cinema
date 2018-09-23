@@ -14,23 +14,23 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public long DivisionId { get; private set; }
 
-        public string Cinema { get; private set; }
+        public int CinemaId { get; private set; }
 
-        public string Hall { get; private set; }
+        public int HallId { get; private set; }
 
         public IEnumerable<long[]> Seats { get; private set; }
 
         public SessionStatus Status { get; private set; }
 
-        public Session(long sessionId, long divisionId, string cinema, string hall, IEnumerable<long[]> seats)
+        public Session(long sessionId, long divisionId, int cinemaId, int hallId, IEnumerable<long[]> seats)
         {
             if (seats.Any(x => x.Length != 2 || !x.All(o => o > 0)))
                 throw new DomainException("座位的格式不正确");
 
             this.SessionId = sessionId;
             this.DivisionId = divisionId;
-            this.Cinema = cinema;
-            this.Hall = hall;
+            this.CinemaId = cinemaId;
+            this.HallId = hallId;
             this.Seats = seats;
             this.Status = SessionStatus.编辑中;
         }
