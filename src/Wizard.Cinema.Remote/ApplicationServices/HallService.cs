@@ -76,7 +76,8 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                             };
                         }).ToList();
 
-                        _repository.InsertBatch(halls);
+                        if (halls.Any())
+                            _repository.InsertBatch(halls);
                     }
                 }
             }

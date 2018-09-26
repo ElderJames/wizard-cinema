@@ -1,6 +1,9 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using Infrastructures;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wizard.Cinema.Remote.Spider.Request;
@@ -20,14 +23,23 @@ namespace Wizard.Cinema.Remote.Spider
 
         public async Task<TResponse> SendAsync<TResponse>(BaseRequest<TResponse> request) where TResponse : class
         {
-            var text = await FeatchHtmlAsync(request);
-
-            return JsonConvert.DeserializeObject<TResponse>(text);
+            string text = await FeatchHtmlAsync(request);
+            try
+            {
+                return JsonConvert.DeserializeObject<TResponse>(text);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("反序列化出错,字符串：" + text, ex);
+            }
         }
 
         public async Task<string> FeatchHtmlAsync<TResponse>(BaseRequest<TResponse> request) where TResponse : class
         {
             var reqMsg = new HttpRequestMessage(request.Method, request.Url);
+            if (!request.PostData.IsNullOrEmpty())
+                reqMsg.Content = new StringContent(request.PostData, Encoding.UTF8, "application/x-www-form-urlencoded");
+
             var respMsg = await _httpClient.SendAsync(reqMsg);
             var text = await respMsg.Content.ReadAsStringAsync();
             _logger.LogDebug("请求" + request.Url + "返回:" + text);

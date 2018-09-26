@@ -1,8 +1,11 @@
-using System.Linq;
+﻿using System.Linq;
+using System.Net.Http;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Repository.Condition;
+using Wizard.Cinema.Remote.Spider;
+using Wizard.Cinema.Remote.Spider.Request;
 
 namespace Wizard.Cinema.Test
 {
@@ -21,10 +24,11 @@ namespace Wizard.Cinema.Test
         [Fact]
         public void SearchHallsAndSaveTest()
         {
-            var service = ServiceProvider.GetService<HallService>();
-            var halls = service.GetByCinemaId(10401);
+            var remoteCall = ServiceProvider.GetService<RemoteSpider>();
+            var halls = remoteCall.SendAsync(new SeatInfoRequest { SeqNo = "201809270282230" }).Result;
 
-            Assert.NotEmpty(halls);
+            Assert.NotNull(halls.seatData);
+            Assert.NotEmpty(halls.seatData.seat.sections);
         }
     }
 }

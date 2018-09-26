@@ -21,6 +21,9 @@ namespace Wizard.Cinema.Remote.ApplicationServices
 
         public PagedData<Models.Cinema> GetByCityId(SearchCinemaCondition condition)
         {
+            if (condition.CityId <= 0)
+                return new PagedData<Models.Cinema>();
+
             if (condition.PageNow == 1)
             {
                 var cinemas = Enumerable.Empty<Models.Cinema>();

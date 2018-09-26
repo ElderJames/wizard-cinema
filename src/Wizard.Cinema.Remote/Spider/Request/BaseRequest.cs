@@ -6,7 +6,9 @@ namespace Wizard.Cinema.Remote.Spider.Request
     {
         public virtual string Url { get; }
 
-        public HttpMethod Method => HttpMethod.Get;
+        public virtual HttpMethod Method => HttpMethod.Get;
+
+        public virtual string PostData { get; }
 
         public virtual string XPath { get; }
     }
