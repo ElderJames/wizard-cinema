@@ -4,6 +4,42 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { _HttpClient } from '@delon/theme';
 
+const provinces = [{
+  value: 'zhejiang',
+  label: 'Zhejiang'
+}, {
+  value: 'jiangsu',
+  label: 'Jiangsu'
+}];
+
+const cities = {
+  zhejiang: [{
+    value: 'hangzhou',
+    label: 'Hangzhou'
+  }, {
+    value: 'ningbo',
+    label: 'Ningbo',
+    isLeaf: true
+  }],
+  jiangsu: [{
+    value: 'nanjing',
+    label: 'Nanjing'
+  }]
+};
+
+const scenicspots = {
+  hangzhou: [{
+    value: 'xihu',
+    label: 'West Lake',
+    isLeaf: true
+  }],
+  nanjing: [{
+    value: 'zhonghuamen',
+    label: 'Zhong Hua Men',
+    isLeaf: true
+  }]
+};
+
 @Component({
   selector: 'session-edit',
   templateUrl: './session-edit.component.html',
@@ -12,17 +48,13 @@ export class SessionEditComponent implements OnInit {
   form: FormGroup;
   submitting = false;
   divisions: any[];
-  activity = {
-    activityId: null,
+  selectCityId = 0;
+  modeldata = {
+    sessionId: null,
     divisionId: 0,
-    name: '',
-    description: '',
-    address: '',
-    price: '',
-    beginTime: new Date(),
-    finishTime: new Date(),
-    registrationBeginTime: new Date(),
-    registrationFinishTime: new Date(),
+    cinemaId: 0,
+    hallId: 0,
+    seats: []
   };
 
   constructor(
@@ -35,44 +67,37 @@ export class SessionEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      name: [null, [Validators.required]],
       divisionId: [null, [Validators.required]],
-      address: [null, [Validators.required]],
-      date: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      price: [null, [Validators.required]],
-      registrationTime: [null, [Validators.required]],
+      cinemaId: [null, [Validators.required]],
+      hall: [null, [Validators.required]],
+      seats: [null, [Validators.required]],
     });
 
     this.getDivisions();
 
     this.route.params.subscribe((params: Params) => {
-      const activityId = params['id'];
-      console.log(activityId);
-      if (!activityId)
+      const sessionId = params['id'];
+      console.log(sessionId);
+      if (!sessionId)
         return;
-      this.getActivity(activityId);
-      this.activity.activityId = activityId;
+      this.getActivity(sessionId);
+      this.modeldata.sessionId = sessionId;
     });
   }
 
   getActivity(id: number) {
-    this.http.get('api/activity/' + id).subscribe((res: any) => {
-      this.activity = res;
+    this.http.get('api/session/' + id).subscribe((res: any) => {
+      this.modeldata = res;
       console.log(res);
       for (const key in res) {
         const val = res[key];
         if (this.form.controls[key]) this.form.controls[key].setValue(val);
       }
-      let dateArr = [];
-      dateArr.push(res.beginTime);
-      dateArr.push(res.finishTime);
-      this.form.controls.date.setValue(dateArr);
 
-      dateArr = [];
-      dateArr.push(res.registrationBeginTime);
-      dateArr.push(res.registrationFinishTime);
-      this.form.controls.registrationTime.setValue(dateArr);
+      var hallarr = [];
+      hallarr.push(this.modeldata.cinemaId);
+      hallarr.push(this.modeldata.hallId);
+      this.form.controls['hall'].setValue(hallarr);
     });
   }
 
@@ -83,28 +108,73 @@ export class SessionEditComponent implements OnInit {
       })
   }
 
-  loadMore() { }
+  onDivisionChanges(value: any) {
+
+    if (!this.divisions)
+      return;
+
+    let selected = this.divisions.find(x => x.divisionId == value);
+    if (!selected)
+      return;
+
+    this.selectCityId = selected.cityId;
+    console.log(this.selectCityId);
+  }
 
   submit() {
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();
-      this.activity[i] = this.form.controls[i].value;
+      this.modeldata[i] = this.form.controls[i].value;
     }
 
-    this.activity['beginTime'] = this.activity['date'][0];
-    this.activity['finishTime'] = this.activity['date'][1];
-    this.activity['registrationBeginTime'] = this.activity['registrationTime'][0];
-    this.activity['registrationFinishTime'] = this.activity['registrationTime'][1];
+    this.modeldata.cinemaId = this.form.controls['hall'][0];
+    this.modeldata.hallId = this.form.controls['hall'][1];
 
     if (this.form.invalid) return;
-    this.submitting = true;
+    console.log(this.modeldata);
+    // this.submitting = true;
 
-    this.submitting = this.http.loading;
-    this.http.post('api/activity', this.activity).subscribe((res: any) => {
-      this.submitting = false;
-      this.msg.success(`提交成功`);
-      this.router.navigate(['activity']);
-    });
+    // this.submitting = this.http.loading;
+    // this.http.post('api/activity', this.modeldata).subscribe((res: any) => {
+    //   this.submitting = false;
+    //   this.msg.success(`提交成功`);
+    //   this.router.navigate(['activity']);
+    // });
+  }
+
+  /** ngModel value */
+  public values: any[] = null;
+
+  public onChanges(values: any): void {
+    console.log(values);
+  }
+
+  /** load data async execute by `nzLoadData` method */
+  public loadData(node: any, index: number): PromiseLike<any> {
+
+   // if (index < 0) { // if index less than 0 it is root node
+      return this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 }).toPromise()
+        .then((res: any) => {
+          console.log(res);
+          node.children = res.result.map(x => {
+            return {
+              value: x.cinemaId,
+              label: x.name,
+              isLeaf: true
+            };
+          });
+        });
+      // setTimeout(() => {
+      //   if (index < 0) {
+      //     node.children = provinces;
+      //   } else if (index === 0) {
+      //     node.children = cities[node.value];
+      //   } else {
+      //     node.children = scenicspots[node.value];
+      //   }
+      //   resolve();
+      // }, 1000);
+ //  }
   }
 }

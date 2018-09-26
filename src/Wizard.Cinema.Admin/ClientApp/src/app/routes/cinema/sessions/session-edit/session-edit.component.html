@@ -1,20 +1,13 @@
-<page-header [title]="'编辑活动'">
-  请填写好活动信息。
+<page-header [title]="'编辑场次'">
+  请填写好场次信息。
 </page-header>
 <nz-card [nzBordered]="false">
   <form nz-form [formGroup]="form" (ngSubmit)="submit()">
     <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="name">标题</nz-form-label>
+      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="divisionId">主办分部</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <input nz-input formControlName="name" id="name" placeholder="给活动起个名字">
-        <nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">请输入活动名称</nz-form-explain>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="name">主办分部</nz-form-label>
-      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <nz-select style="width: 100%;" formControlName="divisionId" (nzScrollToBottom)="loadMore()" nzPlaceHolder="选择主办分部"
-          nzAllowClear>
+        <nz-select style="width: 100%;" formControlName="divisionId" (ngModelChange)="onDivisionChanges($event)"
+          nzPlaceHolder="选择主办分部" nzAllowClear>
           <nz-option *ngFor="let o of divisions" [nzValue]="o.divisionId" [nzLabel]="o.name"></nz-option>
           <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
             <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
@@ -23,38 +16,17 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="活动地址">活动地址</nz-form-label>
+      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="hall">影院影厅</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <input nz-input formControlName="address" id="address" placeholder="给活动起个名字">
-        <nz-form-explain *ngIf="form.get('address').dirty && form.get('address').errors">请输入活动地址</nz-form-explain>
+        <nz-cascader formControlName="hall" [nzLoadData]="loadData" (ngModelChange)="onChanges($event)"></nz-cascader>
+        <nz-form-explain *ngIf="form.get('hall').dirty && form.get('hall').errors">请输入活动名称</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="date">起止日期</nz-form-label>
+      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="seats">锁定座位</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <nz-range-picker formControlName="date" [nzStyle]="{width: '100%'}" [nzShowTime]="{ nzFormat: 'HH:mm' }"
-          nzFormat="yyyy-MM-dd HH:mm:ss"></nz-range-picker>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="registrationTime">报名时间</nz-form-label>
-      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <nz-range-picker formControlName="registrationTime" [nzStyle]="{width: '100%'}" [nzShowTime]="{ nzFormat: 'HH:mm' }"
-          nzFormat="yyyy-MM-dd HH:mm:ss"></nz-range-picker>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="费用">费用</nz-form-label>
-      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <input nz-input formControlName="price" id="price" placeholder="请输入费用">
-        <nz-form-explain *ngIf="form.get('price').dirty && form.get('price').errors">请输入费用</nz-form-explain>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="活动详情">活动详情</nz-form-label>
-      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <ueditor formControlName="description" [config]="custom"></ueditor>
-        <nz-form-explain *ngIf="form.get('description').dirty && form.get('description').errors">请输入活动详情</nz-form-explain>
+        <input nz-input formControlName="seats" id="seats" placeholder="给活动起个名字">
+        <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请输入活动地址</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

@@ -52,7 +52,7 @@ export class ActivityListComponent implements OnInit {
         {
           text: '编辑',
           type: 'link',
-          click: (item: any) => `/activity/detail/${item.activityId}`
+          click: (item: any) => `/activity/${item.activityId}`
           //click: (item: any) => this.update(item),//this.msg.success(`配置${item.no}`),
         },
         {
