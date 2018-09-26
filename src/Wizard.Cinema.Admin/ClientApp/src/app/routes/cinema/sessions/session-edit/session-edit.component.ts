@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -40,6 +40,8 @@ const scenicspots = {
   }]
 };
 
+let _injector: Injector;
+
 @Component({
   selector: 'session-edit',
   templateUrl: './session-edit.component.html',
@@ -63,7 +65,10 @@ export class SessionEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: _HttpClient,
-  ) { }
+    private injector: Injector
+  ) {
+    _injector = this.injector;
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -144,37 +149,53 @@ export class SessionEditComponent implements OnInit {
   }
 
   /** ngModel value */
-  public values: any[] = null;
+  public values: any[] = [];
+
+  selectedCinemaId: 0;
+  selectedHallId: 0;
 
   public onChanges(values: any): void {
-    console.log(values);
+    if (values[0])
+      this.selectedCinemaId = values[0];
+    if (values[1])
+      this.selectedHallId = values[1];
   }
 
   /** load data async execute by `nzLoadData` method */
-  public loadData(node: any, index: number): PromiseLike<any> {
+  public loadData = (node: any, index: number) => {
+    console.log(index);
+    console.log(node);
+    return new Promise(resolve => {
+      if (index < 0) { // if index less than 0 it is root node
 
-   // if (index < 0) { // if index less than 0 it is root node
-      return this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 }).toPromise()
-        .then((res: any) => {
-          console.log(res);
-          node.children = res.result.map(x => {
-            return {
-              value: x.cinemaId,
-              label: x.name,
-              isLeaf: true
-            };
-          });
-        });
-      // setTimeout(() => {
-      //   if (index < 0) {
-      //     node.children = provinces;
-      //   } else if (index === 0) {
-      //     node.children = cities[node.value];
-      //   } else {
-      //     node.children = scenicspots[node.value];
-      //   }
-      //   resolve();
-      // }, 1000);
- //  }
+        this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 })
+          .subscribe((res: any) => {
+            console.log("cinemas", res);
+            node.children = res.records.map(x => {
+              return {
+                value: x.cinemaId,
+                label: x.name,
+                isLeaf: false
+              };
+            });
+          }, null, () => resolve());
+      }
+      else if (index == 0) {
+        console.log('get halls');
+        this.selectedCinemaId = node.value;
+
+        this.http.get("api/cinemas/" + this.selectedCinemaId + "/halls")
+          .subscribe((res: any) => {
+            console.log("halls", res);
+            node.children = res.map(x => {
+              return {
+                value: x.hallId,
+                label: x.name,
+                isLeaf: true
+              }
+            })
+          }, null, () => resolve());
+      }
+    });
   }
 }
