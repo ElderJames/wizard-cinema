@@ -1,46 +1,8 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { _HttpClient } from '@delon/theme';
-
-const provinces = [{
-  value: 'zhejiang',
-  label: 'Zhejiang'
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu'
-}];
-
-const cities = {
-  zhejiang: [{
-    value: 'hangzhou',
-    label: 'Hangzhou'
-  }, {
-    value: 'ningbo',
-    label: 'Ningbo',
-    isLeaf: true
-  }],
-  jiangsu: [{
-    value: 'nanjing',
-    label: 'Nanjing'
-  }]
-};
-
-const scenicspots = {
-  hangzhou: [{
-    value: 'xihu',
-    label: 'West Lake',
-    isLeaf: true
-  }],
-  nanjing: [{
-    value: 'zhonghuamen',
-    label: 'Zhong Hua Men',
-    isLeaf: true
-  }]
-};
-
-let _injector: Injector;
 
 @Component({
   selector: 'session-edit',
@@ -64,10 +26,8 @@ export class SessionEditComponent implements OnInit {
     private msg: NzMessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private http: _HttpClient,
-    private injector: Injector
+    private http: _HttpClient
   ) {
-    _injector = this.injector;
   }
 
   ngOnInit(): void {
@@ -149,31 +109,41 @@ export class SessionEditComponent implements OnInit {
   }
 
   /** ngModel value */
-  public values: any[] = [];
+  // public values: any[] = [1676, 97318];
+  // public nzOptions: any[] = [{
+  //   value: '1676',
+  //   label: '万达IMAX',
+  //   children: [{
+  //     value: '97318',
+  //     label: 'VIP厅',
+  //   }]
+  // }];
 
   selectedCinemaId: 0;
   selectedHallId: 0;
 
   public onChanges(values: any): void {
-    if (values[0])
-      this.selectedCinemaId = values[0];
-    if (values[1])
-      this.selectedHallId = values[1];
+    // if (values[0])
+    //   this.selectedCinemaId = values[0];
+    // if (values[1])
+    //   this.selectedHallId = values[1];
   }
 
   /** load data async execute by `nzLoadData` method */
   public loadData = (node: any, index: number) => {
-    console.log(index);
-    console.log(node);
     return new Promise(resolve => {
       if (index < 0) { // if index less than 0 it is root node
+        if (this.selectCityId <= 0) {
+          resolve();
+          return;
+        }
 
         this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 })
           .subscribe((res: any) => {
             console.log("cinemas", res);
             node.children = res.records.map(x => {
               return {
-                value: x.cinemaId,
+                value: x.cinemaId + '',
                 label: x.name,
                 isLeaf: false
               };
@@ -183,19 +153,22 @@ export class SessionEditComponent implements OnInit {
       else if (index == 0) {
         console.log('get halls');
         this.selectedCinemaId = node.value;
-
         this.http.get("api/cinemas/" + this.selectedCinemaId + "/halls")
           .subscribe((res: any) => {
             console.log("halls", res);
             node.children = res.map(x => {
               return {
-                value: x.hallId,
+                value: x.hallId + '',
                 label: x.name,
                 isLeaf: true
               }
             })
           }, null, () => resolve());
       }
+      else {
+        resolve()
+      }
+      console.log("node", node);
     });
   }
 }

@@ -10,6 +10,7 @@ using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
 using Infrastructures;
+using Wizard.Cinema.Remote.Spider.Response;
 
 namespace Wizard.Cinema.Remote.ApplicationServices
 {
@@ -29,6 +30,9 @@ namespace Wizard.Cinema.Remote.ApplicationServices
 
         public IEnumerable<Hall> GetByCinemaId(int cinemaId)
         {
+            if (cinemaId <= 0)
+                return Enumerable.Empty<Hall>();
+
             var halls = _repository.QueryByCinemaId(cinemaId);
             if (halls.IsNullOrEmpty())
             {
@@ -37,7 +41,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                     halls = _repository.QueryByCinemaId(cinemaId);
                     if (halls.IsNullOrEmpty())
                     {
-                        var movies = _remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinemaId }).Result;
+                        CinemaMoviesResponse movies = _remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinemaId }).Result;
 
                         var seats = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist))
                             .AsParallel().Select(x =>
@@ -62,19 +66,32 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                             .ToList();
 
                         halls = seats.Distinct(new SeatListResponseEqualityComparer()).Select(x =>
-                        {
-                            var html = _remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seatData.show.seqNo }).Result;
-
-                            return new Hall()
                             {
-                                HallId = x.seatData.hall.hallId,
-                                Name = x.seatData.hall.hallName,
-                                CinemaId = x.seatData.cinema.cinemaId,
-                                SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
-                                SeatHtml = html.IsNullOrEmpty() ? null : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline).Replace("seat sold", "seat selectable"),
-                                LastUpdateTime = DateTime.Now
-                            };
-                        }).ToList();
+                                try
+                                {
+                                    string html = _remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest()
+                                    { SeqNo = x.seatData.show.seqNo }).Result;
+
+                                    return new Hall()
+                                    {
+                                        HallId = x.seatData.hall.hallId,
+                                        Name = x.seatData.hall.hallName,
+                                        CinemaId = x.seatData.cinema.cinemaId,
+                                        SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
+                                        SeatHtml = html.IsNullOrEmpty()
+                                            ? null
+                                            : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline)
+                                                .Replace("seat sold", "seat selectable"),
+                                        LastUpdateTime = DateTime.Now
+                                    };
+                                }
+                                catch (Exception ex)
+                                {
+                                    _logger.LogError("获取此次html异常， seqNo:" + x.seatData.show.seqNo, ex);
+                                    return null;
+                                }
+                            }).Where(x => x != null)
+                            .ToList();
 
                         if (halls.Any())
                             _repository.InsertBatch(halls);
