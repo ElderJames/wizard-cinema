@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Infrastructures;
 using Wizard.Cinema.Remote.Repository;
 using Wizard.Cinema.Remote.Repository.Condition;
@@ -47,6 +48,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                                 CinemaId = x.id,
                                 Name = x.nm,
                                 Address = x.addr,
+                                LastUpdateTime = DateTime.Now
                             });
 
                             var splitArr = cinemas.Split(20);
