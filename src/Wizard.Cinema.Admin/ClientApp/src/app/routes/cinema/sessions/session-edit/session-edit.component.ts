@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -26,7 +26,8 @@ export class SessionEditComponent implements OnInit {
     private msg: NzMessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private http: _HttpClient
+    private http: _HttpClient,
+    private cd: ChangeDetectorRef
   ) {
   }
 
@@ -131,6 +132,7 @@ export class SessionEditComponent implements OnInit {
 
   /** load data async execute by `nzLoadData` method */
   public loadData = (node: any, index: number) => {
+    console.log("index", index);
     return new Promise(resolve => {
       if (index < 0) { // if index less than 0 it is root node
         if (this.selectCityId <= 0) {
@@ -170,5 +172,30 @@ export class SessionEditComponent implements OnInit {
       }
       console.log("node", node);
     });
+  }
+
+  selectedSeats: any[] = [];
+  openSelectWindow(values: any) {
+    if (!window)
+      return;
+
+    var win = window.open("/SeatSelector?hallId=" + this.modeldata.hallId, "", 'width=1200,height=630,left=300,top=100,location=no');
+    win.onload = () => {
+      var okbtn = win.document.getElementById('ok');
+      var selectSeats = win.document.getElementById('selected-seat');
+      okbtn.addEventListener('click', () => {
+        this.selectedSeats = [];
+        var json = selectSeats.getAttribute("value");
+
+        if (json)
+          this.selectedSeats = JSON.parse(json);
+        console.log("selectedSeats", this.selectedSeats);
+        this.form.controls["seats"].setValue(this.selectedSeats);
+      })
+    }
+    win.onunload = () => {
+      this.cd.markForCheck();
+      this.cd.detectChanges();
+    }
   }
 }

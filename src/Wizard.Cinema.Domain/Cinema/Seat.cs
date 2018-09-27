@@ -19,24 +19,24 @@ namespace Wizard.Cinema.Domain.Cinema
         public long SessionId { get; private set; }
 
         /// <summary>
-        /// 巫师Id
+        /// 影院提供的座位编号
         /// </summary>
-        public long? WizardId { get; private set; }
-
-        /// <summary>
-        /// 座位名称
-        /// </summary>
-        public string Name { get; private set; }
+        public string SeatNo { get; private set; }
 
         /// <summary>
         /// 位置，n排m号
         /// </summary>
-        public long[] Location { get; private set; }
+        public int[] Position { get; private set; }
 
         /// <summary>
         /// 是否已选
         /// </summary>
         public bool Selected { get; private set; }
+
+        /// <summary>
+        /// 选座巫师Id
+        /// </summary>
+        public long? WizardId { get; private set; }
 
         /// <summary>
         /// 选座时间
@@ -48,17 +48,17 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         /// <param name="seatId"></param>
         /// <param name="sessionId"></param>
-        /// <param name="name"></param>
+        /// <param name="seatNo"></param>
         /// <param name="location"></param>
-        public Seat(long seatId, long sessionId, string name, long[] location)
+        public Seat(long seatId, long sessionId, string seatNo, int[] position)
         {
-            if (location.Length != 2)
-                throw new DomainException("座位数据有误");
+            if (position.Length != 2)
+                throw new DomainException("座位数据是长度为2的数组");
 
             this.SeatId = seatId;
             this.SessionId = sessionId;
-            this.Name = name;
-            this.Location = location;
+            this.SeatNo = seatNo;
+            this.Position = position;
         }
 
         /// <summary>

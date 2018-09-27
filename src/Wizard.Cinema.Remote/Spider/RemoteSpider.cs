@@ -48,6 +48,7 @@ namespace Wizard.Cinema.Remote.Spider
 
             if (text.Contains("我们检测到您所在的网络环境存在恶意访问"))
                 throw new Exception("被发现了，请通知James!");
+
             if (text.Contains("该影院不支持在线选座"))
                 throw new Exception("该影院不支持在线选座");
 

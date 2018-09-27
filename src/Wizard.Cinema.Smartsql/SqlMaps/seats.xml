@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Seat"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMResult">
+      <Result Property="TotalCount" />
+      <Result Property="Records" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
+
+  <ParameterMaps>
+    <ParameterMap Id="SeatParamMap">
+      <Parameter Property="Position" TypeHandler="Json" />
+    </ParameterMap>
+  </ParameterMaps>
+
+  <Statements>
+    <Statement Id="Insert" ParameterMap="SeatParamMap">
+      INSERT INTO seats
+      (SeatId
+      ,SessionId
+      ,SeatNo
+      ,Position
+      ,Selected
+      ,WizardId
+      ,SelectTime
+      )VALUES
+      (@SeatId
+      ,@SessionId
+      ,@SeatNo
+      ,@Position
+      ,@Selected
+      ,@WizardId
+      ,@SelectTime
+      )
+      ;SELECT last_insert_Id() as Id;
+    </Statement>
+
+    <Statement Id="Choose">
+      UPDATE seats
+      SET
+      Selected = @Selected,
+      WizardId = @WizardId,
+      SelectTime = @SelectTime,
+      WHERE SeatId = @SeatId;
+    </Statement>
+
+    <Statement Id="OrderAndPaged">
+      <Switch Prepend="Order By" Property="OrderBy">
+        <Default>
+          id Desc
+        </Default>
+      </Switch>
+      <IsNotNull Prepend="" Property="PageSize">
+        <IsNotNull Prepend="" Property="StartIndex">
+          LIMIT @StartIndex,@PageSize
+        </IsNotNull>
+        <IsNull Prepend="" Property="StartIndex">
+          LIMIT @PageSize
+        </IsNull>
+      </IsNotNull>
+    </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="AND" Property="ActivityId">
+          ActivityId = @ActivityId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="Status">
+          Status = @Status
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query">
+      SELECT * FROM seats
+      <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMResult">
+      SELECT COUNT(1) FROM seats
+      <Include RefId="QueryParams" />;
+      SELECT * FROM seats
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
+    </Statement>
+  </Statements>
+</SmartSqlMap>

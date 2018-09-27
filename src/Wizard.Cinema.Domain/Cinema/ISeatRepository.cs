@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Wizard.Cinema.Domain.Movie
+﻿namespace Wizard.Cinema.Domain.Cinema
 {
-    class ISeatRepository
+    public interface ISeatRepository
     {
+        int Insert(Seat seat);
+
+        int Choose(Seat seat);
+
+        Seat Query(long seatId);
+
+        Seat Query(string seatNo);
     }
 }

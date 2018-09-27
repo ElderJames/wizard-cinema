@@ -18,7 +18,7 @@ namespace Wizard.Cinema.Admin.Controllers
     {
         private readonly IWizardService _wizardService;
         private readonly CityService _cityService;
-        private IDivisionService _divisionService;
+        private readonly IDivisionService _divisionService;
 
         public WizardController(IWizardService wizardService, CityService cityService, IDivisionService divisionService)
         {

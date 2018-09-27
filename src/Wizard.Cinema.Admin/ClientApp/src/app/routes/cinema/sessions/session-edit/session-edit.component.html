@@ -25,8 +25,8 @@
     <nz-form-item>
       <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="seats">锁定座位</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <input nz-input formControlName="seats" id="seats" placeholder="给活动起个名字">
-        <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请输入活动地址</nz-form-explain>
+        <input nz-input formControlName="seats" id="seats" placeholder="请选择锁定座位" (click)="openSelectWindow($event)">
+        <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请选择锁定座位</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>

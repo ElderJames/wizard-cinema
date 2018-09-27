@@ -1,9 +1,14 @@
 ﻿@page
+@using Microsoft.AspNetCore.Mvc.RazorPages
+@using Remote.ApplicationServices
 @using Remote.Spider
 @using Remote.Spider.Request
 @inject RemoteSpider RemoteCall;
+@inject HallService hallService;
 @{
     ViewData["Title"] = "Seat";
+    var hallId = ViewContext.HttpContext.Request.Query["hallId"].ToString();
+    var html = int.TryParse(hallId, out var id) ? hallService.GetById(id)?.SeatHtml : null;
 }
 
 <!DOCTYPE html>
@@ -32,23 +37,29 @@
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="main clearfix">
-            @Html.Raw((await RemoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = "201808170052871" })).Replace("seat sold", "seat selectable"))
-            <div class="side">
-                <div class="ticket-info">
-                    <div class="has-ticket">
-                        <span class="text">座位：</span>
-                        <div class="ticket-container" data-limit="6">
+    @if (string.IsNullOrEmpty(html))
+    {
+        <h1>出错了</h1>
+    }
+    else
+    {
+        <div class="container" id="app">
+            <div class="main clearfix">
+                @Html.Raw(html.Replace("seat sold", "seat selectable"))
+                <div class="side">
+                    <div class="ticket-info">
+                        <div class="has-ticket">
+                            <span class="text">座位：</span>
+                            <div class="ticket-container" data-limit="6">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-<button id="ok">确定</button>
-<input type="hidden" id="selected-seat" value="[]"/>
-
+        <button id="ok">确定</button>
+        <input type="hidden" id="selected-seat" value="[]" />
+    }
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -69,11 +80,11 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-<script src="~/js/cinemas-seat.js"></script>
-<script>
-    $('#ok').click(function() {
-        window.close();
-    });
-</script>
+    <script src="~/js/cinemas-seat.js"></script>
+    <script>
+        $('#ok').click(function () {
+            window.close();
+        });
+    </script>
 </body>
 </html>
