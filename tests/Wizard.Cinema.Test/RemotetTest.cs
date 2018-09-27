@@ -6,6 +6,7 @@ using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Repository.Condition;
 using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Remote.Spider.Request;
+using Wizard.Cinema.Remote.Spider.Response;
 
 namespace Wizard.Cinema.Test
 {
@@ -25,10 +26,19 @@ namespace Wizard.Cinema.Test
         public void SearchHallsAndSaveTest()
         {
             var remoteCall = ServiceProvider.GetService<RemoteSpider>();
-            var halls = remoteCall.SendAsync(new SeatInfoRequest { SeqNo = "201809270282230" }).Result;
+            var halls = remoteCall.SendAsync(new SeatInfoRequest { SeqNo = "201809280075475" }).Result;
 
             Assert.NotNull(halls.seatData);
             Assert.NotEmpty(halls.seatData.seat.sections);
+        }
+
+        [Fact]
+        public void SearchMoviesTest()
+        {
+            var remoteCall = ServiceProvider.GetService<RemoteSpider>();
+            CinemaMoviesResponse movies = remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = 13509 }).Result;
+
+            Assert.NotNull(movies.showData);
         }
     }
 }

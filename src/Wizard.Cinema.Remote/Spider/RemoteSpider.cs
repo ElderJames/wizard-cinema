@@ -40,9 +40,16 @@ namespace Wizard.Cinema.Remote.Spider
             if (!request.PostData.IsNullOrEmpty())
                 reqMsg.Content = new StringContent(request.PostData, Encoding.UTF8, "application/x-www-form-urlencoded");
 
+            reqMsg.Headers.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+
             var respMsg = await _httpClient.SendAsync(reqMsg);
             var text = await respMsg.Content.ReadAsStringAsync();
             _logger.LogDebug("请求" + request.Url + "返回:" + text);
+
+            if (text.Contains("我们检测到您所在的网络环境存在恶意访问"))
+                throw new Exception("被发现了，请通知James!");
+            if (text.Contains("该影院不支持在线选座"))
+                throw new Exception("该影院不支持在线选座");
 
             if (string.IsNullOrEmpty(request.XPath))
                 return text;
