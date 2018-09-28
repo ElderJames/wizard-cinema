@@ -27,7 +27,7 @@
         $('#selected-seat').val(JSON.stringify(B));
     }
     function c(e) {
-        return B.length >= P ? d("一次最多购买" + P + "张票") : (x.hide(),
+        return /*B.length >= P ? d("一次最多购买" + P + "张票") :*/ (x.hide(),
             g.show(),
             o(e),
             s(e) && o(r(e)),
@@ -45,6 +45,7 @@
             $('.ticket[data-index="' + s + '"]').remove(),
             j.text(A[B.length].price.replace("元", "")),
             e.removeClass("selected").addClass("selectable")
+            $('#selected-seat').val(JSON.stringify(B));
     }
     function l(e) {
         i(e),  s(e) && i(r(e)), 0 === B.length && (x.show(), g.hide(), q.addClass("disable"))
@@ -116,6 +117,25 @@
         console.log(r);
     }
 
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            if (vars[hash[0]]) {
+                if (typeof vars[hash[0]] === 'string') {
+                    var origin = vars[hash[0]];
+                    vars[hash[0]] = [];
+                    vars[hash[0]].push(origin);
+                }
+                vars[hash[0]].push(hash[1]);
+            } else {
+                 vars[hash[0]] = hash[1];
+            }
+        }
+        return vars;
+    }
+
     var x = $(".no-ticket")
         , g = $(".has-ticket")
         , k = $(".ticket-container")
@@ -155,9 +175,17 @@
             var e = z / 2;
             $(".screen-container").css("left", e - S / 2)
         }(),
+
         $(".seats-block").on("click", ".seat", function () {
             var e = $(this);
             if (!e.hasClass("empty") && !e.hasClass("sold"))
                 return u(e) ? c(e) : h(e) ? l(e) : void 0
+        })
+
+    //恢复已选座位
+    var seatNos = getUrlVars()['seatNos'];
+    if (seatNos && seatNos.length > 0)
+        seatNos.forEach(item => {
+            $('.seats-block .seat[data-no="' + item+'"]').trigger('click');
         })
 })(window, document, jQuery);

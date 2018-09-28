@@ -13,6 +13,8 @@ export class SessionEditComponent implements OnInit {
   submitting = false;
   divisions: any[];
   selectCityId = 0;
+  cinemas: any[];
+  halls: any[];
   modeldata = {
     sessionId: null,
     divisionId: 0,
@@ -88,17 +90,19 @@ export class SessionEditComponent implements OnInit {
   }
 
   submit() {
+    var form = {};
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();
-      this.modeldata[i] = this.form.controls[i].value;
+      form[i] = this.form.controls[i].value;
     }
 
-    this.modeldata.cinemaId = this.form.controls['hall'][0];
-    this.modeldata.hallId = this.form.controls['hall'][1];
+    form["cinemaId"] = form['hall'][0];
+    form["hallId"] = form['hall'][1];
+    form["seats"] = this.selectedSeats;
 
     if (this.form.invalid) return;
-    console.log(this.modeldata);
+    console.log("submitting", form);
     // this.submitting = true;
 
     // this.submitting = this.http.loading;
@@ -109,17 +113,6 @@ export class SessionEditComponent implements OnInit {
     // });
   }
 
-  /** ngModel value */
-  // public values: any[] = [1676, 97318];
-  // public nzOptions: any[] = [{
-  //   value: '1676',
-  //   label: '万达IMAX',
-  //   children: [{
-  //     value: '97318',
-  //     label: 'VIP厅',
-  //   }]
-  // }];
-
   selectedCinemaId: 0;
   selectedHallId: 0;
 
@@ -128,6 +121,12 @@ export class SessionEditComponent implements OnInit {
     //   this.selectedCinemaId = values[0];
     // if (values[1])
     //   this.selectedHallId = values[1];
+    console.log(values);
+    this.modeldata.cinemaId = values[0];
+    if (this.modeldata.hallId != values[1]) {
+      this.modeldata.hallId = values[1];
+      this.selectedSeats = [];
+    }
   }
 
   /** load data async execute by `nzLoadData` method */
@@ -135,10 +134,10 @@ export class SessionEditComponent implements OnInit {
     console.log("index", index);
     return new Promise(resolve => {
       if (index < 0) { // if index less than 0 it is root node
-        if (this.selectCityId <= 0) {
-          resolve();
-          return;
-        }
+        // if (this.selectCityId <= 0) {
+        //   resolve();
+        //   return;
+        // }
 
         this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 })
           .subscribe((res: any) => {
@@ -179,7 +178,8 @@ export class SessionEditComponent implements OnInit {
     if (!window)
       return;
 
-    var win = window.open("/SeatSelector?hallId=" + this.modeldata.hallId, "", 'width=1200,height=630,left=300,top=100,location=no');
+    var seatsParam = this.selectedSeats.map(x => `seatNos=${x.seatNo}`).join('&');
+    var win = window.open("/SeatSelector?hallId=" + this.modeldata.hallId + "&" + seatsParam, "", 'width=1200,height=630,left=300,top=100,location=no');
     win.onload = () => {
       var okbtn = win.document.getElementById('ok');
       var selectSeats = win.document.getElementById('selected-seat');
@@ -189,8 +189,6 @@ export class SessionEditComponent implements OnInit {
 
         if (json)
           this.selectedSeats = JSON.parse(json);
-        console.log("selectedSeats", this.selectedSeats);
-        this.form.controls["seats"].setValue(this.selectedSeats);
       })
     }
     win.onunload = () => {

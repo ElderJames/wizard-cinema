@@ -22,18 +22,22 @@
         <nz-form-explain *ngIf="form.get('hall').dirty && form.get('hall').errors">请输入活动名称</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="seats">锁定座位</nz-form-label>
-      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <input nz-input formControlName="seats" id="seats" placeholder="请选择锁定座位" (click)="openSelectWindow($event)">
-        <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请选择锁定座位</nz-form-explain>
-      </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
-      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 10, offset: 7 }">
-        <button nz-button nzType="primary" type="submit" [nzLoading]="submitting">提交</button>
-        <button nz-button class="ml-sm">保存</button>
-      </nz-form-control>
-    </nz-form-item>
   </form>
+  <nz-form-item>
+    <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="seats">锁定座位</nz-form-label>
+    <button nz-button nzType="primary" nzShape="circle" (click)="openSelectWindow($event)"><i class="anticon anticon-search"></i></button>
+
+    <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+      <nz-tag *ngFor="let seat of selectedSeats" [nzColor]="'magenta'">{{seat.rowId}}排{{seat.columnId}}座</nz-tag>
+      <!-- <input nz-input formControlName="seats" id="seats" placeholder="请选择锁定座位" (click)="openSelectWindow($event)"> -->
+      <!-- <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请选择锁定座位</nz-form-explain> -->
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 10, offset: 7 }">
+      <button nz-button nzType="primary" type="submit" [nzLoading]="submitting" (click)="submit()">提交</button>
+      <button nz-button class="ml-sm">返回</button>
+    </nz-form-control>
+  </nz-form-item>
+
 </nz-card>
