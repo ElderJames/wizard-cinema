@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Infrastructures\Infrastructures.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Request\Cinema\" />
+  </ItemGroup>
+
 </Project>

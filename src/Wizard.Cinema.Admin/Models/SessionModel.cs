@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
-using Wizard.Cinema.Application.DTOs.EnumTypes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Wizard.Cinema.QueryServices.DTOs.Cinema
+namespace Wizard.Cinema.Admin.Models
 {
-    public class SessionInfo
+    public class SessionModel
     {
         /// <summary>
         /// 场次Id
         /// </summary>
-        public long SessionId { get; set; }
+        public long? SessionId { get; set; }
 
         /// <summary>
         /// 分部Id
@@ -18,21 +20,16 @@ namespace Wizard.Cinema.QueryServices.DTOs.Cinema
         /// <summary>
         /// 影院Id
         /// </summary>
-        public long CinemaId { get; set; }
+        public int CinemaId { get; set; }
 
         /// <summary>
         /// 影厅Id
         /// </summary>
-        public long HallId { get; set; }
+        public int HallId { get; set; }
 
         /// <summary>
         /// 锁定位置SeatNo
         /// </summary>
         public string[] SeatNos { get; set; }
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        public SessionStatus Status { get; set; }
     }
 }

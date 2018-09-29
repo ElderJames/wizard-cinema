@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Infrastructures.Exceptions;
-using Wizard.Cinema.Domain.Cinema.EnumTypes;
+﻿using Wizard.Cinema.Domain.Cinema.EnumTypes;
 
 namespace Wizard.Cinema.Domain.Cinema
 {
@@ -10,29 +7,55 @@ namespace Wizard.Cinema.Domain.Cinema
     /// </summary>
     public class Session
     {
+        /// <summary>
+        /// 场次Id
+        /// </summary>
         public long SessionId { get; private set; }
 
+        /// <summary>
+        /// 分部Id
+        /// </summary>
         public long DivisionId { get; private set; }
 
+        /// <summary>
+        /// 影院Id
+        /// </summary>
         public int CinemaId { get; private set; }
 
+        /// <summary>
+        /// 影厅Id
+        /// </summary>
         public int HallId { get; private set; }
 
-        public IEnumerable<long[]> Seats { get; private set; }
+        /// <summary>
+        /// 锁定位置SeatNo
+        /// </summary>
+        public string[] SeatNos { get; private set; }
 
+        /// <summary>
+        /// 状态
+        /// </summary>
         public SessionStatus Status { get; private set; }
 
-        public Session(long sessionId, long divisionId, int cinemaId, int hallId, IEnumerable<long[]> seats)
+        private Session()
         {
-            if (seats.Any(x => x.Length != 2 || !x.All(o => o > 0)))
-                throw new DomainException("座位的格式不正确");
+        }
 
+        public Session(long sessionId, long divisionId, int cinemaId, int hallId, string[] seatNos)
+        {
             this.SessionId = sessionId;
             this.DivisionId = divisionId;
             this.CinemaId = cinemaId;
             this.HallId = hallId;
-            this.Seats = seats;
+            this.SeatNos = seatNos;
             this.Status = SessionStatus.编辑中;
+        }
+
+        public void Change(int cinemaId, int hallId, string[] seatNos)
+        {
+            this.CinemaId = cinemaId;
+            this.HallId = hallId;
+            this.SeatNos = seatNos;
         }
 
         public void Start()

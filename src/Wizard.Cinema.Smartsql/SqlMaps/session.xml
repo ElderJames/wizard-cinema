@@ -14,13 +14,13 @@
 
   <ParameterMaps>
     <ParameterMap Id="SessionParamMap">
-      <Parameter Property="Seats" TypeHandler="Json" />
+      <Parameter Property="SeatNos" TypeHandler="Json" />
     </ParameterMap>
   </ParameterMaps>
 
   <ResultMaps>
     <ResultMap Id="QuerySessionResultMap">
-      <Result Column="Seats" Property="Seats" TypeHandler="Json" />
+      <Result Column="SeatNos" Property="SeatNos" TypeHandler="Json" />
     </ResultMap>
   </ResultMaps>
 
@@ -31,14 +31,14 @@
       ,DivisionId
       ,CinemaId
       ,HallId
-      ,Seats
+      ,SeatNos
       ,Status
       )VALUES
       (@SessionId
       ,@DivisionId
       ,@CinemaId
       ,@HallId
-      ,@Seats
+      ,@SeatNos
       ,@Status
       )
       ;SELECT last_insert_Id() as Id;
@@ -53,8 +53,8 @@
         <IsNotNull Prepend="," Property="HallId">
           HallId = @HallId
         </IsNotNull>
-        <IsNotNull Prepend="," Property="Seats">
-          Seats = @Seats
+        <IsNotNull Prepend="," Property="SeatNos">
+          SeatNos = @SeatNos
         </IsNotNull>
         <IsNotNull Prepend="," Property="Status">
           Status = @Status

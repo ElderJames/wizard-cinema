@@ -2,7 +2,8 @@
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
-using Wizard.Cinema.Application.DTOs.Request.Cinema;
+using Wizard.Cinema.Admin.Models;
+using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Response;
@@ -56,6 +57,35 @@ namespace Wizard.Cinema.Admin.Controllers
                     };
                 })
             });
+        }
+
+        [HttpPost]
+        public IActionResult Edit(SessionModel model)
+        {
+            if (!model.SessionId.HasValue || model.SessionId <= 0)
+            {
+                ApiResult<bool> apiResult = _sessionService.Create(new CreateSessionReqs()
+                {
+                    DivisionId = model.DivisionId,
+                    CinemaId = model.CinemaId,
+                    HallId = model.HallId,
+                    SeatNos = model.SeatNos
+                });
+
+                return Json(apiResult);
+            }
+            else
+            {
+                ApiResult<bool> apiResult = _sessionService.Change(new UpdateSessionReqs()
+                {
+                    SessionId = model.SessionId.Value,
+                    CinemaId = model.CinemaId,
+                    HallId = model.HallId,
+                    SeatNos = model.SeatNos
+                });
+
+                return Json(apiResult);
+            }
         }
     }
 }

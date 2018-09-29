@@ -20,7 +20,7 @@ export class SessionEditComponent implements OnInit {
     divisionId: 0,
     cinemaId: 0,
     hallId: 0,
-    seats: []
+    seatNos: []
   };
 
   constructor(
@@ -90,38 +90,35 @@ export class SessionEditComponent implements OnInit {
   }
 
   submit() {
-    var form = {};
+    var formData = {};
     for (const i in this.form.controls) {
       this.form.controls[i].markAsDirty();
       this.form.controls[i].updateValueAndValidity();
-      form[i] = this.form.controls[i].value;
+      formData[i] = this.form.controls[i].value;
     }
 
-    form["cinemaId"] = form['hall'][0];
-    form["hallId"] = form['hall'][1];
-    form["seats"] = this.selectedSeats;
+    formData["sessionId"] = this.modeldata.sessionId;
+    formData["cinemaId"] = formData['hall'][0];
+    formData["hallId"] = formData['hall'][1];
+    formData["seatNos"] = this.selectedSeats.map(x => x.seatNo);
 
-    if (this.form.invalid) return;
-    console.log("submitting", form);
-    // this.submitting = true;
+    // if (this.form.invalid) return;
+    console.log("submitting", formData);
+    //this.submitting = true;
 
-    // this.submitting = this.http.loading;
-    // this.http.post('api/activity', this.modeldata).subscribe((res: any) => {
-    //   this.submitting = false;
-    //   this.msg.success(`提交成功`);
-    //   this.router.navigate(['activity']);
-    // });
+    this.submitting = this.http.loading;
+    this.http.post('api/session', formData)
+      .subscribe((res: any) => {
+        this.submitting = false;
+        this.msg.success(`提交成功`);
+        this.router.navigate(['sessions']);
+      });
   }
 
   selectedCinemaId: 0;
   selectedHallId: 0;
 
   public onChanges(values: any): void {
-    // if (values[0])
-    //   this.selectedCinemaId = values[0];
-    // if (values[1])
-    //   this.selectedHallId = values[1];
-    console.log(values);
     this.modeldata.cinemaId = values[0];
     if (this.modeldata.hallId != values[1]) {
       this.modeldata.hallId = values[1];

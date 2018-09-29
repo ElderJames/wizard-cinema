@@ -2,6 +2,7 @@
 using Infrastructures;
 using Wizard.Cinema.Application.DTOs.Request;
 using Wizard.Cinema.Application.DTOs.Request.Division;
+using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services.Dto.Response;
 
 namespace Wizard.Cinema.Application.Services

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wizard.Cinema.Application.DTOs.Request
+namespace Wizard.Cinema.Application.DTOs.Request.Division
 {
     public class ChangeDivisionReqs
     {

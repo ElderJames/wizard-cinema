@@ -4,6 +4,7 @@ using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Wizards;
+using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Response;

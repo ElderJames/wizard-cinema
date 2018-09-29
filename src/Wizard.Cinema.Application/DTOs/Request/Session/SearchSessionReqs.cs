@@ -1,6 +1,6 @@
 ﻿using Infrastructures;
 
-namespace Wizard.Cinema.Application.DTOs.Request.Cinema
+namespace Wizard.Cinema.Application.DTOs.Request.Session
 {
     public class SearchSessionReqs : PagedSearch
     {

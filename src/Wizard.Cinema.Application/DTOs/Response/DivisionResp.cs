@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Wizard.Cinema.Application.Services.Dto.Response
+namespace Wizard.Cinema.Application.DTOs.Response
 {
     public class DivisionResp
     {

@@ -2,7 +2,7 @@
 using Infrastructures;
 using Infrastructures.Attributes;
 using Microsoft.Extensions.Logging;
-using Wizard.Cinema.Application.DTOs.Request.Cinema;
+using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Movie;
@@ -18,7 +18,9 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISessionQueryService _sessionQueryService;
         private readonly ISessionRepository _sessionRepository;
 
-        public SessionService(ILogger<SessionService> logger, ISessionQueryService sessionQueryService, ISessionRepository sessionRepository)
+        public SessionService(ILogger<SessionService> logger,
+            ISessionQueryService sessionQueryService,
+            ISessionRepository sessionRepository)
         {
             this._logger = logger;
             this._sessionQueryService = sessionQueryService;
@@ -30,7 +32,7 @@ namespace Wizard.Cinema.Application.Services
             try
             {
                 long sessionId = NewId.GenerateId();
-                var session = new Session(sessionId, request.SessionId, request.CinemaId, request.HallId, request.Seats);
+                var session = new Session(sessionId, request.DivisionId, request.CinemaId, request.HallId, request.SeatNos);
                 if (_sessionRepository.Insert(session) <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常,请稍后再试");
 
@@ -38,7 +40,28 @@ namespace Wizard.Cinema.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("查询场次时异常", ex);
+                _logger.LogError("创建场次时异常", ex);
+                return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public ApiResult<bool> Change(UpdateSessionReqs request)
+        {
+            try
+            {
+                Session session = _sessionRepository.Query(request.SessionId);
+                if (session == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "找不到这个场次了");
+
+                session.Change(request.CinemaId, request.HallId, request.SeatNos);
+                if (_sessionRepository.Update(session) <= 0)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "保存时出错，请稍后再试");
+
+                return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("更新场次时异常", ex);
                 return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
             }
         }
