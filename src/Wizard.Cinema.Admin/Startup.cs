@@ -24,11 +24,6 @@ namespace Wizard.Cinema.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings()
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-
             services.AddRemote();
             services.AddApplicationService(Configuration);
 

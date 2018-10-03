@@ -37,8 +37,7 @@ export class SessionEditComponent implements OnInit {
     this.form = this.fb.group({
       divisionId: [null, [Validators.required]],
       cinemaId: [null, [Validators.required]],
-      hall: [null, [Validators.required]],
-      seats: [null, [Validators.required]],
+      hall: [null, [Validators.required]]
     });
 
     this.getDivisions();
@@ -48,12 +47,12 @@ export class SessionEditComponent implements OnInit {
       console.log(sessionId);
       if (!sessionId)
         return;
-      this.getActivity(sessionId);
+      this.getSession(sessionId);
       this.modeldata.sessionId = sessionId;
     });
   }
 
-  getActivity(id: number) {
+  getSession(id: number) {
     this.http.get('api/session/' + id).subscribe((res: any) => {
       this.modeldata = res;
       console.log(res);

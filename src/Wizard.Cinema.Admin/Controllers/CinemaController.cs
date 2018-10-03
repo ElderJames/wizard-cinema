@@ -70,5 +70,15 @@ namespace Wizard.Cinema.Admin.Controllers
             var halls = this._hallService.GetByCinemaId(cinemaId);
             return Ok(halls);
         }
+
+        [HttpGet("halls/{hallId}")]
+        public IActionResult GetHall(int hallId)
+        {
+            var hall = _hallService.GetById(hallId);
+            if (hall == null)
+                return Fail("找不到影厅");
+
+            return Ok(hall);
+        }
     }
 }
