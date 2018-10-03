@@ -44,7 +44,7 @@ export class SessionEditComponent implements OnInit {
 
     this.route.params.subscribe((params: Params) => {
       const sessionId = params['id'];
-      console.log(sessionId);
+      console.log("sessionId", sessionId);
       if (!sessionId)
         return;
       this.getSession(sessionId);
@@ -65,6 +65,9 @@ export class SessionEditComponent implements OnInit {
       hallarr.push(this.modeldata.cinemaId);
       hallarr.push(this.modeldata.hallId);
       this.form.controls['hall'].setValue(hallarr);
+
+      if (this.modeldata.hallId)
+        this.getHall();
     });
   }
 
@@ -75,8 +78,26 @@ export class SessionEditComponent implements OnInit {
       })
   }
 
-  onDivisionChanges(value: any) {
+  getHall() {
+    this.http.get('api/halls/' + this.modeldata.hallId)
+      .subscribe((res: any) => {
+        if (res.seatJson) {
+          var halls = JSON.parse(res.seatJson);
+          var seats = halls.sections[0].seats.flatMap((x) => {
+            return x.columns.map(o => {
+              return {
+                rowId: x.rowId,
+                columnId: o.columnId,
+                seatNo: o.seatNo
+              }
+            })
+          });
+          this.selectedSeats = seats.filter(x => this.modeldata.seatNos.indexOf(x.seatNo) >= 0);
+        }
+      })
+  }
 
+  onDivisionChanges(value: any) {
     if (!this.divisions)
       return;
 
@@ -85,7 +106,6 @@ export class SessionEditComponent implements OnInit {
       return;
 
     this.selectCityId = selected.cityId;
-    console.log(this.selectCityId);
   }
 
   submit() {
@@ -127,7 +147,6 @@ export class SessionEditComponent implements OnInit {
 
   /** load data async execute by `nzLoadData` method */
   public loadData = (node: any, index: number) => {
-    console.log("index", index);
     return new Promise(resolve => {
       if (index < 0) { // if index less than 0 it is root node
         // if (this.selectCityId <= 0) {
@@ -137,7 +156,6 @@ export class SessionEditComponent implements OnInit {
 
         this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 })
           .subscribe((res: any) => {
-            console.log("cinemas", res);
             node.children = res.records.map(x => {
               return {
                 value: x.cinemaId + '',
@@ -152,7 +170,6 @@ export class SessionEditComponent implements OnInit {
         this.selectedCinemaId = node.value;
         this.http.get("api/cinemas/" + this.selectedCinemaId + "/halls")
           .subscribe((res: any) => {
-            console.log("halls", res);
             node.children = res.map(x => {
               return {
                 value: x.hallId + '',
@@ -165,7 +182,6 @@ export class SessionEditComponent implements OnInit {
       else {
         resolve()
       }
-      console.log("node", node);
     });
   }
 
