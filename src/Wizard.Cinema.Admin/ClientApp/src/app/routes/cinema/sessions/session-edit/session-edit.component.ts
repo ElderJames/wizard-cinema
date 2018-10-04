@@ -33,31 +33,26 @@ export class SessionEditComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.form = this.fb.group({
       divisionId: [null, [Validators.required]],
       cinemaId: [null, [Validators.required]],
       hall: [null, [Validators.required]]
     });
 
-    this.getDivisions();
+    this.divisions = await this.getDivisions();
 
-    this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe(async (params: Params) => {
       const sessionId = params['id'];
-      console.log("sessionId", sessionId);
+
       if (!sessionId)
         return;
-      this.getSession(sessionId);
-      this.modeldata.sessionId = sessionId;
-    });
-  }
 
-  getSession(id: number) {
-    this.http.get('api/session/' + id).subscribe((res: any) => {
-      this.modeldata = res;
-      console.log(res);
-      for (const key in res) {
-        const val = res[key];
+      this.modeldata.sessionId = sessionId;
+      var session = await this.getSession(sessionId);
+      this.modeldata = session;
+      for (const key in session) {
+        const val = session[key];
         if (this.form.controls[key]) this.form.controls[key].setValue(val);
       }
 
@@ -66,16 +61,38 @@ export class SessionEditComponent implements OnInit {
       hallarr.push(this.modeldata.hallId);
       this.form.controls['hall'].setValue(hallarr);
 
-      if (this.modeldata.hallId)
+      let selected = this.divisions.find(x => x.divisionId == this.modeldata.divisionId);
+      this.selectCityId = selected.cityId;
+
+      if (this.modeldata.hallId) {
         this.getHall();
+        this.selectedHallId = this.modeldata.hallId;
+        var cinemas = await this.getCinemas(this.selectCityId);
+        var halls = await this.getHalls(this.modeldata.cinemaId);
+        cinemas.forEach(item => {
+          item['children'] = halls.filter(x => x.cinemaId == item.cinemaId);
+        })
+        this.hallOptions = cinemas;
+      }
     });
   }
 
-  getDivisions() {
-    this.http.get('api/division', { PageSize: 1000 })
-      .subscribe((res: any) => {
-        this.divisions = res.records;
-      })
+  getSession = async (id: number): Promise<any> => {
+    return new Promise((resolve) => {
+      this.http.get('api/session/' + id).subscribe(async (res: any) => {
+        resolve(res);
+      });
+    })
+  }
+
+  getDivisions = async (): Promise<any> => {
+    return new Promise((resolve) => {
+      this.http.get('api/division', { PageSize: 1000 })
+        .subscribe((res: any) => {
+          // this.divisions = res.records;
+          resolve(res.records);
+        })
+    })
   }
 
   getHall() {
@@ -122,8 +139,7 @@ export class SessionEditComponent implements OnInit {
     formData["seatNos"] = this.selectedSeats.map(x => x.seatNo);
 
     // if (this.form.invalid) return;
-    console.log("submitting", formData);
-    //this.submitting = true;
+    console.log("submitData", formData);
 
     this.submitting = this.http.loading;
     this.http.post('api/session', formData)
@@ -134,8 +150,9 @@ export class SessionEditComponent implements OnInit {
       });
   }
 
-  selectedCinemaId: 0;
-  selectedHallId: 0;
+  selectedCinemaId = 0;
+  selectedHallId = 0;
+  hallOptions: any[];
 
   public onChanges(values: any): void {
     this.modeldata.cinemaId = values[0];
@@ -145,44 +162,46 @@ export class SessionEditComponent implements OnInit {
     }
   }
 
-  /** load data async execute by `nzLoadData` method */
-  public loadData = (node: any, index: number) => {
-    return new Promise(resolve => {
-      if (index < 0) { // if index less than 0 it is root node
-        // if (this.selectCityId <= 0) {
-        //   resolve();
-        //   return;
-        // }
+  getCinemas(cityId: number): Promise<any[]> {
+    return new Promise((resolve) => {
+      this.http.get('api/city/' + cityId + '/cinemas', { size: 300 })
+        .subscribe((res: any) => {
+          resolve(res.records.map(x => {
+            return {
+              cinemaId: x.cinemaId,
+              value: x.cinemaId + '',
+              label: x.name,
+              isLeaf: false
+            };
+          }))
+        }, null, () => resolve(null))
+    })
+  }
 
-        this.http.get('api/city/' + this.selectCityId + '/cinemas', { size: 300 })
-          .subscribe((res: any) => {
-            node.children = res.records.map(x => {
-              return {
-                value: x.cinemaId + '',
-                label: x.name,
-                isLeaf: false
-              };
-            });
-          }, null, () => resolve());
-      }
-      else if (index == 0) {
-        console.log('get halls');
-        this.selectedCinemaId = node.value;
-        this.http.get("api/cinemas/" + this.selectedCinemaId + "/halls")
-          .subscribe((res: any) => {
-            node.children = res.map(x => {
-              return {
-                value: x.hallId + '',
-                label: x.name,
-                isLeaf: true
-              }
-            })
-          }, null, () => resolve());
-      }
-      else {
-        resolve()
-      }
-    });
+  getHalls(cinemaId: number): Promise<any[]> {
+    return new Promise((resolve) => {
+      this.http.get("api/cinemas/" + cinemaId + "/halls")
+        .subscribe((res: any) => {
+          resolve(res.map(x => {
+            return {
+              cinemaId: cinemaId,
+              value: x.hallId + '',
+              label: x.name,
+              isLeaf: true
+            }
+          }))
+        }, null, () => resolve(null));
+    })
+  }
+
+  /** load data async execute by `nzLoadData` method */
+  public loadData = async (node: any, index: number) => {
+    if (index < 0) {
+      node.children = await this.getCinemas(this.selectCityId);
+    }
+    else if (index == 0) {
+      node.children = await this.getHalls(this.selectedCinemaId);
+    }
   }
 
   selectedSeats: any[] = [];
