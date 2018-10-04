@@ -17,12 +17,13 @@ namespace Infrastructures
         {
             this.Result = result;
             this.Status = status;
+            this.Message = string.Empty;
         }
 
         public ApiResult(ResultStatus status, string message)
         {
             this.Status = status;
-            this.Message = message;
+            this.Message = message ?? string.Empty;
             Result = default(TResult);
 
             Type type = typeof(TResult);

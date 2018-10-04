@@ -66,7 +66,7 @@ export class SessionEditComponent implements OnInit {
 
       if (this.modeldata.hallId) {
         this.getHall();
-        this.selectedHallId = this.modeldata.hallId;
+
         var cinemas = await this.getCinemas(this.selectCityId);
         var halls = await this.getHalls(this.modeldata.cinemaId);
         cinemas.forEach(item => {
@@ -146,24 +146,21 @@ export class SessionEditComponent implements OnInit {
       .subscribe((res: any) => {
         this.submitting = false;
         this.msg.success(`提交成功`);
-        this.router.navigate(['sessions']);
+        this.router.navigate(['/cinema/sessions']);
       });
   }
 
-  selectedCinemaId = 0;
-  selectedHallId = 0;
+  // selectedCinemaId = 0;
+  // selectedHallId = 0;
   hallOptions: any[];
 
-  public onChanges(values: any): void {
-    this.modeldata.cinemaId = values[0];
-    if (this.modeldata.hallId != values[1]) {
-      this.modeldata.hallId = values[1];
-      this.selectedSeats = [];
-    }
-  }
 
   getCinemas(cityId: number): Promise<any[]> {
-    return new Promise((resolve) => {
+    if (!cityId || cityId <= 0) {
+      this.msg.error("请选择城市");
+      return;
+    }
+    return new Promise((resolve, reject) => {
       this.http.get('api/city/' + cityId + '/cinemas', { size: 300 })
         .subscribe((res: any) => {
           resolve(res.records.map(x => {
@@ -179,6 +176,10 @@ export class SessionEditComponent implements OnInit {
   }
 
   getHalls(cinemaId: number): Promise<any[]> {
+    if (!cinemaId || cinemaId <= 0) {
+      this.msg.error("请选择影院");
+      return;
+    }
     return new Promise((resolve) => {
       this.http.get("api/cinemas/" + cinemaId + "/halls")
         .subscribe((res: any) => {
@@ -194,13 +195,25 @@ export class SessionEditComponent implements OnInit {
     })
   }
 
+
+  public onHallSelectorChanges(values: any): void {
+    console.log(values);
+    this.modeldata.cinemaId = values[0];
+    if (this.modeldata.hallId != values[1]) {
+      this.modeldata.hallId = values[1];
+      this.selectedSeats = [];
+    }
+  }
+
   /** load data async execute by `nzLoadData` method */
-  public loadData = async (node: any, index: number) => {
+  loadHallData = async (node: any, index: number) => {
+    console.log(node)
     if (index < 0) {
       node.children = await this.getCinemas(this.selectCityId);
     }
     else if (index == 0) {
-      node.children = await this.getHalls(this.selectedCinemaId);
+      var cinemaId = node.cinemaId;
+      node.children = await this.getHalls(cinemaId);
     }
   }
 

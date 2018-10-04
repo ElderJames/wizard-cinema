@@ -81,6 +81,9 @@
 
     <Statement Id="QueryParams">
       <Where>
+        <IsNotNull Prepend="AND" Property="SessionId">
+          SessionId = @SessionId
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="ActivityId">
           ActivityId = @ActivityId
         </IsNotNull>

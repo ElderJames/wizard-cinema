@@ -18,8 +18,8 @@
     <nz-form-item>
       <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="hall">影院影厅</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
-        <nz-cascader formControlName="hall" [nzLoadData]="loadData" [nzOptions]="hallOptions" (ngModelChange)="onChanges($event)"></nz-cascader>
-        <nz-form-explain *ngIf="form.get('hall').dirty && form.get('hall').errors">请输入活动名称</nz-form-explain>
+        <nz-cascader formControlName="hall" [nzLoadData]="loadHallData" [nzOptions]="hallOptions" (ngModelChange)="onHallSelectorChanges($event)"></nz-cascader>
+        <nz-form-explain *ngIf="form.get('hall').dirty && form.get('hall').errors">请选择影院影厅</nz-form-explain>
       </nz-form-control>
     </nz-form-item>
   </form>
@@ -28,8 +28,6 @@
     <button nz-button nzType="primary" nzShape="circle" (click)="openSelectWindow($event)"><i class="anticon anticon-search"></i></button>
     <nz-form-control nzXs="24" nzSm="12" nzMd="10">
       <nz-tag *ngFor="let seat of selectedSeats" [nzColor]="'magenta'">{{seat.rowId}}排{{seat.columnId}}座</nz-tag>
-      <!-- <input nz-input formControlName="seats" id="seats" placeholder="请选择锁定座位" (click)="openSelectWindow($event)"> -->
-      <!-- <nz-form-explain *ngIf="form.get('seats').dirty && form.get('seats').errors">请选择锁定座位</nz-form-explain> -->
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
