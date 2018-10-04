@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Repository.Condition;
+using Wizard.Cinema.Remote.Spider.Response;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
@@ -29,7 +31,7 @@ namespace Wizard.Cinema.Admin.Controllers
             if (keyword.IsNullOrEmpty())
                 return Ok(Array.Empty<object>());
 
-            var citys = this._cityService.Search(keyword);
+            IEnumerable<CityResponse.City> citys = this._cityService.Search(keyword);
             return Ok(citys.Take(7));
         }
 
@@ -39,7 +41,7 @@ namespace Wizard.Cinema.Admin.Controllers
             if (size <= 0)
                 return Ok(new PagedData<object>());
 
-            var cinemas = this._cinemaService.GetByCityId(new SearchCinemaCondition()
+            PagedData<Remote.Models.Cinema> cinemas = this._cinemaService.GetByCityId(new SearchCinemaCondition()
             {
                 CityId = cityId,
                 Keyword = keyword,
@@ -67,14 +69,14 @@ namespace Wizard.Cinema.Admin.Controllers
             if (cinemaId <= 0)
                 return Ok(Enumerable.Empty<Hall>());
 
-            var halls = this._hallService.GetByCinemaId(cinemaId);
+            IEnumerable<Hall> halls = this._hallService.GetByCinemaId(cinemaId);
             return Ok(halls);
         }
 
         [HttpGet("halls/{hallId}")]
         public IActionResult GetHall(int hallId)
         {
-            var hall = _hallService.GetById(hallId);
+            Hall hall = _hallService.GetById(hallId);
             if (hall == null)
                 return Fail("找不到影厅");
 
