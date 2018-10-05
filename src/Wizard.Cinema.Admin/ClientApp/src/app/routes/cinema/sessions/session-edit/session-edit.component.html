@@ -16,6 +16,18 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
+      <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="activityId">关联活动</nz-form-label>
+      <nz-form-control nzXs="24" nzSm="12" nzMd="10">
+        <nz-select style="width: 100%;" formControlName="activityId" (ngModelChange)="onActivityChanges($event)"
+          nzPlaceHolder="选择关联活动" nzAllowClear>
+          <nz-option *ngFor="let o of activities" [nzValue]="o.activityId" [nzLabel]="o.name"></nz-option>
+          <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
+            <i class="anticon anticon-loading anticon-spin loading-icon"></i> Loading Data...
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
       <nz-form-label nzXs="24" nzSm="7" nzRequired nzFor="hall">影院影厅</nz-form-label>
       <nz-form-control nzXs="24" nzSm="12" nzMd="10">
         <nz-cascader formControlName="hall" [nzLoadData]="loadHallData" [nzOptions]="hallOptions" (ngModelChange)="onHallSelectorChanges($event)"></nz-cascader>

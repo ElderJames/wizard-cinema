@@ -4,6 +4,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { _HttpClient } from '@delon/theme';
 import { CinermaService } from '../../../../services/cinema.service';
+import { ActivityService } from '../../../../services/activity.service';
+
 
 @Component({
   selector: 'session-edit',
@@ -16,8 +18,10 @@ export class SessionEditComponent implements OnInit {
   selectCityId = 0;
   cinemas: any[];
   halls: any[];
+  activities: any[];
   modeldata = {
     sessionId: null,
+    activityId: 0,
     divisionId: 0,
     cinemaId: 0,
     hallId: 0,
@@ -31,18 +35,20 @@ export class SessionEditComponent implements OnInit {
     private router: Router,
     private http: _HttpClient,
     private cd: ChangeDetectorRef,
-    private cinemaService: CinermaService
+    private cinemaSrv: CinermaService,
+    private activitySrv: ActivityService
   ) {
   }
 
   async ngOnInit(): Promise<void> {
     this.form = this.fb.group({
       divisionId: [null, [Validators.required]],
+      activityId: [null, [Validators.required]],
       cinemaId: [null, [Validators.required]],
       hall: [null, [Validators.required]]
     });
 
-    this.divisions = await this.cinemaService.getDivisions(300);
+    this.divisions = await this.cinemaSrv.getDivisions(300);
 
     this.route.params.subscribe(async (params: Params) => {
       const sessionId = params['id'];
@@ -51,7 +57,7 @@ export class SessionEditComponent implements OnInit {
         return;
 
       this.modeldata.sessionId = sessionId;
-      var session = await this.cinemaService.getSession(sessionId);
+      var session = await this.cinemaSrv.getSession(sessionId);
       this.modeldata = session;
       for (const key in session) {
         const val = session[key];
@@ -65,9 +71,16 @@ export class SessionEditComponent implements OnInit {
 
       let selected = this.divisions.find(x => x.divisionId == this.modeldata.divisionId);
       this.selectCityId = selected.cityId;
-
+      if (this.modeldata.activityId) {
+        var res = await this.activitySrv.getActivities(1000, 1, this.modeldata.divisionId);
+        this.activities = res.records;
+      }
+      else {
+        var res = await this.activitySrv.getActivities(1000, 1, null);
+        this.activities = res.records;
+      }
       if (this.modeldata.hallId) {
-        var hall = await this.cinemaService.getHall(this.modeldata.hallId);
+        var hall = await this.cinemaSrv.getHall(this.modeldata.hallId);
         if (hall.seatJson) {
           var seatJson = JSON.parse(hall.seatJson);
           var seats = seatJson.sections[0].seats.flatMap((x) => {
@@ -82,7 +95,7 @@ export class SessionEditComponent implements OnInit {
           this.selectedSeats = seats.filter(x => this.modeldata.seatNos.indexOf(x.seatNo) >= 0);
         }
 
-        var cinemas = await this.cinemaService.getCinemas(this.selectCityId, 300);
+        var cinemas = await this.cinemaSrv.getCinemas(this.selectCityId, 300);
         var halls = await this.getHalls(this.modeldata.cinemaId);
         cinemas.forEach(item => {
           item['children'] = halls.filter(x => x.cinemaId == item.cinemaId);
@@ -102,7 +115,9 @@ export class SessionEditComponent implements OnInit {
 
     this.selectCityId = selected.cityId;
   }
-
+  onActivityChanges(value: any) {
+    console.log(value);
+  }
   submit() {
     var formData = {};
     for (const i in this.form.controls) {
@@ -142,7 +157,7 @@ export class SessionEditComponent implements OnInit {
   }
 
   async getHalls(cinemaId: number) {
-    var halls = await this.cinemaService.getHalls(cinemaId);
+    var halls = await this.cinemaSrv.getHalls(cinemaId);
     return halls.map(x => {
       return {
         cinemaId: cinemaId,
@@ -157,7 +172,7 @@ export class SessionEditComponent implements OnInit {
   loadHallData = async (node: any, index: number) => {
     console.log("node", node)
     if (index < 0) {
-      node.children = await this.cinemaService.getCinemas(this.selectCityId, 300);
+      node.children = await this.cinemaSrv.getCinemas(this.selectCityId, 300);
     }
     else if (index == 0) {
       var cinemaId = node.cinemaId;

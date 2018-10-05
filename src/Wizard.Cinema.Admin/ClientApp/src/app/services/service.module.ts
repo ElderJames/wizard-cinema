@@ -1,9 +1,11 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CinermaService } from './cinema.service'
+import { ActivityService } from './activity.service'
 
 @NgModule({
     providers: [
-        CinermaService
+        CinermaService,
+        ActivityService
     ],
 })
 export class ServiceModule {
