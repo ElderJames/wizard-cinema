@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { _HttpClient } from '@delon/theme';
+import { CinermaService } from '../../../../services/cinema.service';
 
 @Component({
   selector: 'session-edit',
@@ -29,7 +30,8 @@ export class SessionEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: _HttpClient,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private cinemaService: CinermaService
   ) {
   }
 
@@ -40,7 +42,7 @@ export class SessionEditComponent implements OnInit {
       hall: [null, [Validators.required]]
     });
 
-    this.divisions = await this.getDivisions();
+    this.divisions = await this.cinemaService.getDivisions(300);
 
     this.route.params.subscribe(async (params: Params) => {
       const sessionId = params['id'];
@@ -49,7 +51,7 @@ export class SessionEditComponent implements OnInit {
         return;
 
       this.modeldata.sessionId = sessionId;
-      var session = await this.getSession(sessionId);
+      var session = await this.cinemaService.getSession(sessionId);
       this.modeldata = session;
       for (const key in session) {
         const val = session[key];
@@ -65,42 +67,10 @@ export class SessionEditComponent implements OnInit {
       this.selectCityId = selected.cityId;
 
       if (this.modeldata.hallId) {
-        this.getHall();
-
-        var cinemas = await this.getCinemas(this.selectCityId);
-        var halls = await this.getHalls(this.modeldata.cinemaId);
-        cinemas.forEach(item => {
-          item['children'] = halls.filter(x => x.cinemaId == item.cinemaId);
-        })
-        this.hallOptions = cinemas;
-      }
-    });
-  }
-
-  getSession = async (id: number): Promise<any> => {
-    return new Promise((resolve) => {
-      this.http.get('api/session/' + id).subscribe(async (res: any) => {
-        resolve(res);
-      });
-    })
-  }
-
-  getDivisions = async (): Promise<any> => {
-    return new Promise((resolve) => {
-      this.http.get('api/division', { PageSize: 1000 })
-        .subscribe((res: any) => {
-          // this.divisions = res.records;
-          resolve(res.records);
-        })
-    })
-  }
-
-  getHall() {
-    this.http.get('api/halls/' + this.modeldata.hallId)
-      .subscribe((res: any) => {
-        if (res.seatJson) {
-          var halls = JSON.parse(res.seatJson);
-          var seats = halls.sections[0].seats.flatMap((x) => {
+        var hall = await this.cinemaService.getHall(this.modeldata.hallId);
+        if (hall.seatJson) {
+          var seatJson = JSON.parse(hall.seatJson);
+          var seats = seatJson.sections[0].seats.flatMap((x) => {
             return x.columns.map(o => {
               return {
                 rowId: x.rowId,
@@ -111,7 +81,15 @@ export class SessionEditComponent implements OnInit {
           });
           this.selectedSeats = seats.filter(x => this.modeldata.seatNos.indexOf(x.seatNo) >= 0);
         }
-      })
+
+        var cinemas = await this.cinemaService.getCinemas(this.selectCityId, 300);
+        var halls = await this.getHalls(this.modeldata.cinemaId);
+        cinemas.forEach(item => {
+          item['children'] = halls.filter(x => x.cinemaId == item.cinemaId);
+        })
+        this.hallOptions = cinemas;
+      }
+    });
   }
 
   onDivisionChanges(value: any) {
@@ -154,48 +132,6 @@ export class SessionEditComponent implements OnInit {
   // selectedHallId = 0;
   hallOptions: any[];
 
-
-  getCinemas(cityId: number): Promise<any[]> {
-    if (!cityId || cityId <= 0) {
-      this.msg.error("请选择城市");
-      return;
-    }
-    return new Promise((resolve, reject) => {
-      this.http.get('api/city/' + cityId + '/cinemas', { size: 300 })
-        .subscribe((res: any) => {
-          resolve(res.records.map(x => {
-            return {
-              cinemaId: x.cinemaId,
-              value: x.cinemaId + '',
-              label: x.name,
-              isLeaf: false
-            };
-          }))
-        }, null, () => resolve(null))
-    })
-  }
-
-  getHalls(cinemaId: number): Promise<any[]> {
-    if (!cinemaId || cinemaId <= 0) {
-      this.msg.error("请选择影院");
-      return;
-    }
-    return new Promise((resolve) => {
-      this.http.get("api/cinemas/" + cinemaId + "/halls")
-        .subscribe((res: any) => {
-          resolve(res.map(x => {
-            return {
-              cinemaId: cinemaId,
-              value: x.hallId + '',
-              label: x.name,
-              isLeaf: true
-            }
-          }))
-        }, null, () => resolve(null));
-    })
-  }
-
-
   public onHallSelectorChanges(values: any): void {
     console.log(values);
     this.modeldata.cinemaId = values[0];
@@ -205,11 +141,23 @@ export class SessionEditComponent implements OnInit {
     }
   }
 
+  async getHalls(cinemaId: number) {
+    var halls = await this.cinemaService.getHalls(cinemaId);
+    return halls.map(x => {
+      return {
+        cinemaId: cinemaId,
+        value: x.hallId + '',
+        label: x.name,
+        isLeaf: true
+      }
+    })
+  }
+
   /** load data async execute by `nzLoadData` method */
   loadHallData = async (node: any, index: number) => {
-    console.log(node)
+    console.log("node", node)
     if (index < 0) {
-      node.children = await this.getCinemas(this.selectCityId);
+      node.children = await this.cinemaService.getCinemas(this.selectCityId, 300);
     }
     else if (index == 0) {
       var cinemaId = node.cinemaId;

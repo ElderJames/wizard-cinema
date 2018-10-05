@@ -31,6 +31,8 @@ import { NgxTinymceModule } from 'ngx-tinymce';
 // @delon/form: JSON Schema form
 import { JsonSchemaModule } from '@shared/json-schema/json-schema.module';
 
+import { ServiceModule } from './services/service.module';
+
 // 加载i18n语言文件
 export function I18nHttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, `assets/tmp/i18n/`, '.json');
@@ -77,6 +79,8 @@ export function StartupServiceFactory(
     }),
     // JSON-Schema form
     JsonSchemaModule,
+    //servicr module
+    ServiceModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'zh-Hans' },
