@@ -13,6 +13,11 @@ namespace Wizard.Cinema.Domain.Cinema
         public long SessionId { get; private set; }
 
         /// <summary>
+        /// 活动Id
+        /// </summary>
+        public long ActivityId { get; private set; }
+
+        /// <summary>
         /// 分部Id
         /// </summary>
         public long DivisionId { get; private set; }
@@ -41,10 +46,11 @@ namespace Wizard.Cinema.Domain.Cinema
         {
         }
 
-        public Session(long sessionId, long divisionId, int cinemaId, int hallId, string[] seatNos)
+        public Session(long sessionId, long divisionId, long activityId, int cinemaId, int hallId, string[] seatNos)
         {
             this.SessionId = sessionId;
             this.DivisionId = divisionId;
+            this.ActivityId = activityId;
             this.CinemaId = cinemaId;
             this.HallId = hallId;
             this.SeatNos = seatNos;

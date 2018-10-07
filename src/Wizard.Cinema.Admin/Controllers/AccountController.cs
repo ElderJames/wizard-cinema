@@ -12,14 +12,10 @@ namespace Wizard.Cinema.Admin.Controllers
     [ApiController]
     public class AccountController : BaseController
     {
-        private readonly JwtIssuerOptions _jwtOptions;
-        private readonly IJwtFactory _jwtFactory;
         private readonly IWizardService _wizardService;
 
-        public AccountController(IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions, IWizardService wizardService)
+        public AccountController(IWizardService wizardService)
         {
-            this._jwtOptions = jwtOptions.Value;
-            this._jwtFactory = jwtFactory;
             this._wizardService = wizardService;
         }
 

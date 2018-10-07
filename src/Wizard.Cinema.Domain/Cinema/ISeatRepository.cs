@@ -4,6 +4,8 @@
     {
         int Insert(Seat seat);
 
+        int BatchInsert(Seat[] seats);
+
         int Choose(Seat seat);
 
         Seat Query(long seatId);

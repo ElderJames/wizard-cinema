@@ -3,9 +3,9 @@
     public class CreateSessionReqs
     {
         /// <summary>
-        /// 分部Id
+        /// 活动Id
         /// </summary>
-        public long DivisionId { get; set; }
+        public long ActivityId { get; set; }
 
         /// <summary>
         /// 影院Id
@@ -20,6 +20,15 @@
         /// <summary>
         /// 锁定位置SeatNo
         /// </summary>
-        public string[] SeatNos { get; set; }
+        public SeatInfo[] Seats { get; set; }
+
+        public class SeatInfo
+        {
+            public string SeatNo { get; set; }
+
+            public string RowId { get; set; }
+
+            public string ColumnId { get; set; }
+        }
     }
 }

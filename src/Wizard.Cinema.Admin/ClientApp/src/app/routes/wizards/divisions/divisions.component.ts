@@ -7,7 +7,6 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
-import { Timer } from 'ngx-countdown/src/components/timer';
 
 @Component({
   selector: 'divisions',

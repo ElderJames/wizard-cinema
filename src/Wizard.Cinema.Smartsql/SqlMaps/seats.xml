@@ -40,6 +40,28 @@
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
+    <Statement Id="BatchInsert" ParameterMap="SeatParamMap">
+      INSERT INTO seats
+      (SeatId
+      ,SessionId
+      ,SeatNo
+      ,Position
+      ,Selected
+      ,WizardId
+      ,SelectTime
+      )VALUES
+      <For Property="seats" Key="T" Separator="," Close="" Open="" Prepend="">
+        (@SeatId
+        ,@SessionId
+        ,@SeatNo
+        ,@Position
+        ,@Selected
+        ,@WizardId
+        ,@SelectTime
+        )
+      </For>
+    </Statement>
+
     <Statement Id="Choose">
       UPDATE seats
       SET

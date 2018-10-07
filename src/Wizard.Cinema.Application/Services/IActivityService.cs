@@ -15,7 +15,7 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<IEnumerable<ActivityResp>> GetByIds(long[] activityIds);
 
-        ApiResult<PagedData<ActivityResp>> Search(PagedSearch search);
+        ApiResult<PagedData<ActivityResp>> Search(SearchActivityReqs search);
 
         ApiResult<ApplicantResp> GetApplicant(long applicantId);
 

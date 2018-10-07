@@ -16,12 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.7" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.9" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="MySql.Data" Version="8.0.12" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="SmartSql" Version="3.7.0" />
-    <PackageReference Include="SmartSql.DIExtension" Version="3.6.7" />
+    <PackageReference Include="SmartSql" Version="3.7.8" />
+    <PackageReference Include="SmartSql.DIExtension" Version="3.7.8" />
     <PackageReference Include="SmartSql.DyRepository" Version="3.6.1" />
     <PackageReference Include="System.IO" Version="4.3.0" />
   </ItemGroup>

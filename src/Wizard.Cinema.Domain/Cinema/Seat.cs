@@ -19,14 +19,19 @@ namespace Wizard.Cinema.Domain.Cinema
         public long SessionId { get; private set; }
 
         /// <summary>
+        /// 活动id
+        /// </summary>
+        public long ActivityId { get; private set; }
+
+        /// <summary>
         /// 影院提供的座位编号
         /// </summary>
         public string SeatNo { get; private set; }
 
         /// <summary>
-        /// 位置，n排m号
+        /// 位置，n排m坐
         /// </summary>
-        public int[] Position { get; private set; }
+        public string[] Position { get; private set; }
 
         /// <summary>
         /// 是否已选
@@ -48,14 +53,16 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         /// <param name="seatId"></param>
         /// <param name="sessionId"></param>
+        /// <param name="activityId"></param>
         /// <param name="seatNo"></param>
-        /// <param name="location"></param>
-        public Seat(long seatId, long sessionId, string seatNo, int[] position)
+        /// <param name="position"></param>
+        public Seat(long seatId, long sessionId, long activityId, string seatNo, string[] position)
         {
             if (position.Length != 2)
                 throw new DomainException("座位数据是长度为2的数组");
 
             this.SeatId = seatId;
+            this.ActivityId = activityId;
             this.SessionId = sessionId;
             this.SeatNo = seatNo;
             this.Position = position;

@@ -75,10 +75,6 @@ export class SessionEditComponent implements OnInit {
         var res = await this.activitySrv.getActivities(1000, 1, this.modeldata.divisionId);
         this.activities = res.records;
       }
-      else {
-        var res = await this.activitySrv.getActivities(1000, 1, null);
-        this.activities = res.records;
-      }
       if (this.modeldata.hallId) {
         var hall = await this.cinemaSrv.getHall(this.modeldata.hallId);
         if (hall.seatJson) {
@@ -105,7 +101,7 @@ export class SessionEditComponent implements OnInit {
     });
   }
 
-  onDivisionChanges(value: any) {
+  async onDivisionChanges(value: any) {
     if (!this.divisions)
       return;
 
@@ -114,7 +110,11 @@ export class SessionEditComponent implements OnInit {
       return;
 
     this.selectCityId = selected.cityId;
+
+    var res = await this.activitySrv.getActivities(1000, 1, value);
+    this.activities = res.records;
   }
+
   onActivityChanges(value: any) {
     console.log(value);
   }

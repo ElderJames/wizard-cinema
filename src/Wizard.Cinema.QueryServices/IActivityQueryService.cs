@@ -10,6 +10,6 @@ namespace Wizard.Cinema.QueryServices
 
         IEnumerable<ActivityInfo> Query(long[] activityId);
 
-        PagedData<ActivityInfo> QueryPaged(PagedSearch search);
+        PagedData<ActivityInfo> QueryPaged(SearchActivityCondition search);
     }
 }

@@ -10,6 +10,11 @@ namespace Wizard.Cinema.Application.DTOs.Response
         public long SessionId { get; set; }
 
         /// <summary>
+        /// 活动Id
+        /// </summary>
+        public long ActivityId { get; set; }
+
+        /// <summary>
         /// 分部Id
         /// </summary>
         public long DivisionId { get; set; }

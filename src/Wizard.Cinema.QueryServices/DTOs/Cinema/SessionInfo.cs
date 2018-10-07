@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Wizard.Cinema.Application.DTOs.EnumTypes;
+﻿using Wizard.Cinema.Application.DTOs.EnumTypes;
 
 namespace Wizard.Cinema.QueryServices.DTOs.Cinema
 {
@@ -14,6 +13,11 @@ namespace Wizard.Cinema.QueryServices.DTOs.Cinema
         /// 分部Id
         /// </summary>
         public long DivisionId { get; set; }
+
+        /// <summary>
+        /// 活动Id
+        /// </summary>
+        public long ActivityId { get; set; }
 
         /// <summary>
         /// 影院Id

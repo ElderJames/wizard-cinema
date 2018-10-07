@@ -117,10 +117,11 @@ namespace Wizard.Cinema.Application.Services
             return new ApiResult<IEnumerable<ActivityResp>>(ResultStatus.SUCCESS, Mapper.Map<ActivityInfo, ActivityResp>(activity));
         }
 
-        public ApiResult<PagedData<ActivityResp>> Search(PagedSearch search)
+        public ApiResult<PagedData<ActivityResp>> Search(SearchActivityReqs request)
         {
             try
             {
+                SearchActivityCondition search = Mapper.Map<SearchActivityReqs, SearchActivityCondition>(request);
                 PagedData<ActivityInfo> activities = _activityQueryService.QueryPaged(search);
                 return new ApiResult<PagedData<ActivityResp>>(ResultStatus.SUCCESS, Mapper.Map<PagedData<ActivityInfo>, PagedData<ActivityResp>>(activities));
             }

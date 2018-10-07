@@ -106,6 +106,9 @@
         <IsNotNull Prepend="AND" Property="ActivityId">
           ActivityId = @ActivityId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="DivisionId">
+          DivisionId = @DivisionId
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="Status">
           Status = @Status
         </IsNotNull>

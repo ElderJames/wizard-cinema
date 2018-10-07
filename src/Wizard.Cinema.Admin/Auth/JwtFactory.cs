@@ -49,6 +49,7 @@ namespace Wizard.Cinema.Admin.Auth
             {
                 Issuer = _jwtOptions.Issuer,
                 Audience = _jwtOptions.Audience,
+                NotBefore = _jwtOptions.NotBefore,
                 SigningCredentials = _jwtOptions.SigningCredentials,
                 Subject = identity,
                 Expires = _jwtOptions.Expiration,

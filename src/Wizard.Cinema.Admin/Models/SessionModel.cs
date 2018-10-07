@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Wizard.Cinema.Admin.Models
 {
@@ -13,9 +10,9 @@ namespace Wizard.Cinema.Admin.Models
         public long? SessionId { get; set; }
 
         /// <summary>
-        /// 分部Id
+        /// 活动Id
         /// </summary>
-        public long DivisionId { get; set; }
+        public long ActivityId { get; set; }
 
         /// <summary>
         /// 影院Id

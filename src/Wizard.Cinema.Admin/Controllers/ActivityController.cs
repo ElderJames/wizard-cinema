@@ -90,8 +90,9 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search([FromQuery]PagedSearch search)
+        public IActionResult Search([FromQuery]SearchActivityModel model)
         {
+            SearchActivityReqs search = Mapper.Map<SearchActivityModel, SearchActivityReqs>(model);
             ApiResult<PagedData<ActivityResp>> activitys = _activityService.Search(search);
             ApiResult<IEnumerable<DivisionResp>> divisionResult = _divisionService.GetByIds(activitys.Result.Records.Select(x => x.DivisionId).ToArray());
             ApiResult<IEnumerable<WizardResp>> wizards = _wizardService.GetWizards(activitys.Result.Records.Select(x => x.CreatorId).ToArray());

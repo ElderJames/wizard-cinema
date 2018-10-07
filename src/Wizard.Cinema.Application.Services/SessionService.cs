@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Data;
+using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
+using Infrastructures.Exceptions;
 using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
+using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
@@ -17,24 +21,51 @@ namespace Wizard.Cinema.Application.Services
         private readonly ILogger<SessionService> _logger;
         private readonly ISessionQueryService _sessionQueryService;
         private readonly ISessionRepository _sessionRepository;
+        private readonly IActivityRepository _activityRepository;
+        private readonly ISeatRepository _seatRepository;
+
+        private readonly ITransactionRepository _transactionRepository;
 
         public SessionService(ILogger<SessionService> logger,
             ISessionQueryService sessionQueryService,
-            ISessionRepository sessionRepository)
+            ISessionRepository sessionRepository,
+            ITransactionRepository transactionRepository,
+            IActivityRepository activityRepository,
+            ISeatRepository seatRepository)
         {
             this._logger = logger;
             this._sessionQueryService = sessionQueryService;
             this._sessionRepository = sessionRepository;
+            this._transactionRepository = transactionRepository;
+            this._activityRepository = activityRepository;
+            this._seatRepository = seatRepository;
         }
 
         public ApiResult<bool> Create(CreateSessionReqs request)
         {
             try
             {
+                Activity activity = _activityRepository.Query(request.ActivityId);
+                if (activity == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
+
                 long sessionId = NewId.GenerateId();
-                var session = new Session(sessionId, request.DivisionId, request.CinemaId, request.HallId, request.SeatNos);
-                if (_sessionRepository.Insert(session) <= 0)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常,请稍后再试");
+                var session = new Session(sessionId, activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
+
+                Seat[] seats = request.Seats.Select(seatInfo =>
+                {
+                    long seatId = NewId.GenerateId();
+                    string[] position = { seatInfo.RowId, seatInfo.ColumnId };
+                    return new Seat(seatId, sessionId, activity.ActivityId, seatInfo.SeatNo, position);
+                }).ToArray();
+
+                _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+                {
+                    _seatRepository.BatchInsert(seats);
+
+                    if (_sessionRepository.Insert(session) <= 0)
+                        throw new DomainException("保存时异常,请稍后再试");
+                });
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);
             }
