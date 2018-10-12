@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
+using Wizard.Cinema.Domain.Activity.EnumTypes;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
@@ -84,9 +85,29 @@ namespace Wizard.Cinema.Application.Services
                 if (session == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到这个场次了");
 
-                session.Change(request.CinemaId, request.HallId, request.SeatNos);
-                if (_sessionRepository.Update(session) <= 0)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "保存时出错，请稍后再试");
+                Activity activity = _activityRepository.Query(request.ActivityId);
+                if (activity == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
+
+                if (activity.Status != ActivityStatus.未启动)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "活动已启动，无法再修改了！");
+
+                session.Change(activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
+
+                Seat[] seats = request.Seats.Select(seatInfo =>
+                {
+                    long seatId = NewId.GenerateId();
+                    string[] position = { seatInfo.RowId, seatInfo.ColumnId };
+                    return new Seat(seatId, session.SessionId, activity.ActivityId, seatInfo.SeatNo, position);
+                }).ToArray();
+
+                _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+                {
+                    _seatRepository.ClearInSession(session.SessionId);
+                    _seatRepository.BatchInsert(seats);
+                    if (_sessionRepository.Update(session) <= 0)
+                        throw new DomainException("保存时异常,请稍后再试");
+                });
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);
             }

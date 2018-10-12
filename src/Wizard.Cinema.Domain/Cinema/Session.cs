@@ -57,8 +57,10 @@ namespace Wizard.Cinema.Domain.Cinema
             this.Status = SessionStatus.编辑中;
         }
 
-        public void Change(int cinemaId, int hallId, string[] seatNos)
+        public void Change(long divisionId, long activityId, int cinemaId, int hallId, string[] seatNos)
         {
+            this.DivisionId = divisionId;
+            this.ActivityId = activityId;
             this.CinemaId = cinemaId;
             this.HallId = hallId;
             this.SeatNos = seatNos;

@@ -8,9 +8,9 @@
         public long SessionId { get; set; }
 
         /// <summary>
-        /// 分部Id
+        /// 活动Id
         /// </summary>
-        public long DivisionId { get; set; }
+        public long ActivityId { get; set; }
 
         /// <summary>
         /// 影院Id
@@ -25,6 +25,6 @@
         /// <summary>
         /// 锁定位置SeatNo
         /// </summary>
-        public string[] SeatNos { get; set; }
+        public SeatInfoReqs[] Seats { get; set; }
     }
 }

@@ -23,6 +23,7 @@
       INSERT INTO seats
       (SeatId
       ,SessionId
+      ,ActiviyyId
       ,SeatNo
       ,Position
       ,Selected
@@ -31,6 +32,7 @@
       )VALUES
       (@SeatId
       ,@SessionId
+      ,@ActiviyyId
       ,@SeatNo
       ,@Position
       ,@Selected
@@ -60,6 +62,12 @@
         ,@SelectTime
         )
       </For>
+    </Statement>
+
+    <Statement Id="ClearInSession">
+      DELETE FROM seats
+      WHERE
+      SessionId = @SessionId
     </Statement>
 
     <Statement Id="Choose">

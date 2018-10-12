@@ -6,6 +6,8 @@
 
         int BatchInsert(Seat[] seats);
 
+        int ClearInSession(long sessionId);
+
         int Choose(Seat seat);
 
         Seat Query(long seatId);

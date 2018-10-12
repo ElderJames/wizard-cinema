@@ -20,15 +20,6 @@
         /// <summary>
         /// 锁定位置SeatNo
         /// </summary>
-        public SeatInfo[] Seats { get; set; }
-
-        public class SeatInfo
-        {
-            public string SeatNo { get; set; }
-
-            public string RowId { get; set; }
-
-            public string ColumnId { get; set; }
-        }
+        public SeatInfoReqs[] Seats { get; set; }
     }
 }

@@ -7,7 +7,6 @@ using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
-using Wizard.Cinema.Application.Services.Dto.Response;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Spider.Response;
@@ -91,7 +90,7 @@ namespace Wizard.Cinema.Admin.Controllers
                                 x.columnId
                             }))
                         .Where(x => x.seatNo == seatNo)
-                        .Select(o => new CreateSessionReqs.SeatInfo
+                        .Select(o => new SeatInfoReqs
                         {
                             SeatNo = seatNo,
                             ColumnId = o.columnId,
@@ -109,7 +108,20 @@ namespace Wizard.Cinema.Admin.Controllers
                     SessionId = model.SessionId.Value,
                     CinemaId = model.CinemaId,
                     HallId = model.HallId,
-                    SeatNos = model.SeatNos
+                    Seats = model.SeatNos.SelectMany(seatNo => seat.sections[0].seats.SelectMany(o =>
+                            o.columns.Select(x => new
+                            {
+                                x.seatNo,
+                                o.rowId,
+                                x.columnId
+                            }))
+                        .Where(x => x.seatNo == seatNo)
+                        .Select(o => new SeatInfoReqs
+                        {
+                            SeatNo = seatNo,
+                            ColumnId = o.columnId,
+                            RowId = o.rowId
+                        })).ToArray()
                 });
 
                 return Json(apiResult);
