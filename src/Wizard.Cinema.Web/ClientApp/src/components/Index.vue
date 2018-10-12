@@ -12,7 +12,7 @@
                                 </mu-list-item>
                             </mu-list>
                         </div>
-                        <MediaCard :media="movies.ms"></MediaCard>
+                        <!-- <MediaCard :media="movies.ms"></MediaCard> -->
                     </div>
                     <div class="list">
                         <div class="title">
@@ -22,7 +22,7 @@
                                 </mu-list-item>
                             </mu-list>
                         </div>
-                        <MediaCard :media="tvs"></MediaCard>
+                        <!-- <MediaCard :media="tvs"></MediaCard> -->
                     </div>
                 </div>
             </div>

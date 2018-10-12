@@ -3,7 +3,7 @@
     <div class="header_wrap">
       <slot name="header">
         <template>
-          <mu-appbar :title="title">
+          <mu-appbar :title="title" color="pink">
             <mu-button icon slot="left" v-if="has_menu && layout_type" @click="openMenu" >
               <mu-icon value="menu"></mu-icon>
             </mu-button>
@@ -43,7 +43,7 @@
     <div class="footer_wrap" v-if="has_footer && !layout_type">
       <template>
         <mu-paper>
-          <mu-bottom-nav :value="active_nav" @change="handleChange">
+          <mu-bottom-nav :value="active_nav" @change="handleChange" shift>
             <mu-bottom-nav-item :value="nav.value" :title="nav.title" :icon="nav.icon" v-for="nav in bottom_nav" :key="nav.title" />
           </mu-bottom-nav>
         </mu-paper>
@@ -68,18 +68,18 @@ export default {
       active_nav: "/",
       bottom_nav: [
         {
-          title: "首页",
+          title: "活动",
           value: "/",
           icon: "subscriptions"
         },
         {
-          title: "正在热映",
-          value: "/movie",
+          title: "报名",
+          value: "/apply",
           icon: "movie"
         },
         {
-          title: "即将上映",
-          value: "/tv",
+          title: "发现",
+          value: "/dicovery",
           icon: "tv"
         },
         {
@@ -175,7 +175,7 @@ export default {
         "deviceready",
         () => {
           console.log("设备已就绪");
-          StatusBar.backgroundColorByHexString(theme_color);
+          StatusBar.backgroundColorByHexString("#e91e63");
         },
         false
       );

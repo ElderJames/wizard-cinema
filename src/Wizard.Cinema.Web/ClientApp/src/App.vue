@@ -62,7 +62,7 @@ export default {
       // let local_theme = Store.get("theme") || ""; // 获取本地主题
       const styleEl = this.getThemeStyle();
       // styleEl.innerHTML = this.themes[local_theme] || "";
-      theme.use("dark");
+      theme.use("light");
     },
     getThemeStyle() {
       const themeId = "muse-theme";

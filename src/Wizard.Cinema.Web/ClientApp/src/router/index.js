@@ -3,16 +3,50 @@ import VueRouter from 'vue-router'
 import store from '@/vuex/store';
 
 import Index from '@/components/Index'
+import Me from '@/components/Me'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
+const routes = [{
     path: '/',
     name: 'Index',
     component: Index,
-    meta: { keepAlive: true }
+    meta: {
+      keepAlive: true
+    }
   },
+  {
+    path: '/apply',
+    name: 'Apply',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/dicovery',
+    name: 'Dicovery',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/user',
+    name: 'login',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/user/login',
+    name: 'login',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  }
 ]
 
 
@@ -45,7 +79,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 }
 
 const router = new VueRouter({
-  // mode: 'history',
+  mode: 'history',
   base: __dirname,
   scrollBehavior,
   routes: routes
