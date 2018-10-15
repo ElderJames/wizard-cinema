@@ -42,12 +42,12 @@
     </div>
     <div class="footer_wrap" v-if="has_footer && !layout_type">
       <template>
-        <mu-paper>
+       <mu-paper>
           <mu-bottom-nav :value="active_nav" @change="handleChange" shift>
-            <mu-bottom-nav-item :value="nav.value" :title="nav.title" :icon="nav.icon" v-for="nav in bottom_nav" :key="nav.title" />
-          </mu-bottom-nav>
-        </mu-paper>
-      </template>
+            <mu-bottom-nav-item  v-for="nav in bottom_nav" :value="nav.value" :title="nav.title" :icon="nav.icon" :key="nav.title" :to="nav.value" replace/>
+        </mu-bottom-nav>
+       </mu-paper> 
+   </template>
     </div>
     <mu-dialog :open="dialog" title="分享到" @close="closeDialog">
       <div id="soshid"></div>
@@ -74,7 +74,7 @@ export default {
         },
         {
           title: "报名",
-          value: "/apply",
+          value: "/applyer",
           icon: "movie"
         },
         {
@@ -147,7 +147,7 @@ export default {
     },
     handleChange(val) {
       this.active_nav = val;
-      this.$router.push(val);
+      // this.$router.push(val);
     },
     setActiveNav() {
       let path = this.$route.path;
