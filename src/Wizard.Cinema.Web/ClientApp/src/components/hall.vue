@@ -21,7 +21,7 @@
             div(class="screen") 银幕中央
             div(class="c-screen-line")
           div(class="seats-wrapper")
-            div(class="row")
+            div(class="seat-row")
               span(class="seat selectable" data-column-id="1" data-row-id="1" data-no="3,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
               span(class="seat selected" data-column-id="2" data-row-id="1" data-no="3,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
               span(class="seat empty" data-column-id="" data-row-id="1" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf")
@@ -252,7 +252,7 @@ export default {
   margin-top: 112px;
   white-space: normal;
 }
-.seats-block .row {
+.seats-block .seat-row {
   white-space: nowrap;
   margin-bottom: 10px;
   text-align: center;
