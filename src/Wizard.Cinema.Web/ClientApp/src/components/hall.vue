@@ -1,73 +1,1523 @@
 <template lang="pug">
-  Layout
-    div(class="hall")
-      div(class="seat-example")
-        div(class="selectable-example example")
-          span 可选座位
-        div(class="sold-example example")
-          span 已售座位
-        div(class="selected-example example")
-          span 已选座位
-        div(class="couple-example example")
-          span 情侣座位
-      div(class="seats-block" data-cols="5" data-section-id="1" data-section-name="VIP 1" data-seq-no="201810060176494")
-        div(class="row-id-container")
-          span(class="row-id") 1
-          span(class="row-id") 2
-          span(class="row-id") 3
-          span(class="row-id") 4
-        div(class="seats-container")
-          div(class="screen-container" style="left: 0px;")
-            div(class="screen") 银幕中央
-            div(class="c-screen-line")
-          div(class="seats-wrapper")
-            div(class="seat-row")
-              span(class="seat selectable" data-column-id="1" data-row-id="1" data-no="3,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
-              span(class="seat selected" data-column-id="2" data-row-id="1" data-no="3,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
-              span(class="seat empty" data-column-id="" data-row-id="1" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf")
-              span(class="seat selectable" data-column-id="3" data-row-id="1" data-no="3,1,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
-              span(class="seat selected" data-column-id="4" data-row-id="1" data-no="3,0,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf")
-    
-    //- <div class="seats-block" data-cols="5" data-section-id="1" data-section-name="VIP 1" data-seq-no="201810060176494">
-
-    //- <div class="seats-container">
-    //-   <div class="screen-container" style="left: 0px;"> 
-    //-     <div class="screen">银幕中央</div>
-    //-     <div class="c-screen-line"></div>
-    //-   </div>
-    //-   <div class="seats-wrapper">
-    //-   <div class="row">
-    //- <span class="seat selectable" data-column-id="1" data-row-id="1" data-no="3,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selected" data-column-id="2" data-row-id="1" data-no="3,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat empty" data-column-id="" data-row-id="1" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selected" data-column-id="3" data-row-id="1" data-no="3,1,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="4" data-row-id="1" data-no="3,0,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- </div>
-    //- <div class="row">
-    //- <span class="seat selectable" data-column-id="1" data-row-id="2" data-no="2,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selected" data-column-id="2" data-row-id="2" data-no="2,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat empty" data-column-id="" data-row-id="2" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selected" data-column-id="3" data-row-id="2" data-no="2,1,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="4" data-row-id="2" data-no="2,0,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- </div>
-    //- <div class="row">
-    //- <span class="seat selectable" data-column-id="1" data-row-id="3" data-no="1,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="2" data-row-id="3" data-no="1,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat empty" data-column-id="" data-row-id="3" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="3" data-row-id="3" data-no="1,1,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="4" data-row-id="3" data-no="1,0,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- </div>
-    //- <div class="row">
-    //- <span class="seat selectable" data-column-id="1" data-row-id="4" data-no="0,4,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="2" data-row-id="4" data-no="0,3,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat empty" data-column-id="" data-row-id="4" data-no="" data-st="E" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="3" data-row-id="4" data-no="0,1,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- <span class="seat selectable" data-column-id="4" data-row-id="4" data-no="0,0,0000000001" data-st="N" data-act="seat-click" data-bid="b_s7eiiijf"></span>
-    //- </div>
-    //- </div>
-    //- </div>
-    //- </div>
-
+  Layout(:has_share="false" title="选座")
+    .body(style='visibility: visible;')
+      section.seat-block
+        .info-block
+          .movie-info.box-flex.middle
+            .flex
+              .title.line-ellipsis 影
+              .info.line-ellipsis
+                span 2018-10-16 19:30
+                span(style='margin-left: 5px; ') 国语2D
+          ul.reminder-list
+            li.reminder-item
+              img(src='http://p1.meituan.net/movie/77717de09967c29cd5b3d1f76309ac841254.png')
+              div 13岁以下儿童应在家长陪同下观看
+              span.reminder-num(style='display: none;')
+                | 1个通知
+                i.fold-down
+        .select-block(style='margin-top: 0.3rem; height: 562.234px;')
+          .seat-block-wrap(style='visibility: visible;')
+            .hall-name-wrapper.animate(style='transform: translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg);')
+              span.hall-name IMAX厅
+            .row-nav.animate(style='transform: translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);')
+              div 2
+              div 3
+              div 4
+              div 5
+              div 6
+              div 7
+              div 8
+              div 9
+              div 10
+              div 11
+            .seats-block.animate(style='width: 1426px; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);')
+              .m-line(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
+                .divider(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
+              .seats-wrap(data-sectionid='1', data-sectionname='花城汇IMAX', style='width: 1426px;')
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"1", "rowId": "2", "columnId": "1", "type": "N", "seatNo": "9,30,0000000001"}', data-status='0', data-id='9,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"2", "rowId": "2", "columnId": "2", "type": "N", "seatNo": "9,29,0000000001"}', data-status='0', data-id='9,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"3", "rowId": "2", "columnId": "3", "type": "N", "seatNo": "9,28,0000000001"}', data-status='0', data-id='9,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"4", "rowId": "2", "columnId": "4", "type": "N", "seatNo": "9,27,0000000001"}', data-status='0', data-id='9,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"5", "rowId": "2", "columnId": "5", "type": "N", "seatNo": "9,26,0000000001"}', data-status='0', data-id='9,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"6", "rowId": "2", "columnId": "6", "type": "N", "seatNo": "9,25,0000000001"}', data-status='0', data-id='9,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"7", "rowId": "2", "columnId": "7", "type": "N", "seatNo": "9,24,0000000001"}', data-status='0', data-id='9,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"8", "rowId": "2", "columnId": "8", "type": "N", "seatNo": "9,23,0000000001"}', data-status='0', data-id='9,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"9", "rowId": "2", "columnId": "9", "type": "N", "seatNo": "9,22,0000000001"}', data-status='0', data-id='9,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"10", "rowId": "2", "columnId": "10", "type": "N", "seatNo": "9,21,0000000001"}', data-status='0', data-id='9,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"11", "rowId": "2", "columnId": "11", "type": "N", "seatNo": "9,20,0000000001"}', data-status='0', data-id='9,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"12", "rowId": "2", "columnId": "12", "type": "N", "seatNo": "9,19,0000000001"}', data-status='0', data-id='9,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"13", "rowId": "2", "columnId": "13", "type": "N", "seatNo": "9,18,0000000001"}', data-status='0', data-id='9,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"14", "rowId": "2", "columnId": "14", "type": "N", "seatNo": "9,17,0000000001"}', data-status='0', data-id='9,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"15", "rowId": "2", "columnId": "15", "type": "N", "seatNo": "9,16,0000000001"}', data-status='0', data-id='9,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"16", "rowId": "2", "columnId": "16", "type": "N", "seatNo": "9,15,0000000001"}', data-status='0', data-id='9,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"17", "rowId": "2", "columnId": "17", "type": "N", "seatNo": "9,14,0000000001"}', data-status='0', data-id='9,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"18", "rowId": "2", "columnId": "18", "type": "N", "seatNo": "9,13,0000000001"}', data-status='0', data-id='9,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"19", "rowId": "2", "columnId": "19", "type": "N", "seatNo": "9,12,0000000001"}', data-status='0', data-id='9,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"20", "rowId": "2", "columnId": "20", "type": "N", "seatNo": "9,11,0000000001"}', data-status='0', data-id='9,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"21", "rowId": "2", "columnId": "21", "type": "N", "seatNo": "9,10,0000000001"}', data-status='0', data-id='9,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"22", "rowId": "2", "columnId": "22", "type": "N", "seatNo": "9,9,0000000001"}', data-status='0', data-id='9,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"23", "rowId": "2", "columnId": "23", "type": "N", "seatNo": "9,8,0000000001"}', data-status='0', data-id='9,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"24", "rowId": "2", "columnId": "24", "type": "N", "seatNo": "9,7,0000000001"}', data-status='0', data-id='9,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"25", "rowId": "2", "columnId": "25", "type": "N", "seatNo": "9,6,0000000001"}', data-status='0', data-id='9,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"26", "rowId": "2", "columnId": "26", "type": "N", "seatNo": "9,5,0000000001"}', data-status='0', data-id='9,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"27", "rowId": "2", "columnId": "27", "type": "N", "seatNo": "9,4,0000000001"}', data-status='0', data-id='9,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"28", "rowId": "2", "columnId": "28", "type": "N", "seatNo": "9,3,0000000001"}', data-status='0', data-id='9,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"30", "rowId": "2", "columnId": "29", "type": "N", "seatNo": "9,1,0000000001"}', data-status='0', data-id='9,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"31", "rowId": "2", "columnId": "30", "type": "N", "seatNo": "9,0,0000000001"}', data-status='0', data-id='9,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 2排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"1", "rowId": "3", "columnId": "1", "type": "N", "seatNo": "8,30,0000000001"}', data-status='0', data-id='8,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"2", "rowId": "3", "columnId": "2", "type": "N", "seatNo": "8,29,0000000001"}', data-status='0', data-id='8,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"3", "rowId": "3", "columnId": "3", "type": "N", "seatNo": "8,28,0000000001"}', data-status='0', data-id='8,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"4", "rowId": "3", "columnId": "4", "type": "N", "seatNo": "8,27,0000000001"}', data-status='0', data-id='8,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"5", "rowId": "3", "columnId": "5", "type": "N", "seatNo": "8,26,0000000001"}', data-status='0', data-id='8,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"6", "rowId": "3", "columnId": "6", "type": "N", "seatNo": "8,25,0000000001"}', data-status='0', data-id='8,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"7", "rowId": "3", "columnId": "7", "type": "N", "seatNo": "8,24,0000000001"}', data-status='0', data-id='8,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"8", "rowId": "3", "columnId": "8", "type": "N", "seatNo": "8,23,0000000001"}', data-status='0', data-id='8,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"9", "rowId": "3", "columnId": "9", "type": "N", "seatNo": "8,22,0000000001"}', data-status='0', data-id='8,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"10", "rowId": "3", "columnId": "10", "type": "N", "seatNo": "8,21,0000000001"}', data-status='0', data-id='8,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"11", "rowId": "3", "columnId": "11", "type": "N", "seatNo": "8,20,0000000001"}', data-status='0', data-id='8,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"12", "rowId": "3", "columnId": "12", "type": "N", "seatNo": "8,19,0000000001"}', data-status='0', data-id='8,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"13", "rowId": "3", "columnId": "13", "type": "N", "seatNo": "8,18,0000000001"}', data-status='0', data-id='8,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"14", "rowId": "3", "columnId": "14", "type": "N", "seatNo": "8,17,0000000001"}', data-status='0', data-id='8,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"15", "rowId": "3", "columnId": "15", "type": "N", "seatNo": "8,16,0000000001"}', data-status='0', data-id='8,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"16", "rowId": "3", "columnId": "16", "type": "N", "seatNo": "8,15,0000000001"}', data-status='0', data-id='8,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"17", "rowId": "3", "columnId": "17", "type": "N", "seatNo": "8,14,0000000001"}', data-status='0', data-id='8,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"18", "rowId": "3", "columnId": "18", "type": "N", "seatNo": "8,13,0000000001"}', data-status='0', data-id='8,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"19", "rowId": "3", "columnId": "19", "type": "N", "seatNo": "8,12,0000000001"}', data-status='0', data-id='8,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"20", "rowId": "3", "columnId": "20", "type": "N", "seatNo": "8,11,0000000001"}', data-status='0', data-id='8,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"21", "rowId": "3", "columnId": "21", "type": "N", "seatNo": "8,10,0000000001"}', data-status='0', data-id='8,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"22", "rowId": "3", "columnId": "22", "type": "N", "seatNo": "8,9,0000000001"}', data-status='0', data-id='8,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"23", "rowId": "3", "columnId": "23", "type": "N", "seatNo": "8,8,0000000001"}', data-status='0', data-id='8,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"24", "rowId": "3", "columnId": "24", "type": "N", "seatNo": "8,7,0000000001"}', data-status='0', data-id='8,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"25", "rowId": "3", "columnId": "25", "type": "N", "seatNo": "8,6,0000000001"}', data-status='0', data-id='8,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"26", "rowId": "3", "columnId": "26", "type": "N", "seatNo": "8,5,0000000001"}', data-status='0', data-id='8,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"27", "rowId": "3", "columnId": "27", "type": "N", "seatNo": "8,4,0000000001"}', data-status='0', data-id='8,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"28", "rowId": "3", "columnId": "28", "type": "N", "seatNo": "8,3,0000000001"}', data-status='0', data-id='8,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"30", "rowId": "3", "columnId": "29", "type": "N", "seatNo": "8,1,0000000001"}', data-status='0', data-id='8,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"2", "column":"31", "rowId": "3", "columnId": "30", "type": "N", "seatNo": "8,0,0000000001"}', data-status='0', data-id='8,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 3排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"1", "rowId": "4", "columnId": "1", "type": "N", "seatNo": "7,30,0000000001"}', data-status='0', data-id='7,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"2", "rowId": "4", "columnId": "2", "type": "N", "seatNo": "7,29,0000000001"}', data-status='0', data-id='7,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"3", "rowId": "4", "columnId": "3", "type": "N", "seatNo": "7,28,0000000001"}', data-status='0', data-id='7,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"4", "rowId": "4", "columnId": "4", "type": "N", "seatNo": "7,27,0000000001"}', data-status='0', data-id='7,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"5", "rowId": "4", "columnId": "5", "type": "N", "seatNo": "7,26,0000000001"}', data-status='0', data-id='7,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"6", "rowId": "4", "columnId": "6", "type": "N", "seatNo": "7,25,0000000001"}', data-status='0', data-id='7,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"7", "rowId": "4", "columnId": "7", "type": "N", "seatNo": "7,24,0000000001"}', data-status='0', data-id='7,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"8", "rowId": "4", "columnId": "8", "type": "N", "seatNo": "7,23,0000000001"}', data-status='0', data-id='7,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"9", "rowId": "4", "columnId": "9", "type": "N", "seatNo": "7,22,0000000001"}', data-status='0', data-id='7,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"10", "rowId": "4", "columnId": "10", "type": "N", "seatNo": "7,21,0000000001"}', data-status='0', data-id='7,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"11", "rowId": "4", "columnId": "11", "type": "N", "seatNo": "7,20,0000000001"}', data-status='0', data-id='7,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"12", "rowId": "4", "columnId": "12", "type": "N", "seatNo": "7,19,0000000001"}', data-status='0', data-id='7,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"13", "rowId": "4", "columnId": "13", "type": "N", "seatNo": "7,18,0000000001"}', data-status='0', data-id='7,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"14", "rowId": "4", "columnId": "14", "type": "N", "seatNo": "7,17,0000000001"}', data-status='0', data-id='7,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"15", "rowId": "4", "columnId": "15", "type": "N", "seatNo": "7,16,0000000001"}', data-status='0', data-id='7,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"16", "rowId": "4", "columnId": "16", "type": "N", "seatNo": "7,15,0000000001"}', data-status='0', data-id='7,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"17", "rowId": "4", "columnId": "17", "type": "N", "seatNo": "7,14,0000000001"}', data-status='0', data-id='7,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"18", "rowId": "4", "columnId": "18", "type": "N", "seatNo": "7,13,0000000001"}', data-status='0', data-id='7,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"19", "rowId": "4", "columnId": "19", "type": "N", "seatNo": "7,12,0000000001"}', data-status='0', data-id='7,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"20", "rowId": "4", "columnId": "20", "type": "N", "seatNo": "7,11,0000000001"}', data-status='0', data-id='7,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"21", "rowId": "4", "columnId": "21", "type": "N", "seatNo": "7,10,0000000001"}', data-status='0', data-id='7,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"22", "rowId": "4", "columnId": "22", "type": "N", "seatNo": "7,9,0000000001"}', data-status='0', data-id='7,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"23", "rowId": "4", "columnId": "23", "type": "N", "seatNo": "7,8,0000000001"}', data-status='0', data-id='7,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"24", "rowId": "4", "columnId": "24", "type": "N", "seatNo": "7,7,0000000001"}', data-status='0', data-id='7,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"25", "rowId": "4", "columnId": "25", "type": "N", "seatNo": "7,6,0000000001"}', data-status='0', data-id='7,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"26", "rowId": "4", "columnId": "26", "type": "N", "seatNo": "7,5,0000000001"}', data-status='0', data-id='7,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"27", "rowId": "4", "columnId": "27", "type": "N", "seatNo": "7,4,0000000001"}', data-status='0', data-id='7,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"28", "rowId": "4", "columnId": "28", "type": "N", "seatNo": "7,3,0000000001"}', data-status='0', data-id='7,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"30", "rowId": "4", "columnId": "29", "type": "N", "seatNo": "7,1,0000000001"}', data-status='0', data-id='7,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"3", "column":"31", "rowId": "4", "columnId": "30", "type": "N", "seatNo": "7,0,0000000001"}', data-status='0', data-id='7,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 4排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"1", "rowId": "5", "columnId": "1", "type": "N", "seatNo": "6,30,0000000001"}', data-status='0', data-id='6,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"2", "rowId": "5", "columnId": "2", "type": "N", "seatNo": "6,29,0000000001"}', data-status='0', data-id='6,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"3", "rowId": "5", "columnId": "3", "type": "N", "seatNo": "6,28,0000000001"}', data-status='0', data-id='6,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"4", "rowId": "5", "columnId": "4", "type": "N", "seatNo": "6,27,0000000001"}', data-status='0', data-id='6,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"5", "rowId": "5", "columnId": "5", "type": "N", "seatNo": "6,26,0000000001"}', data-status='0', data-id='6,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"6", "rowId": "5", "columnId": "6", "type": "N", "seatNo": "6,25,0000000001"}', data-status='0', data-id='6,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"7", "rowId": "5", "columnId": "7", "type": "N", "seatNo": "6,24,0000000001"}', data-status='0', data-id='6,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"8", "rowId": "5", "columnId": "8", "type": "N", "seatNo": "6,23,0000000001"}', data-status='0', data-id='6,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"9", "rowId": "5", "columnId": "9", "type": "N", "seatNo": "6,22,0000000001"}', data-status='0', data-id='6,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"10", "rowId": "5", "columnId": "10", "type": "N", "seatNo": "6,21,0000000001"}', data-status='0', data-id='6,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"11", "rowId": "5", "columnId": "11", "type": "N", "seatNo": "6,20,0000000001"}', data-status='0', data-id='6,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"12", "rowId": "5", "columnId": "12", "type": "N", "seatNo": "6,19,0000000001"}', data-status='0', data-id='6,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"13", "rowId": "5", "columnId": "13", "type": "N", "seatNo": "6,18,0000000001"}', data-status='0', data-id='6,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"14", "rowId": "5", "columnId": "14", "type": "N", "seatNo": "6,17,0000000001"}', data-status='0', data-id='6,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"15", "rowId": "5", "columnId": "15", "type": "N", "seatNo": "6,16,0000000001"}', data-status='0', data-id='6,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"16", "rowId": "5", "columnId": "16", "type": "N", "seatNo": "6,15,0000000001"}', data-status='0', data-id='6,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"17", "rowId": "5", "columnId": "17", "type": "N", "seatNo": "6,14,0000000001"}', data-status='0', data-id='6,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"18", "rowId": "5", "columnId": "18", "type": "N", "seatNo": "6,13,0000000001"}', data-status='0', data-id='6,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"19", "rowId": "5", "columnId": "19", "type": "N", "seatNo": "6,12,0000000001"}', data-status='0', data-id='6,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"20", "rowId": "5", "columnId": "20", "type": "N", "seatNo": "6,11,0000000001"}', data-status='0', data-id='6,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"21", "rowId": "5", "columnId": "21", "type": "N", "seatNo": "6,10,0000000001"}', data-status='0', data-id='6,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"22", "rowId": "5", "columnId": "22", "type": "N", "seatNo": "6,9,0000000001"}', data-status='0', data-id='6,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"23", "rowId": "5", "columnId": "23", "type": "N", "seatNo": "6,8,0000000001"}', data-status='0', data-id='6,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"24", "rowId": "5", "columnId": "24", "type": "N", "seatNo": "6,7,0000000001"}', data-status='0', data-id='6,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"25", "rowId": "5", "columnId": "25", "type": "N", "seatNo": "6,6,0000000001"}', data-status='0', data-id='6,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"26", "rowId": "5", "columnId": "26", "type": "N", "seatNo": "6,5,0000000001"}', data-status='0', data-id='6,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"27", "rowId": "5", "columnId": "27", "type": "N", "seatNo": "6,4,0000000001"}', data-status='0', data-id='6,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"28", "rowId": "5", "columnId": "28", "type": "N", "seatNo": "6,3,0000000001"}', data-status='0', data-id='6,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"30", "rowId": "5", "columnId": "29", "type": "N", "seatNo": "6,1,0000000001"}', data-status='0', data-id='6,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"4", "column":"31", "rowId": "5", "columnId": "30", "type": "N", "seatNo": "6,0,0000000001"}', data-status='0', data-id='6,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 5排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"1", "rowId": "6", "columnId": "1", "type": "N", "seatNo": "5,30,0000000001"}', data-status='0', data-id='5,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"2", "rowId": "6", "columnId": "2", "type": "N", "seatNo": "5,29,0000000001"}', data-status='0', data-id='5,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"3", "rowId": "6", "columnId": "3", "type": "N", "seatNo": "5,28,0000000001"}', data-status='0', data-id='5,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"4", "rowId": "6", "columnId": "4", "type": "N", "seatNo": "5,27,0000000001"}', data-status='0', data-id='5,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"5", "rowId": "6", "columnId": "5", "type": "N", "seatNo": "5,26,0000000001"}', data-status='0', data-id='5,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"6", "rowId": "6", "columnId": "6", "type": "N", "seatNo": "5,25,0000000001"}', data-status='0', data-id='5,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"7", "rowId": "6", "columnId": "7", "type": "N", "seatNo": "5,24,0000000001"}', data-status='0', data-id='5,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"8", "rowId": "6", "columnId": "8", "type": "N", "seatNo": "5,23,0000000001"}', data-status='0', data-id='5,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"9", "rowId": "6", "columnId": "9", "type": "N", "seatNo": "5,22,0000000001"}', data-status='0', data-id='5,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"10", "rowId": "6", "columnId": "10", "type": "N", "seatNo": "5,21,0000000001"}', data-status='0', data-id='5,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"11", "rowId": "6", "columnId": "11", "type": "N", "seatNo": "5,20,0000000001"}', data-status='0', data-id='5,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"12", "rowId": "6", "columnId": "12", "type": "N", "seatNo": "5,19,0000000001"}', data-status='0', data-id='5,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"13", "rowId": "6", "columnId": "13", "type": "N", "seatNo": "5,18,0000000001"}', data-status='0', data-id='5,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"14", "rowId": "6", "columnId": "14", "type": "N", "seatNo": "5,17,0000000001"}', data-status='0', data-id='5,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"15", "rowId": "6", "columnId": "15", "type": "N", "seatNo": "5,16,0000000001"}', data-status='0', data-id='5,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"16", "rowId": "6", "columnId": "16", "type": "N", "seatNo": "5,15,0000000001"}', data-status='0', data-id='5,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"17", "rowId": "6", "columnId": "17", "type": "N", "seatNo": "5,14,0000000001"}', data-status='0', data-id='5,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"18", "rowId": "6", "columnId": "18", "type": "N", "seatNo": "5,13,0000000001"}', data-status='0', data-id='5,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"19", "rowId": "6", "columnId": "19", "type": "N", "seatNo": "5,12,0000000001"}', data-status='0', data-id='5,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"20", "rowId": "6", "columnId": "20", "type": "N", "seatNo": "5,11,0000000001"}', data-status='0', data-id='5,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"21", "rowId": "6", "columnId": "21", "type": "N", "seatNo": "5,10,0000000001"}', data-status='0', data-id='5,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"22", "rowId": "6", "columnId": "22", "type": "N", "seatNo": "5,9,0000000001"}', data-status='0', data-id='5,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"23", "rowId": "6", "columnId": "23", "type": "N", "seatNo": "5,8,0000000001"}', data-status='0', data-id='5,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"24", "rowId": "6", "columnId": "24", "type": "N", "seatNo": "5,7,0000000001"}', data-status='0', data-id='5,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"25", "rowId": "6", "columnId": "25", "type": "N", "seatNo": "5,6,0000000001"}', data-status='0', data-id='5,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"26", "rowId": "6", "columnId": "26", "type": "N", "seatNo": "5,5,0000000001"}', data-status='0', data-id='5,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"27", "rowId": "6", "columnId": "27", "type": "N", "seatNo": "5,4,0000000001"}', data-status='0', data-id='5,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"28", "rowId": "6", "columnId": "28", "type": "N", "seatNo": "5,3,0000000001"}', data-status='0', data-id='5,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"30", "rowId": "6", "columnId": "29", "type": "N", "seatNo": "5,1,0000000001"}', data-status='0', data-id='5,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"5", "column":"31", "rowId": "6", "columnId": "30", "type": "N", "seatNo": "5,0,0000000001"}', data-status='0', data-id='5,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 6排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"1", "rowId": "7", "columnId": "1", "type": "N", "seatNo": "4,30,0000000001"}', data-status='0', data-id='4,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"2", "rowId": "7", "columnId": "2", "type": "N", "seatNo": "4,29,0000000001"}', data-status='0', data-id='4,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"3", "rowId": "7", "columnId": "3", "type": "N", "seatNo": "4,28,0000000001"}', data-status='0', data-id='4,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"4", "rowId": "7", "columnId": "4", "type": "N", "seatNo": "4,27,0000000001"}', data-status='0', data-id='4,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"5", "rowId": "7", "columnId": "5", "type": "N", "seatNo": "4,26,0000000001"}', data-status='0', data-id='4,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"6", "rowId": "7", "columnId": "6", "type": "N", "seatNo": "4,25,0000000001"}', data-status='0', data-id='4,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"7", "rowId": "7", "columnId": "7", "type": "N", "seatNo": "4,24,0000000001"}', data-status='0', data-id='4,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"8", "rowId": "7", "columnId": "8", "type": "N", "seatNo": "4,23,0000000001"}', data-status='0', data-id='4,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"9", "rowId": "7", "columnId": "9", "type": "N", "seatNo": "4,22,0000000001"}', data-status='0', data-id='4,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"10", "rowId": "7", "columnId": "10", "type": "N", "seatNo": "4,21,0000000001"}', data-status='0', data-id='4,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"11", "rowId": "7", "columnId": "11", "type": "N", "seatNo": "4,20,0000000001"}', data-status='0', data-id='4,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"12", "rowId": "7", "columnId": "12", "type": "N", "seatNo": "4,19,0000000001"}', data-status='0', data-id='4,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"13", "rowId": "7", "columnId": "13", "type": "N", "seatNo": "4,18,0000000001"}', data-status='0', data-id='4,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"14", "rowId": "7", "columnId": "14", "type": "N", "seatNo": "4,17,0000000001"}', data-status='0', data-id='4,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 14座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"15", "rowId": "7", "columnId": "15", "type": "N", "seatNo": "4,16,0000000001"}', data-status='0', data-id='4,16,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 15座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"16", "rowId": "7", "columnId": "16", "type": "N", "seatNo": "4,15,0000000001"}', data-status='0', data-id='4,15,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 16座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"17", "rowId": "7", "columnId": "17", "type": "N", "seatNo": "4,14,0000000001"}', data-status='0', data-id='4,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"18", "rowId": "7", "columnId": "18", "type": "N", "seatNo": "4,13,0000000001"}', data-status='0', data-id='4,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"19", "rowId": "7", "columnId": "19", "type": "N", "seatNo": "4,12,0000000001"}', data-status='0', data-id='4,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"20", "rowId": "7", "columnId": "20", "type": "N", "seatNo": "4,11,0000000001"}', data-status='0', data-id='4,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"21", "rowId": "7", "columnId": "21", "type": "N", "seatNo": "4,10,0000000001"}', data-status='0', data-id='4,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"22", "rowId": "7", "columnId": "22", "type": "N", "seatNo": "4,9,0000000001"}', data-status='0', data-id='4,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"23", "rowId": "7", "columnId": "23", "type": "N", "seatNo": "4,8,0000000001"}', data-status='0', data-id='4,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"24", "rowId": "7", "columnId": "24", "type": "N", "seatNo": "4,7,0000000001"}', data-status='0', data-id='4,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"25", "rowId": "7", "columnId": "25", "type": "N", "seatNo": "4,6,0000000001"}', data-status='0', data-id='4,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"26", "rowId": "7", "columnId": "26", "type": "N", "seatNo": "4,5,0000000001"}', data-status='0', data-id='4,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"27", "rowId": "7", "columnId": "27", "type": "N", "seatNo": "4,4,0000000001"}', data-status='0', data-id='4,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"28", "rowId": "7", "columnId": "28", "type": "N", "seatNo": "4,3,0000000001"}', data-status='0', data-id='4,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"30", "rowId": "7", "columnId": "29", "type": "N", "seatNo": "4,1,0000000001"}', data-status='0', data-id='4,1,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 29座
+                .wrap(data-love='0', data-info='{"index":"0","row":"6", "column":"31", "rowId": "7", "columnId": "30", "type": "N", "seatNo": "4,0,0000000001"}', data-status='0', data-id='4,0,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 7排
+                      div 30座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"1", "rowId": "8", "columnId": "1", "type": "N", "seatNo": "3,30,0000000001"}', data-status='0', data-id='3,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"2", "rowId": "8", "columnId": "2", "type": "N", "seatNo": "3,29,0000000001"}', data-status='0', data-id='3,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"3", "rowId": "8", "columnId": "3", "type": "N", "seatNo": "3,28,0000000001"}', data-status='0', data-id='3,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"4", "rowId": "8", "columnId": "4", "type": "N", "seatNo": "3,27,0000000001"}', data-status='0', data-id='3,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"5", "rowId": "8", "columnId": "5", "type": "N", "seatNo": "3,26,0000000001"}', data-status='0', data-id='3,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"6", "rowId": "8", "columnId": "6", "type": "N", "seatNo": "3,25,0000000001"}', data-status='0', data-id='3,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"7", "rowId": "8", "columnId": "7", "type": "N", "seatNo": "3,24,0000000001"}', data-status='0', data-id='3,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"8", "rowId": "8", "columnId": "8", "type": "N", "seatNo": "3,23,0000000001"}', data-status='0', data-id='3,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"9", "rowId": "8", "columnId": "9", "type": "N", "seatNo": "3,22,0000000001"}', data-status='0', data-id='3,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"10", "rowId": "8", "columnId": "10", "type": "N", "seatNo": "3,21,0000000001"}', data-status='0', data-id='3,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"11", "rowId": "8", "columnId": "11", "type": "N", "seatNo": "3,20,0000000001"}', data-status='0', data-id='3,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"12", "rowId": "8", "columnId": "12", "type": "N", "seatNo": "3,19,0000000001"}', data-status='0', data-id='3,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"13", "rowId": "8", "columnId": "13", "type": "N", "seatNo": "3,18,0000000001"}', data-status='0', data-id='3,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"14", "rowId": "8", "columnId": "14", "type": "N", "seatNo": "3,17,0000000001"}', data-status='0', data-id='3,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 14座
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"19", "rowId": "8", "columnId": "19", "type": "N", "seatNo": "3,12,0000000001"}', data-status='0', data-id='3,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"20", "rowId": "8", "columnId": "20", "type": "N", "seatNo": "3,11,0000000001"}', data-status='0', data-id='3,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"21", "rowId": "8", "columnId": "21", "type": "N", "seatNo": "3,10,0000000001"}', data-status='0', data-id='3,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"22", "rowId": "8", "columnId": "22", "type": "N", "seatNo": "3,9,0000000001"}', data-status='0', data-id='3,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"23", "rowId": "8", "columnId": "23", "type": "N", "seatNo": "3,8,0000000001"}', data-status='0', data-id='3,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"24", "rowId": "8", "columnId": "24", "type": "N", "seatNo": "3,7,0000000001"}', data-status='0', data-id='3,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"25", "rowId": "8", "columnId": "25", "type": "N", "seatNo": "3,6,0000000001"}', data-status='0', data-id='3,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"26", "rowId": "8", "columnId": "26", "type": "N", "seatNo": "3,5,0000000001"}', data-status='0', data-id='3,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"27", "rowId": "8", "columnId": "27", "type": "N", "seatNo": "3,4,0000000001"}', data-status='0', data-id='3,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"7", "column":"28", "rowId": "8", "columnId": "28", "type": "N", "seatNo": "3,3,0000000001"}', data-status='0', data-id='3,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 8排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"1", "rowId": "9", "columnId": "1", "type": "N", "seatNo": "2,30,0000000001"}', data-status='0', data-id='2,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"2", "rowId": "9", "columnId": "2", "type": "N", "seatNo": "2,29,0000000001"}', data-status='0', data-id='2,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"3", "rowId": "9", "columnId": "3", "type": "N", "seatNo": "2,28,0000000001"}', data-status='0', data-id='2,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"4", "rowId": "9", "columnId": "4", "type": "N", "seatNo": "2,27,0000000001"}', data-status='0', data-id='2,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"5", "rowId": "9", "columnId": "5", "type": "N", "seatNo": "2,26,0000000001"}', data-status='0', data-id='2,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"6", "rowId": "9", "columnId": "6", "type": "N", "seatNo": "2,25,0000000001"}', data-status='0', data-id='2,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"7", "rowId": "9", "columnId": "7", "type": "N", "seatNo": "2,24,0000000001"}', data-status='0', data-id='2,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"8", "rowId": "9", "columnId": "8", "type": "N", "seatNo": "2,23,0000000001"}', data-status='0', data-id='2,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"9", "rowId": "9", "columnId": "9", "type": "N", "seatNo": "2,22,0000000001"}', data-status='0', data-id='2,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"10", "rowId": "9", "columnId": "10", "type": "N", "seatNo": "2,21,0000000001"}', data-status='0', data-id='2,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"11", "rowId": "9", "columnId": "11", "type": "N", "seatNo": "2,20,0000000001"}', data-status='0', data-id='2,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"12", "rowId": "9", "columnId": "12", "type": "N", "seatNo": "2,19,0000000001"}', data-status='0', data-id='2,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"13", "rowId": "9", "columnId": "13", "type": "N", "seatNo": "2,18,0000000001"}', data-status='0', data-id='2,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 13座
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"19", "rowId": "9", "columnId": "19", "type": "N", "seatNo": "2,12,0000000001"}', data-status='0', data-id='2,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"20", "rowId": "9", "columnId": "20", "type": "N", "seatNo": "2,11,0000000001"}', data-status='0', data-id='2,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"21", "rowId": "9", "columnId": "21", "type": "N", "seatNo": "2,10,0000000001"}', data-status='0', data-id='2,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"22", "rowId": "9", "columnId": "22", "type": "N", "seatNo": "2,9,0000000001"}', data-status='0', data-id='2,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"23", "rowId": "9", "columnId": "23", "type": "N", "seatNo": "2,8,0000000001"}', data-status='0', data-id='2,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"24", "rowId": "9", "columnId": "24", "type": "N", "seatNo": "2,7,0000000001"}', data-status='0', data-id='2,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"25", "rowId": "9", "columnId": "25", "type": "N", "seatNo": "2,6,0000000001"}', data-status='0', data-id='2,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"8", "column":"26", "rowId": "9", "columnId": "26", "type": "N", "seatNo": "2,5,0000000001"}', data-status='0', data-id='2,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 9排
+                      div 26座
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"1", "rowId": "10", "columnId": "1", "type": "N", "seatNo": "1,30,0000000001"}', data-status='0', data-id='1,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"2", "rowId": "10", "columnId": "2", "type": "N", "seatNo": "1,29,0000000001"}', data-status='0', data-id='1,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"3", "rowId": "10", "columnId": "3", "type": "N", "seatNo": "1,28,0000000001"}', data-status='0', data-id='1,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"4", "rowId": "10", "columnId": "4", "type": "N", "seatNo": "1,27,0000000001"}', data-status='0', data-id='1,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"5", "rowId": "10", "columnId": "5", "type": "N", "seatNo": "1,26,0000000001"}', data-status='0', data-id='1,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"6", "rowId": "10", "columnId": "6", "type": "N", "seatNo": "1,25,0000000001"}', data-status='0', data-id='1,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"7", "rowId": "10", "columnId": "7", "type": "N", "seatNo": "1,24,0000000001"}', data-status='0', data-id='1,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"8", "rowId": "10", "columnId": "8", "type": "N", "seatNo": "1,23,0000000001"}', data-status='0', data-id='1,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"9", "rowId": "10", "columnId": "9", "type": "N", "seatNo": "1,22,0000000001"}', data-status='0', data-id='1,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"10", "rowId": "10", "columnId": "10", "type": "N", "seatNo": "1,21,0000000001"}', data-status='0', data-id='1,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"11", "rowId": "10", "columnId": "11", "type": "N", "seatNo": "1,20,0000000001"}', data-status='0', data-id='1,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"12", "rowId": "10", "columnId": "12", "type": "N", "seatNo": "1,19,0000000001"}', data-status='0', data-id='1,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"13", "rowId": "10", "columnId": "13", "type": "N", "seatNo": "1,18,0000000001"}', data-status='0', data-id='1,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"14", "rowId": "10", "columnId": "14", "type": "N", "seatNo": "1,17,0000000001"}', data-status='0', data-id='1,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 14座
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"17", "rowId": "10", "columnId": "17", "type": "N", "seatNo": "1,14,0000000001"}', data-status='0', data-id='1,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"18", "rowId": "10", "columnId": "18", "type": "N", "seatNo": "1,13,0000000001"}', data-status='0', data-id='1,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"19", "rowId": "10", "columnId": "19", "type": "N", "seatNo": "1,12,0000000001"}', data-status='0', data-id='1,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"20", "rowId": "10", "columnId": "20", "type": "N", "seatNo": "1,11,0000000001"}', data-status='0', data-id='1,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"21", "rowId": "10", "columnId": "21", "type": "N", "seatNo": "1,10,0000000001"}', data-status='0', data-id='1,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"22", "rowId": "10", "columnId": "22", "type": "N", "seatNo": "1,9,0000000001"}', data-status='0', data-id='1,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"23", "rowId": "10", "columnId": "23", "type": "N", "seatNo": "1,8,0000000001"}', data-status='0', data-id='1,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"24", "rowId": "10", "columnId": "24", "type": "N", "seatNo": "1,7,0000000001"}', data-status='0', data-id='1,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"25", "rowId": "10", "columnId": "25", "type": "N", "seatNo": "1,6,0000000001"}', data-status='0', data-id='1,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"26", "rowId": "10", "columnId": "26", "type": "N", "seatNo": "1,5,0000000001"}', data-status='0', data-id='1,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"27", "rowId": "10", "columnId": "27", "type": "N", "seatNo": "1,4,0000000001"}', data-status='0', data-id='1,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"9", "column":"28", "rowId": "10", "columnId": "28", "type": "N", "seatNo": "1,3,0000000001"}', data-status='0', data-id='1,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 10排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"1", "rowId": "11", "columnId": "1", "type": "N", "seatNo": "0,30,0000000001"}', data-status='0', data-id='0,30,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 1座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"2", "rowId": "11", "columnId": "2", "type": "N", "seatNo": "0,29,0000000001"}', data-status='0', data-id='0,29,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 2座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"3", "rowId": "11", "columnId": "3", "type": "N", "seatNo": "0,28,0000000001"}', data-status='0', data-id='0,28,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 3座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"4", "rowId": "11", "columnId": "4", "type": "N", "seatNo": "0,27,0000000001"}', data-status='0', data-id='0,27,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 4座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"5", "rowId": "11", "columnId": "5", "type": "N", "seatNo": "0,26,0000000001"}', data-status='0', data-id='0,26,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 5座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"6", "rowId": "11", "columnId": "6", "type": "N", "seatNo": "0,25,0000000001"}', data-status='0', data-id='0,25,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 6座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"7", "rowId": "11", "columnId": "7", "type": "N", "seatNo": "0,24,0000000001"}', data-status='0', data-id='0,24,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 7座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"8", "rowId": "11", "columnId": "8", "type": "N", "seatNo": "0,23,0000000001"}', data-status='0', data-id='0,23,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 8座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"9", "rowId": "11", "columnId": "9", "type": "N", "seatNo": "0,22,0000000001"}', data-status='0', data-id='0,22,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 9座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"10", "rowId": "11", "columnId": "10", "type": "N", "seatNo": "0,21,0000000001"}', data-status='0', data-id='0,21,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 10座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"11", "rowId": "11", "columnId": "11", "type": "N", "seatNo": "0,20,0000000001"}', data-status='0', data-id='0,20,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 11座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"12", "rowId": "11", "columnId": "12", "type": "N", "seatNo": "0,19,0000000001"}', data-status='0', data-id='0,19,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 12座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"13", "rowId": "11", "columnId": "13", "type": "N", "seatNo": "0,18,0000000001"}', data-status='0', data-id='0,18,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 13座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"14", "rowId": "11", "columnId": "14", "type": "N", "seatNo": "0,17,0000000001"}', data-status='0', data-id='0,17,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 14座
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-status='1')
+                  .seat
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"17", "rowId": "11", "columnId": "17", "type": "N", "seatNo": "0,14,0000000001"}', data-status='0', data-id='0,14,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 17座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"18", "rowId": "11", "columnId": "18", "type": "N", "seatNo": "0,13,0000000001"}', data-status='0', data-id='0,13,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 18座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"19", "rowId": "11", "columnId": "19", "type": "N", "seatNo": "0,12,0000000001"}', data-status='0', data-id='0,12,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 19座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"20", "rowId": "11", "columnId": "20", "type": "N", "seatNo": "0,11,0000000001"}', data-status='0', data-id='0,11,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 20座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"21", "rowId": "11", "columnId": "21", "type": "N", "seatNo": "0,10,0000000001"}', data-status='0', data-id='0,10,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 21座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"22", "rowId": "11", "columnId": "22", "type": "N", "seatNo": "0,9,0000000001"}', data-status='0', data-id='0,9,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 22座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"23", "rowId": "11", "columnId": "23", "type": "N", "seatNo": "0,8,0000000001"}', data-status='0', data-id='0,8,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 23座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"24", "rowId": "11", "columnId": "24", "type": "N", "seatNo": "0,7,0000000001"}', data-status='0', data-id='0,7,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 24座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"25", "rowId": "11", "columnId": "25", "type": "N", "seatNo": "0,6,0000000001"}', data-status='0', data-id='0,6,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 25座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"26", "rowId": "11", "columnId": "26", "type": "N", "seatNo": "0,5,0000000001"}', data-status='0', data-id='0,5,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 26座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"27", "rowId": "11", "columnId": "27", "type": "N", "seatNo": "0,4,0000000001"}', data-status='0', data-id='0,4,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 27座
+                .wrap(data-love='0', data-info='{"index":"0","row":"10", "column":"28", "rowId": "11", "columnId": "28", "type": "N", "seatNo": "0,3,0000000001"}', data-status='0', data-id='0,3,0000000001', data-bid='dp_wx_seat_select')
+                  .seat
+                    .name
+                      div 11排
+                      div 28座
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+                .wrap
+                  .seat
+              .mew-info(style='transform: translate3d(0px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg);')
+                img(src='data:image/png;base64,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')
+        .buy-block(data-show='recommend')
+          .cinema-info
+            .seat-type-info
+              span.text-middle
+                span.c.icon
+                span.text 可选
+              span.text-middle
+                span.u.icon
+                span.text 已选
+              span.text-middle
+                span.s.icon
+                span.text 已售
+              span.text-middle
+                span.l.icon
+                span.text 情侣座
+          .recommend-price-block
+            .recommend-block
+              .title 推荐座位
+              .recommend-list.grid-4
+                .wrap(data-bid='dp_wx_seat_recommend')
+                  .button(data-desc='{"img":"http://p0.meituan.net/movie/4d5558c36804180ca9a2355c2f16d2b05701957.png","remind":"赚到了，后排看IMAX体验更棒耶！"}', data-obj='[{"columnId":"16","rowId":"7","rowNum":6,"sectionId":"1"}]') 1人
+                .wrap(data-bid='dp_wx_seat_recommend')
+                  .button(data-desc='{"img":"http://p0.meituan.net/movie/4d5558c36804180ca9a2355c2f16d2b05701957.png","remind":"赚到了，后排看IMAX体验更棒耶！"}', data-obj='[{"columnId":"16","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"17","rowId":"7","rowNum":6,"sectionId":"1"}]') 2人
+                .wrap(data-bid='dp_wx_seat_recommend')
+                  .button(data-desc='{"img":"http://p0.meituan.net/movie/4d5558c36804180ca9a2355c2f16d2b05701957.png","remind":"赚到了，后排看IMAX体验更棒耶！"}', data-obj='[{"columnId":"15","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"16","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"17","rowId":"7","rowNum":6,"sectionId":"1"}]') 3人
+                .wrap(data-bid='dp_wx_seat_recommend')
+                  .button(data-desc='{"img":"http://p0.meituan.net/movie/4d5558c36804180ca9a2355c2f16d2b05701957.png","remind":"赚到了，后排看IMAX体验更棒耶！"}', data-obj='[{"columnId":"15","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"16","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"17","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"18","rowId":"7","rowNum":6,"sectionId":"1"}]') 4人
+                .wrap(data-bid='dp_wx_seat_recommend')
+                  .button(data-desc='{"img":"http://p0.meituan.net/movie/4d5558c36804180ca9a2355c2f16d2b05701957.png","remind":"赚到了，后排看IMAX体验更棒耶！"}', data-obj='[{"columnId":"14","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"15","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"16","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"17","rowId":"7","rowNum":6,"sectionId":"1"},{"columnId":"18","rowId":"7","rowNum":6,"sectionId":"1"}]') 5人
+          .price-block(data-obj='{"seatsPrice":{"1":{"desc":[{"activity":"","price":"64"}],"totalPrice":"64"},"2":{"desc":[{"activity":"","price":"64"},{"activity":"","price":"64"}],"totalPrice":"128"},"3":{"desc":[{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"}],"totalPrice":"192"},"4":{"desc":[{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"}],"totalPrice":"256"},"5":{"desc":[{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"}],"totalPrice":"320"},"6":{"desc":[{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"},{"activity":"","price":"64"}],"totalPrice":"384"}},"seatsPriceDetail":{"1":{"detail":[],"display":false,"originPrice":"64"},"2":{"detail":[],"display":false,"originPrice":"64"},"3":{"detail":[],"display":false,"originPrice":"64"},"4":{"detail":[],"display":false,"originPrice":"64"},"5":{"detail":[],"display":false,"originPrice":"64"},"6":{"detail":[],"display":false,"originPrice":"64"}}}')
 </template>
 
 <script>
@@ -77,9 +1527,7 @@ export default {
   data: function() {
     return {};
   },
-  created() {
-    _self = this;
-  },
+  created() {},
   mounted() {},
   methods: {},
   computed: {},
@@ -89,479 +1537,56 @@ export default {
 };
 </script>
 
+<style scoped>
+a {
+  text-decoration: none;
+}
+.confirm_alert {
+  width: 280px;
+  background: #fff;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  position: fixed;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  border: 1px solid #efefef;
+  text-align: center;
+  z-index: 10000002;
+}
+.confirm_alert .alert_content {
+  padding: 20px;
+  border-bottom: 1px solid #efefef;
+}
+.confirm_alert .alert_buttons {
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+}
+.confirm_alert a {
+  color: #08c;
+  float: left;
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.confirm_alert a.last {
+  border-left: 1px solid #efefef;
+}
+.confirm_alert a.all {
+  width: 100%;
+}
+</style>
 
 <style scoped>
-.order-progress-bar {
-  height: 60px;
-  width: 100%;
-  margin: 40px 0;
-  text-align: center;
-}
-.order-progress-bar .step {
-  float: left;
-  width: 25%;
-}
-.order-progress-bar .bar {
-  width: 0;
-  height: 4px;
-  border-left: 150px solid #ffd8d7;
-  border-right: 150px solid #ffd8d7;
-}
-.order-progress-bar .first .bar {
-  border-left-color: transparent !important;
-}
-.order-progress-bar .last .bar {
-  border-right-color: transparent !important;
-}
-.order-progress-bar .step-num {
-  color: #fff;
-  font-size: 12px;
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  border-radius: 10px;
-  text-align: center;
-  background-color: #ffd8d7;
-  position: relative;
-  top: 10px;
-}
-.order-progress-bar .step-text {
-  font-size: 14px;
-  color: #999;
-  display: inline-block;
-  margin-top: 10px;
-}
-.order-progress-bar .done .bar {
-  border-color: #f03d37;
-}
-.order-progress-bar .done .step-num {
-  background-color: #f03d37;
-}
-.order-progress-bar .done .step-text {
-  color: #f03d37;
-}
-.modal-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.modal-container .modal {
-  width: 460px;
-  height: 155px;
-  padding: 30px 0;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  text-align: center;
-}
-.modal-container .icon {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background: url(data:image/png;base64,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)
-    no-repeat;
-}
-.modal-container .tip {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 26px;
-  margin-top: 12px;
-}
-.modal-container .tip .highlight {
-  color: #f03d37;
-}
-.modal-container .btn {
-  border-radius: 100px;
-  height: 42px;
-  line-height: 42px;
-  font-size: 16px;
-  width: 260px;
-  padding: 0;
-  cursor: default;
-}
-.modal-container .ok-btn {
-  color: #fff;
-  background-color: #f03d37;
-  -webkit-box-shadow: 0 2px 10px -2px #f03d37;
-  box-shadow: 0 2px 10px -2px #f03d37;
-}
-.modal-container .cancel-btn {
-  margin-left: 12px;
-  color: #999;
-  background-color: #e5e5e5;
-  -webkit-box-shadow: 0 2px 10px -2px #e5e5e5;
-  box-shadow: 0 2px 10px -2px #e5e5e5;
-}
-.modal-container .short.btn {
-  width: 106px;
-}
-.main {
-  width: 100%;
-  border: 1px solid #e5e5e5;
-  font-size: 0;
-}
-.hall {
-  width: 820px;
-  display: inline-block;
-  vertical-align: top;
-}
-.hall .seat-example {
-  margin: 30px 0 30px 118px;
-}
-.hall .seat-example .example {
-  display: inline-block;
-  font-size: 16px;
-  color: #666;
-  height: 26px;
-  line-height: 26px;
-  padding-left: 38px;
-  background-repeat: no-repeat;
-  margin-right: 50px;
-}
-.hall .seat-example .selectable-example {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAY9JREFUSA3tVs1qg0AQ3l1/i5eCFC8+QSC0+BQ999QeC32t9lLovac8RQwk6BOUXLzVitFE0/mEDVIiJsbkUgeM7jjzfd/OjpvlrGZhGL6uVqvnsix5zX3yoxBia5rm22g0etkL5vt+WRTFtm8DJrDrpKI+wExJXd3VyzMw/1axf5YDpe6IqRSPUJZlGdQdmN4eBixgAps4nmRGRUyOCTneXddlnHOWJEkv5CAFFjCBTeOP2Wz2CXI+nU7vqZkmnudVAXBuNptKpWVZGHa2OI4ZdTPTNK3CIB42n89TarYHQWpuHcfJoEqaqqqViFNKDhKUV5ICGxy2bQt6d4cfU1EUQ5LKO4KQ3NWQW5+MxAEXCbraNZd8can7QHypSrOh1EOpz1YBtQkZOw+2zK67V1teI7FhGGy9XjfpavWDWNf1xrhGYtpTGa5z2f/6jmkZFPwff0VR1H0xj1yL5XKJhv3hQRDoaZriILClKz8S5+hwIk3ptHNTHTtowBeLxXWe5/2d8vZIoi4X4/H4myZY/AJMWAAq2pF/7QAAAABJRU5ErkJggg==);
-}
-.hall .seat-example .sold-example {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAeRJREFUSA3tlr9Lw0AUx99dmyZtpRbBX6AOoiAG1KF1EXFUcBMEHRX/LV0EFyfBUhwFJwWdXC2CIKKIttU0TXLPd6kJaaFQz3bSB0kud+99P3ePl7swiNjZ4uz+h+PueAgs0v3rZowBpjXtYPXydi8QiwcN+ZTQlbEBFmNd5YKHyM4fXncJEYJ5FCxX2m2o1JearVlsAkcn0et2CD7NmVt6nMPdu0Up97rGrdY9X1NqFxbN7UDYBxfzs0XO4HCqPwVxzuH6uQIVxw18lJ9VWsDNSwU0EpfaQoijYt48kYKskDfXBIri0mgWaNy3Z8uBUtmC3FAm7GuMdH5HBLh4fIPpbBJGUrofKKjv6qlsuQgbHBnMj/cZdgCVHoNJzS8IyxWdk1o8bSFAi/EQKoclYzitySwvcCbQoKJrTCkSnCAvh4JVzaXlGdHVfAtxYDoCJsPiUgWoxv2DVTP347j/VP84ZaoBfy/VTT8C0bQ5KKDmefBiqe1etB+D3JvbWVvwZCYFj582xan9jSCdEhMZox0X2oKzehzk1Sv7Y8WFLMaR48PTZ93pVUpbde8rNaBjuMpuN83EXUnYVEJIx2e91bHb7/SNWOn08KBfslSBrLA8l9WNhNq30+Hs7Fqdr4/OlNnxsfcFxEaatII5mN4AAAAASUVORK5CYII=);
-}
-.hall .seat-example .selected-example {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAoxJREFUSA3Fls9LFGEYx78z7rq7WuEiQqEVi1SHwjrVSU9aghURJYa2UUgd+nEuKAg6dK7cQ6FSCYrdosK/oFupFF46CLkFBZm7s+K4P2benmfGHRx3t5nZXdln2Zl5n3me5/O+z/vMMyNhk0RfY0zL4qrQIW1SV3wpyRA+P8ZfRTGcD+bLX/CZoeF9kMiwqiIEpJXvuEZBLbANwSutNpRXIFH+tmbRBq7qMh2CWeDLoxjgnV1bNlLu4Ob+di5txuTYQ+O4lPc0wEOjmNGAicZmUpMmEQfYoVLhGMmflOo6gGPrGiYHx/CW40oE7dUFZpojPDJR6RTNcgVo2mvuj6n1flxeJGALENy54SuAv0tQJR3nZR042hBGOg9lkwAZcpFRlXuSPY1H4JODho+eoxj0zFhQ1tLCgrsgU5Ufk2kQpIkEthJkSg9VomvparuDeye+4vjuqOFDaYVsVZAtTICYoeK3bHbOg66227hw8AmWlE+Y/T3t7EAWrsFXDk+he//dgqCdrbcI+tSAxuZ7sK4lC2yKKVyD6+UGnG1/jL7IIytOZ+tNXDz0jKCfEZs/CTWXsO45Xdha5v+MXy4M4HrHO5yK3Iegn5L5RdARxFOzBO0hKD0GHsQ1OKurePHlDG50vEdv5IGBiKfmMDLX7RnKzq5TzcYMf07whT8fsJj4iFiZUI7lesVszJLV1wh+2hxUcPS04go4Ba41A5dMNXceLUONnVpfWUJdb6P1F3UvCea3ybpS1MedkvpwKFzatCTYHwL4v11Ssz2uFbiOwT8yCjy+ecvfAJU7q8Cq9PAN6r8ljQ8BQbOgOt5eoZpTD7Sjxah4/u4dnETTDj88vPq9T3A1C/mcH0p/P7R/ODnAZaZCuGEAAAAASUVORK5CYII=);
-}
-.hall .seat-example .couple-example {
-  padding-left: 77px;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAaCAYAAAAOl/o1AAAAAXNSR0IArs4c6QAAAfFJREFUWAntmM1qwkAQxzffKV4KEiTgK0iLvkTPPbWv0lN76JMUeu/Jp1BB8Q2KHrzVSkg0pvNPWVnXpD25CWsG8jGThM3/t7uTzRhMsNFo9EzuU5ZljhDW9tQwjC2Jex0MBi+FIglIkqYp8VBri8Uiw6baoBWaRRim6NALOaZ5FBIva3cOrdAsCrNFp6rzMAyravqk3cNwGI/HDyAWxzHb7/cnN+oWgEZohWbS/sj15UAoMKTAW7fbZZRo2Gaz0RoKYEAjtEIz+e+TyeQDUAxKKnc0j4b9fj+/AcHdbpfTa7VacM9uy+Uyb0PV1Fmv18z3feY4v+mD9LPpdBpRkr03idJNp9OJQYubbds5HB2nDsRjmnAY0Azt7XbbpGu3Nu18y7I8DoMfcRMeVmGqRga0QJPY+VwfGBCoq0NS5Rcu/dgAkUZALYAgqfLEKr2fcrcWQJSr/qPBZqUqwWlGSANEIiC5tRghTVKVeqVObmlSxYoOS3cVq9UgCHIm+Ic6t/2npxSI53lsu0WFTS8DENd1S0WVAqG1PcN2adYkVanHawFEeqfKXJpOFuohn6vVqtJkgd9/lSWAIuJU9ccH5NuYz+duFEUoEGW0HZXkix7UNUYwIqoaBnmZjBxjNptdJ0mif3W5oEfpq2P2er0vGhDpD2q0q+oG3RT9AAAAAElFTkSuQmCC);
-}
-.seats-block {
-  font-size: 0;
-  overflow: hidden;
-  margin-left: 20px;
-  white-space: nowrap;
-}
-.seats-block .row-id-container {
-  width: 20px;
-  float: left;
-  margin-top: 112px;
-  white-space: normal;
-}
-.seats-block .seat-row {
-  white-space: nowrap;
-  margin-bottom: 10px;
-  text-align: center;
-}
-.seats-block .empty-row {
-  height: 20px;
-}
-.seats-block .empty-row-id {
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-}
-.seats-block .row-id {
-  font-size: 16px;
-  color: #999;
-  margin-right: 40px;
-  margin-bottom: 10px;
-  display: inline-block;
-  width: 20px;
-  height: 26px;
-  line-height: 29px;
-  text-align: center;
-}
-.seats-block .seats-container {
-  margin-left: 50px;
-  overflow: auto;
-  position: relative;
-  padding-top: 112px;
-}
-.seats-block .seats-wrapper {
-  display: inline-block;
-  min-width: 550px;
-}
-.seats-block .screen-container {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: -1;
-}
-.seats-block .screen-container .screen {
-  width: 550px;
-  padding-top: 50px;
-  text-align: center;
-  font-size: 16px;
-  color: #666;
-  background: url(data:image/png;base64,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)
-    no-repeat;
-  background-position-x: center;
-  position: relative;
-  margin-bottom: 40px;
-}
-.seats-block .screen-container .c-screen-line {
-  width: 0;
-  border-left: 1px dashed #e5e5e5;
-  position: absolute;
-  top: 90px;
-  bottom: 0;
-  left: 50%;
-}
-.seats-block .seat {
-  display: inline-block;
-  font-size: 0;
-  width: 30px;
-  height: 26px;
-  margin: 0 5px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAY9JREFUSA3tVs1qg0AQ3l1/i5eCFC8+QSC0+BQ999QeC32t9lLovac8RQwk6BOUXLzVitFE0/mEDVIiJsbkUgeM7jjzfd/OjpvlrGZhGL6uVqvnsix5zX3yoxBia5rm22g0etkL5vt+WRTFtm8DJrDrpKI+wExJXd3VyzMw/1axf5YDpe6IqRSPUJZlGdQdmN4eBixgAps4nmRGRUyOCTneXddlnHOWJEkv5CAFFjCBTeOP2Wz2CXI+nU7vqZkmnudVAXBuNptKpWVZGHa2OI4ZdTPTNK3CIB42n89TarYHQWpuHcfJoEqaqqqViFNKDhKUV5ICGxy2bQt6d4cfU1EUQ5LKO4KQ3NWQW5+MxAEXCbraNZd8can7QHypSrOh1EOpz1YBtQkZOw+2zK67V1teI7FhGGy9XjfpavWDWNf1xrhGYtpTGa5z2f/6jmkZFPwff0VR1H0xj1yL5XKJhv3hQRDoaZriILClKz8S5+hwIk3ptHNTHTtowBeLxXWe5/2d8vZIoi4X4/H4myZY/AJMWAAq2pF/7QAAAABJRU5ErkJggg==)
-    no-repeat;
-  background-position: 0 1px;
-}
-.seats-block .seat.empty {
-  background-image: none;
-}
-.seats-block .seat.sold {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAeRJREFUSA3tlr9Lw0AUx99dmyZtpRbBX6AOoiAG1KF1EXFUcBMEHRX/LV0EFyfBUhwFJwWdXC2CIKKIttU0TXLPd6kJaaFQz3bSB0kud+99P3ePl7swiNjZ4uz+h+PueAgs0v3rZowBpjXtYPXydi8QiwcN+ZTQlbEBFmNd5YKHyM4fXncJEYJ5FCxX2m2o1JearVlsAkcn0et2CD7NmVt6nMPdu0Up97rGrdY9X1NqFxbN7UDYBxfzs0XO4HCqPwVxzuH6uQIVxw18lJ9VWsDNSwU0EpfaQoijYt48kYKskDfXBIri0mgWaNy3Z8uBUtmC3FAm7GuMdH5HBLh4fIPpbBJGUrofKKjv6qlsuQgbHBnMj/cZdgCVHoNJzS8IyxWdk1o8bSFAi/EQKoclYzitySwvcCbQoKJrTCkSnCAvh4JVzaXlGdHVfAtxYDoCJsPiUgWoxv2DVTP347j/VP84ZaoBfy/VTT8C0bQ5KKDmefBiqe1etB+D3JvbWVvwZCYFj582xan9jSCdEhMZox0X2oKzehzk1Sv7Y8WFLMaR48PTZ93pVUpbde8rNaBjuMpuN83EXUnYVEJIx2e91bHb7/SNWOn08KBfslSBrLA8l9WNhNq30+Hs7Fqdr4/OlNnxsfcFxEaatII5mN4AAAAASUVORK5CYII=);
-}
-.seats-block .seat.selected {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAaCAYAAACgoey0AAAAAXNSR0IArs4c6QAAAoxJREFUSA3Fls9LFGEYx78z7rq7WuEiQqEVi1SHwjrVSU9aghURJYa2UUgd+nEuKAg6dK7cQ6FSCYrdosK/oFupFF46CLkFBZm7s+K4P2benmfGHRx3t5nZXdln2Zl5n3me5/O+z/vMMyNhk0RfY0zL4qrQIW1SV3wpyRA+P8ZfRTGcD+bLX/CZoeF9kMiwqiIEpJXvuEZBLbANwSutNpRXIFH+tmbRBq7qMh2CWeDLoxjgnV1bNlLu4Ob+di5txuTYQ+O4lPc0wEOjmNGAicZmUpMmEQfYoVLhGMmflOo6gGPrGiYHx/CW40oE7dUFZpojPDJR6RTNcgVo2mvuj6n1flxeJGALENy54SuAv0tQJR3nZR042hBGOg9lkwAZcpFRlXuSPY1H4JODho+eoxj0zFhQ1tLCgrsgU5Ufk2kQpIkEthJkSg9VomvparuDeye+4vjuqOFDaYVsVZAtTICYoeK3bHbOg66227hw8AmWlE+Y/T3t7EAWrsFXDk+he//dgqCdrbcI+tSAxuZ7sK4lC2yKKVyD6+UGnG1/jL7IIytOZ+tNXDz0jKCfEZs/CTWXsO45Xdha5v+MXy4M4HrHO5yK3Iegn5L5RdARxFOzBO0hKD0GHsQ1OKurePHlDG50vEdv5IGBiKfmMDLX7RnKzq5TzcYMf07whT8fsJj4iFiZUI7lesVszJLV1wh+2hxUcPS04go4Ba41A5dMNXceLUONnVpfWUJdb6P1F3UvCea3ybpS1MedkvpwKFzatCTYHwL4v11Ssz2uFbiOwT8yCjy+ecvfAJU7q8Cq9PAN6r8ljQ8BQbOgOt5eoZpTD7Sjxah4/u4dnETTDj88vPq9T3A1C/mcH0p/P7R/ODnAZaZCuGEAAAAASUVORK5CYII=);
-}
-.seats-block .seat.lover {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAaCAYAAAAOl/o1AAAAAXNSR0IArs4c6QAAAfFJREFUWAntmM1qwkAQxzffKV4KEiTgK0iLvkTPPbWv0lN76JMUeu/Jp1BB8Q2KHrzVSkg0pvNPWVnXpD25CWsG8jGThM3/t7uTzRhMsNFo9EzuU5ZljhDW9tQwjC2Jex0MBi+FIglIkqYp8VBri8Uiw6baoBWaRRim6NALOaZ5FBIva3cOrdAsCrNFp6rzMAyravqk3cNwGI/HDyAWxzHb7/cnN+oWgEZohWbS/sj15UAoMKTAW7fbZZRo2Gaz0RoKYEAjtEIz+e+TyeQDUAxKKnc0j4b9fj+/AcHdbpfTa7VacM9uy+Uyb0PV1Fmv18z3feY4v+mD9LPpdBpRkr03idJNp9OJQYubbds5HB2nDsRjmnAY0Azt7XbbpGu3Nu18y7I8DoMfcRMeVmGqRga0QJPY+VwfGBCoq0NS5Rcu/dgAkUZALYAgqfLEKr2fcrcWQJSr/qPBZqUqwWlGSANEIiC5tRghTVKVeqVObmlSxYoOS3cVq9UgCHIm+Ic6t/2npxSI53lsu0WFTS8DENd1S0WVAqG1PcN2adYkVanHawFEeqfKXJpOFuohn6vVqtJkgd9/lSWAIuJU9ccH5NuYz+duFEUoEGW0HZXkix7UNUYwIqoaBnmZjBxjNptdJ0mif3W5oEfpq2P2er0vGhDpD2q0q+oG3RT9AAAAAElFTkSuQmCC);
-  width: 35px;
-}
-.seats-block .seat.lover.selected {
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAaCAYAAAAOl/o1AAAAAXNSR0IArs4c6QAAAvVJREFUWAntmMtrE1EUxr+ZyaSTpLEppaDQB1JdiSS2ijsFF9WN6KqojQsXIigKbu3CKAj+AT4Wbd0oXbhzIYIKuhKKSAsqPla1VGorJW2aR5N0Mp4zJSEzNTHJZMBMcmCYuXfunTPf79577kNAkYXHEdEE3NA0yEXZjn0UBGQFDXeeXMStvEhX/oHvDKOzH7IgFuc695kbPjqHMVJYAGKQzgWaBQY3M/UQmEeDAYhz+0LlygpAzk/gDIhYYgXYTFf+gUYtyRqTpJU1hx/hbF6HDiQ8gRcq8NjXBYgSsPbT2VAYBmsUSCtrzqmYGp3EM4YiEYwTOQ2Rrt0QXQog0+VyA/FlQOnYGmd5etXe+/yHcH3oHVY25rCc/Fpt9ZrKV+IzOk8gugEP6XO1Ad4AkIqhL3gSH8QcEPR2Is1dJ29uH4GgvqNm8znV33v9B3E59BKKq4NgfKv+AzXUqMRnbpO00dyq+IsckHZlB0QKsCGRQCgaQJyMJlIljWiVs8O7LoBbxGy9/iFcCb3Ssx/MDmMp+cVcpOa0VZ80PCAWIqfhN9qIhefvrwzlSieG+8dwbfAt9gSOFgptwXhNU5oAhjG//r7wrh4Pdvu0BGT84ymk1TguBZ9jIHAEPe2Des9gGPdn6g+DgdrtUzg3iZsUXCIURwwWW6SgQ3kcZMvZTt8+XD3wBm7JCzWXoZ4h6T3jR2y6XDVL76z45Bkm/hsI9Bh/IRkFNlZx21IP4U/+SnzGvZljyKhJHcbD2eOwE4bdPg17GSOzylOLiU+4O70fkihjNb1QeUULJe3yWRcgrGs9u2RBXm1V7fBpecjUJuX/rdUCYmqbFhATkJIxhFd0aoY2PrTUdZTR6rtol7JNWkkgvAvciG0r3/gZtE/h9VUpKwlE9tCijK5ms1YMMbV4C4gRiMRAFjIxWDj5MH6xUVMp2stAQ1yIPIX7+5p+QKQRHZpXmtMo1qb2DqBbn4HopEgYnUKgXcY/joScCSuehXhaRmxkBOofEssDcdHpkRIAAAAASUVORK5CYII=);
-}
-.seats-block .seat.lover-left {
-  background-position: 1px 0;
-  margin-right: 0;
-}
-.seats-block .seat.lover-right {
-  background-position: -34px 0;
-  margin-left: 0;
-}
-.side {
-  width: 340px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  display: inline-block;
-}
-.side .info-item {
-  font-size: 12px;
-  color: #999;
-  margin-bottom: 4px;
-}
-.side .info-item .value {
-  color: #151515;
-  margin-left: 2px;
-}
-.side .movie-info .poster {
-  width: 115px;
-  height: 158px;
-  border: 2px solid #fff;
-  -webkit-box-shadow: 0 2px 7px 0 hsla(0, 0%, 53%, 0.5);
-  box-shadow: 0 2px 7px 0 hsla(0, 0%, 53%, 0.5);
-  float: left;
-}
-.side .movie-info .poster img {
-  width: 100%;
-  height: 100%;
-}
-.side .movie-info .content {
-  margin-left: 140px;
-}
-.side .movie-info .content .name {
-  font-size: 20px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 14px;
-}
-.side .show-info {
-  margin-top: 20px;
-}
-.side .show-info .info-item {
-  margin-bottom: 9px;
-}
-.side .show-info .info-item > span {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 14px;
-}
-.side .show-info .info-item .value {
-  width: 85%;
-}
-.side .show-info .info-item .screen {
-  color: #f03d37;
-}
-.side .ticket-info {
-  padding: 20px 0 10px;
-  border-top: 1px dashed #e5e5e5;
-  border-bottom: 1px dashed #e5e5e5;
-}
-.side .ticket-info .buy-limit {
-  font-size: 14px;
-  color: #999;
-  margin: 0;
-}
-.side .ticket-info .no-selected {
-  font-size: 14px;
-  color: #333;
-  text-align: center;
-  margin: 28px 0 39px;
-}
-.side .ticket-info .no-selected span {
-  color: #f03d37;
-}
-.side .ticket-info .text {
-  font-size: 14px;
-  color: #999;
-  float: left;
-}
-.side .ticket-info .ticket-container {
-  margin-left: 42px;
-  margin-bottom: 20px;
-  position: relative;
-  top: -5px;
-}
-.side .ticket-info .ticket {
-  cursor: default;
-  position: relative;
-  font-size: 12px;
-  color: #f03d37;
-  display: inline-block;
-  width: 60px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  margin: 0 12px 10px 0;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAeCAYAAABwmH1PAAAAAXNSR0IArs4c6QAAAXlJREFUWAlj/Oho7cXAzLTg/89fogzDGDCys71m+PsvgeGji+2r38eP/h/u4Pexo/9BfmUCxSyLhdUwjluI11gsrRhAfmUa9j5F8+Coh9ECZNhxR2N42EUpmodGZgx/TYz9+nvzhn9ogTEsuUysDGxS/548jP4+qe/0l6zUL//fvh2WHoV5ihHGALa0GD872rQxamrm8EybzQMTH070RzsLBngeZmRk/M+7/0jVv9s3rw7n5A33MCgmQZ4GRnn7r3Vrvw+nmEX2C4qHQRLMPxlO/X38kA1Z0XBiY3h4OHkOm18wPPyXncGMWVb+FzbFw0EMxcOgkvo/A0MlW1Aw53DwHDY/wD0Mq5aYVNW1WX0D4OLYNA1lMZavtraSoGT8ydWukklTU5u7uWNY1sGwSGL5zfDrGYuM6ldQMh7OMQv3MIjBPX8xN0xguNPDNq/iirhRD+MKmeEiPhrDwyUmcflj5MUwaM7lz/FjuAJk2IiD/AjyK+NIm0wDAACxUs8MaULTAAAAAElFTkSuQmCC)
-    no-repeat;
-}
-.side .ticket-info .ticket:hover:after {
-  content: "";
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAMAAAAM7l6QAAAAe1BMVEUAAAD///////+/v7+ioqqjo6mioqmhoamhoamgoqihoqigoqihoqigoaihoqegoaihoqigoaeio6mjpKqkpaulpqyqqrCrrLKtrrOvsLWwsbaxsbbIyczd3uDj5OXm5ufo6Orq6+zs7O7w8PHy8vP09PT19fb39/f///8xq/o0AAAAEXRSTlMAAQIIPFN2hYuMqL/Z4uny8xXlGIYAAAEESURBVCjPhVPZEoIwEKuAIAJKuUGQG/L/X+hFl6IyzdNOMt1mL8YENMN2XN93HdvQ2Dd088IJF1PfqkePb+AdJfFg8R9YB1LP/A/OQrf4X1jLv3wH7/91b0/2Xv7NT3yrCkEH5e0TmM9uLPWWmPNFvaNa6teYwYmcslcQ1phFIoPZlLLGmHIeNZhywdnMISdhgyGJW4wZUQ5zV6dRi77DkK6My3ypkrgD+kQi/I2c9EAXS8RVTp4O6Hq0kZx8tZaNaONkQBNK1qiwfELzfJiOqAPBnagtxYz6/SybcA+oLaKpFZH5jJKaSiMpKWVRrSNRDVSxDqplUq2iYpFVZ6A8or0TfABxMjSH45kDbAAAAABJRU5ErkJggg==)
-    no-repeat;
-  width: 16px;
-  height: 16px;
-  background-size: 16px;
-  position: absolute;
-  top: -7px;
-  right: -7px;
-}
-.side .ticket-info .total-price {
-  font-size: 14px;
-  color: #333;
-}
-.side .ticket-info .total-price .price {
-  color: #f03d37;
-  font-size: 24px;
-}
-.side .ticket-info .total-price .price:before {
-  content: "\FFE5";
-  font-size: 14px;
-}
-.side .confirm-order {
-  padding: 20px 0;
-  text-align: center;
-}
-.side .confirm-order .cellphone {
-  color: #999;
-  font-size: 14px;
-}
-.side .confirm-order .cellphone .phone-num {
-  color: #151515;
-}
-.side .confirm-order .login-form {
-  display: inline-block;
-  width: 260px;
-}
-.side .confirm-order .login-form input {
-  display: block;
-  width: 218px;
-  height: 40px;
-  border: 1px solid #e5e5e5;
-  border-radius: 50px;
-  margin-bottom: 6px;
-  padding: 0 20px;
-  font-size: 14px;
-  color: #333;
-}
-.side .confirm-order .login-form input:focus {
-  border-color: #f03d37;
-}
-.side .confirm-order .captcha {
-  width: 300px;
-}
-.side .confirm-order .captcha .input-captcha {
-  width: 48px;
-  display: inline-block;
-  margin-left: -20px;
-}
-.side .confirm-order .captcha img {
-  vertical-align: top;
-  width: 79px;
-  height: 42px;
-  margin: 0 10px 6px 5px;
-}
-.side .confirm-order .captcha .change-captcha {
-  color: #f03d37;
-  font-size: 12px;
-  cursor: pointer;
-}
-.side .confirm-order .captcha .change-captcha:hover {
-  text-decoration: underline;
-}
-.side .confirm-order .code-inputer {
-  display: inline-block;
-  line-height: 42px;
-}
-.side .confirm-order .send-code {
-  font-size: 14px;
-  position: relative;
-  right: -80px;
-  top: -48px;
-  color: #f03d37;
-  cursor: default;
-}
-.side .confirm-order .send-code.disable {
-  color: #ccc;
-}
-.side .confirm-order .confirm-btn {
-  cursor: default;
-  width: 260px;
-  height: 42px;
-  line-height: 42px;
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  border-radius: 21px;
-  position: relative;
-  left: 50%;
-  margin: 38px 0 0 -130px;
-  background-color: #f03d37;
-  -webkit-box-shadow: 0 2px 10px -2px #f03d37;
-  box-shadow: 0 2px 10px -2px #f03d37;
-}
-.side .confirm-order .confirm-btn.disable {
-  background-color: #dedede;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.modal-container .modal .ox {
-  background-image: url(data:image/png;base64,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);
-  width: 81px;
-  height: 52px;
-}
-.modal-container .modal .xox {
-  background-image: url(data:image/png;base64,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);
-  width: 100px;
-  height: 52px;
-}
+@import "../assets/css/hall-common.css";
+</style>
+<style scoped>
+@import "../assets/css/hall-theme.css";
+</style>
+<style scoped>
+@import "../assets/css/hall-seats.css";
 </style>
