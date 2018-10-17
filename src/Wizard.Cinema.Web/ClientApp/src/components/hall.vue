@@ -16,11 +16,11 @@
               span.reminder-num(style='display: none;')
                 | 1个通知
                 i.fold-down
-        .select-block(style='margin-top: 0.3rem; height: 562.234px;')
+        .select-block(:style='selectBlockStyle')
           .seat-block-wrap(style='visibility: visible;')
-            .hall-name-wrapper.animate(style='transform: translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg);')
+            .hall-name-wrapper.animate(:style='hallNameStyle')
               span.hall-name IMAX厅
-            .row-nav.animate(style='transform: translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);')
+            .row-nav.animate(:style='rowNavStyle')
               div 2
               div 3
               div 4
@@ -31,7 +31,7 @@
               div 9
               div 10
               div 11
-            .seats-block.animate(style='width: 1426px; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);')
+            .seats-block.animate(@mousedown="move" :style='seatblockStyle')
               .m-line(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
                 .divider(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
               .seats-wrap(data-sectionid='1', data-sectionname='花城汇IMAX', style='width: 1426px;')
@@ -1523,11 +1523,264 @@
 <script>
 import Layout from "@/components/Layout";
 
+/*
+function(t, e, n) {
+		(function(i) {
+			"use strict";
+
+			function a() {
+                p = i(".seat-block .select-block"),
+                    h = i(".select-block .hall-name-wrapper"),
+                    u = i(".select-block .row-nav"),
+                    m = i(".select-block .seats-block"),
+                    f = i(".select-block .mew-info"),
+                    v = i(".seats-wrap .wrap .seat"),
+                    "mmweb" === window.channelName && f.hide(),
+                    _ = p.width(),
+                    g = p.height(),
+                    b = m.width(),
+                    w = m.height(),
+                    y = u.eq(0).width(),
+                    T = (_ - b) / 2,
+                    E = (g - w) / 2,
+                    A = function () {
+					var t = b > w ? _ / b : g / w;
+					return t * w > g && (t = g / w), t
+                    }(),
+                    A = A > 1 ? 1 : A, A *= .8,
+                    A = A <  F? F : A,
+                    I = T,
+                    x = E,
+                    C = A,
+                    O || (O = new L["default"](m[0])),
+                    m.data("transformer", O),
+                    k || (k = new L["default"](u[0])),
+                    u.data("transformer", k),
+                    S || (S = new L["default"](h[0])),
+                    h.data("transformer", S),
+                    D || (D = new L["default"](f[0])),
+                    f.data("transformer", D),
+                    s(),
+                    o()
+			}
+			function s() {
+				M = {
+					translateObj: {
+						x: T,
+						y: E,
+						z: 0
+					},
+					scale: A
+                },
+                    i.extend(!0, O.transform, M),
+                    O.update(),
+                    i.extend(!0, k.transform, M),
+                    k.transform.translateObj.x = -y * (1 - A) / 2,
+                    k.update(),
+                    i.extend(!1, D.transform, M),
+                    D.update(),
+                    i.extend(!0, S.transform, M);
+				var t = b / 2 + T - h.width() / 2;
+                i(".m-line").length && "none" !== i(".m-line").css("transform") && A > .8 && (t -= 23),
+                    S.transform.translateObj.x = t,
+                    S.transform.translateObj.y = 0,
+                    S.transform.scale = 1,
+                    S.update(),
+                    l()
+			}
+			function o() {
+				var t = new Hammer(m[0], {});
+				t.get("pinch").set({
+					enable: !0
+				}), t.on("panstart swipestart pinchstart", function(t) {
+					u.removeClass("animate"), h.removeClass("animate"), m.removeClass("animate")
+				}), t.on("panend swipestart pinchend", function(t) {
+					u.addClass("animate"), h.addClass("animate"), m.addClass("animate"), r()
+				}), t.on("panstart", function(t) {
+					j = T, P = E
+				}), t.on("panmove", function(t) {
+					T = j + t.deltaX, E = P + t.deltaY, _ > b * A ? T = I : (T < X.right && (T = X.right), T > X.left && (T = X.left)), g > w * A ? E = x : (E < X.bottom && (E = X.bottom), E > X.top && (E = X.top)), s()
+				}), t.on("pinchstart", function(t) {
+					R = A
+				}), t.on("pinchmove", function(t) {
+					var e = R * t.scale;
+					if (e > H || e < F) return void t.preventDefault();
+					A = e, s()
+				})
+			}
+			function r() {
+				var t = !1;
+				m.width() * A < _ && (T = I, t = !0), m.height() * A < g && (E = x, t = !0), t && s()
+			}
+			function l() {
+				X = {
+					left: b / 2 * (A - 1) + 40,
+					right: _ - b / 2 * (1 + A) - 40,
+					top: w / 2 * (A - 1) + 40,
+					bottom: g - w / 2 * (1 + A) - 40
+				}, T < X.right && (T = X.right), T > X.left && (T = X.left), E < X.bottom && (E = X.bottom), E > X.top && (E = X.top)
+			}
+			function c() {
+				if (!(C >= .8)) {
+					var t = this,
+						e = t.outerWidth() * A,
+						n = t.outerHeight() * A,
+						a = t.data("info"),
+						o = function() {
+							var e = t.parent();
+							if (0 === e.siblings(".seats-wrap").length) return 0;
+							var n = parseInt(a.index, 10);
+							if (0 === n) return 0;
+							var s = 0;
+							return e.siblings(".seats-wrap").each(function(t) {
+								t < n && (s += i(this).height())
+							}), s
+						}(),
+						r = function() {
+							return {
+								left: (a.column - 1) * e,
+								top: (a.row - 1) * n + o * A
+							}
+						}();
+					_ = i(".seat-block .select-block").width(), g = i(".seat-block .select-block").height();
+					var c = (r.left + e / 2) / (m.width() * A) * b,
+						d = (r.top + n / 2) / (m.height() * A) * w;
+					T = _ / 2 - c, E = g / 2 - d, A = .9, l(), s()
+				}
+			}
+			var d = n(63)["default"];
+			Object.defineProperty(e, "__esModule", {
+				value: !0
+			}), e["default"] = a, n(762);
+			var p, u, h, m, f, v, _, g, b, w, y, I, x, C, T, E, A, M, O, k, D, S, j, P, R, N = n(763),
+				L = d(N),
+				U = n(767),
+				B = d(U),
+				Y = n(769),
+				H = .9,
+				F = .4,
+				X = {
+					left: 0,
+					right: 0,
+					top: 0,
+					bottom: 0
+				},
+				z = !0;
+			i(".seat-block .select-block").on("click", '.seats-wrap .wrap[data-status="0"]', function(t) {
+				var e = i(this),
+					n = e.data("love"),
+					a = constant.seatData.seat,
+					s = a.doIconRain,
+					o = a.iconRainTriggerMillis,
+					r = a.iconRains;
+				if (e.hasClass("active")) e.removeClass("active"), 1 == n ? e.next(".wrap").removeClass("active") : 2 == n && e.prev(".wrap").removeClass("active"), B["default"].unSelected();
+				else {
+					var l = i('.select-block .seats-wrap .wrap[data-status="0"].active').length;
+					if (1 != n && 2 != n || l++, constant.discountLimit > 0 && l >= constant.discountLimit && z && l < constant.discountLimit + 1 && (Toast("褰撳墠浼樻儬娲诲姩闄愯喘" + constant.discountLimit + "寮犵エ"), z = !1), l >= constant.limit) return Toast("姣忔鏈€澶氬彲閫�" + constant.limit + "涓骇浣�"), !1;
+					e.addClass("active"), 1 == n ? e.next(".wrap").addClass("active") : 2 == n && e.prev(".wrap").addClass("active"), B["default"].selected(), c.call(e)
+				}(0, Y.startIconRain)(s, o, r, i('.select-block .seats-wrap .wrap[data-status="0"].active').length, !1)
+			}), t.exports = e["default"]
+		}).call(e, n(1))
+	},
+
+*/
+
 export default {
   data: function() {
-    return {};
+    return {
+      hallData: {
+        sections: [
+          {
+            cols: 31,
+            rows: 10,
+            seats: [
+              {
+                columns: [
+                  { columnId: "1", seatNo: "9,30,0000000001", st: "N" },
+                  { columnId: "2", seatNo: "9,29,0000000001", st: "N" },
+                  { columnId: "3", seatNo: "9,28,0000000001", st: "N" },
+                  { columnId: "4", seatNo: "9,27,0000000001", st: "N" },
+                  { columnId: "5", seatNo: "9,26,0000000001", st: "N" },
+                  { columnId: "6", seatNo: "9,25,0000000001", st: "N" },
+                  { columnId: "7", seatNo: "9,24,0000000001", st: "N" },
+                  { columnId: "8", seatNo: "9,23,0000000001", st: "N" },
+                  { columnId: "9", seatNo: "9,22,0000000001", st: "N" },
+                  { columnId: "10", seatNo: "9,21,0000000001", st: "N" },
+                  { columnId: "11", seatNo: "9,20,0000000001", st: "N" },
+                  { columnId: "12", seatNo: "9,19,0000000001", st: "N" },
+                  { columnId: "13", seatNo: "9,18,0000000001", st: "N" },
+                  { columnId: "14", seatNo: "9,17,0000000001", st: "N" },
+                  { columnId: "15", seatNo: "9,16,0000000001", st: "N" },
+                  { columnId: "16", seatNo: "9,15,0000000001", st: "N" },
+                  { columnId: "17", seatNo: "9,14,0000000001", st: "N" },
+                  { columnId: "18", seatNo: "9,13,0000000001", st: "N" },
+                  { columnId: "19", seatNo: "9,12,0000000001", st: "N" },
+                  { columnId: "20", seatNo: "9,11,0000000001", st: "N" },
+                  { columnId: "21", seatNo: "9,10,0000000001", st: "N" },
+                  { columnId: "22", seatNo: "9,9,0000000001", st: "N" },
+                  { columnId: "23", seatNo: "9,8,0000000001", st: "N" },
+                  { columnId: "24", seatNo: "9,7,0000000001", st: "N" },
+                  { columnId: "25", seatNo: "9,6,0000000001", st: "N" },
+                  { columnId: "26", seatNo: "9,5,0000000001", st: "N" },
+                  { columnId: "27", seatNo: "9,4,0000000001", st: "N" },
+                  { columnId: "28", seatNo: "9,3,0000000001", st: "N" },
+                  { columnId: "", seatNo: "", st: "E" },
+                  { columnId: "29", seatNo: "9,1,0000000001", st: "N" },
+                  { columnId: "30", seatNo: "9,0,0000000001", st: "N" }
+                ],
+                rowId: "2",
+                rowNum: 1
+              }
+            ],
+            sectionId: "1",
+            sectionName: "花城汇IMAX"
+          }
+        ]
+      },
+      seatBlock: {
+        seatWidth: 46, //座位宽46px
+        maxSeatLength: 0,
+        scale: 0.4, //初始是0.4，选中后0.9
+        seatblockStyle:
+          "width: 1426px; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translate3d(-525.5px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
+        rowNavStyle:
+          "transform: translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
+        selectBlockStyle: "margin-top: 0.3rem; height: 562.234px;"
+      },
+      selectBlockStyle: null,
+      hallNameStyle: null,
+      rowNavStyle: null,
+      seatblockStyle: null
+    };
   },
-  created() {},
+  created() {
+    var lengtharr = this.hallData.sections[0].seats.map(x => x.columns.length);
+    this.seatBlock.maxSeatLength = Math.max(...lengtharr);
+
+    console.log(this.seatBlock);
+
+    this.selectBlockStyle = {
+      "margin-top": "0.3rem",
+      height: "562.234px"
+    };
+    this.hallNameStyle = {
+      transform:
+        "translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)"
+    };
+    this.rowNavStyle = {
+      transform:
+        "translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
+    };
+    this.seatblockStyle = {
+      width: this.seatBlock.maxSeatLength * this.seatBlock.seatWidth + "px",
+      "touch-action": "none",
+      "user-select": "none",
+      "-webkit-user-drag": "none",
+      "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
+      transform:
+        "translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
+    };
+  },
   mounted() {},
   methods: {},
   computed: {},
