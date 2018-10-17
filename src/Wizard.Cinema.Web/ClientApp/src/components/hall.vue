@@ -16,11 +16,11 @@
               span.reminder-num(style='display: none;')
                 | 1个通知
                 i.fold-down
-        .select-block(:style='selectBlockStyle')
+        .select-block()
           .seat-block-wrap(style='visibility: visible;')
-            .hall-name-wrapper.animate(:style='hallNameStyle')
+            .hall-name-wrapper.animate()
               span.hall-name IMAX厅
-            .row-nav.animate(:style='rowNavStyle')
+            .row-nav.animate()
               div 2
               div 3
               div 4
@@ -31,9 +31,9 @@
               div 9
               div 10
               div 11
-            .seats-block.animate(@mousedown="move" :style='seatblockStyle')
-              .m-line(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
-                .divider(style='-webkit-transform: translateX(-23px);transform: translateX(-23px);')
+            .seats-block.animate(v-drag="true" )
+              .m-line(style="-webkit-transform: translateX(-23px);transform: translateX(-23px);")
+                .divider(style="-webkit-transform: translateX(-23px);transform: translateX(-23px);")
               .seats-wrap(data-sectionid='1', data-sectionname='花城汇IMAX', style='width: 1426px;')
                 .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"1", "rowId": "2", "columnId": "1", "type": "N", "seatNo": "9,30,0000000001"}', data-status='0', data-id='9,30,0000000001', data-bid='dp_wx_seat_select')
                   .seat
@@ -1736,56 +1736,126 @@ export default {
             sectionName: "花城汇IMAX"
           }
         ]
-      },
-      seatBlock: {
-        seatWidth: 46, //座位宽46px
-        maxSeatLength: 0,
-        scale: 0.4, //初始是0.4，选中后0.9
-        seatblockStyle:
-          "width: 1426px; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translate3d(-525.5px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
-        rowNavStyle:
-          "transform: translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
-        selectBlockStyle: "margin-top: 0.3rem; height: 562.234px;"
-      },
-      selectBlockStyle: null,
-      hallNameStyle: null,
-      rowNavStyle: null,
-      seatblockStyle: null
+      }
+      // seatBlock: {
+      //   seatWidth: 46, //座位宽46px
+      //   maxSeatLength: 0,
+      //   scale: 0.4, //初始是0.4，选中后0.9
+      //   seatblockStyle:
+      //     "width: 1426px; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); transform: translate3d(-525.5px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
+      //   rowNavStyle:
+      //     "transform: translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg);",
+      //   selectBlockStyle: "margin-top: 0.3rem; height: 562.234px;"
+      // },
+      // selectBlockStyle: null,
+      // hallNameStyle: null,
+      // rowNavStyle: null,
+      // seatblockStyle: null
     };
   },
   created() {
-    var lengtharr = this.hallData.sections[0].seats.map(x => x.columns.length);
-    this.seatBlock.maxSeatLength = Math.max(...lengtharr);
-
-    console.log(this.seatBlock);
-
-    this.selectBlockStyle = {
-      "margin-top": "0.3rem",
-      height: "562.234px"
-    };
-    this.hallNameStyle = {
-      transform:
-        "translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)"
-    };
-    this.rowNavStyle = {
-      transform:
-        "translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
-    };
-    this.seatblockStyle = {
-      width: this.seatBlock.maxSeatLength * this.seatBlock.seatWidth + "px",
-      "touch-action": "none",
-      "user-select": "none",
-      "-webkit-user-drag": "none",
-      "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
-      transform:
-        "translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
-    };
+    // var lengtharr = this.hallData.sections[0].seats.map(x => x.columns.length);
+    // this.seatBlock.maxSeatLength = Math.max(...lengtharr);
+    // console.log(this.seatBlock);
+    // this.selectBlockStyle = {
+    //   "margin-top": "0.3rem",
+    //   height: "562.234px"
+    // };
+    // this.hallNameStyle = {
+    //   transform:
+    //     "translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)"
+    // };
+    // this.rowNavStyle = {
+    //   transform:
+    //     "translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
+    // };
+    // this.seatblockStyle = {
+    //   width: this.seatBlock.maxSeatLength * this.seatBlock.seatWidth + "px",
+    //   "touch-action": "none",
+    //   "user-select": "none",
+    //   "-webkit-user-drag": "none",
+    //   "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
+    //   transform:
+    //     "translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
+    // };
   },
   mounted() {},
   methods: {},
   computed: {},
   components: {
     Layout
+  },
+  directives: {
+    drag: {
+      // 指令的定义
+      inserted: function(el) {
+        let odiv = el; //获取当前元素
+        let p = document.querySelector(".seat-block .select-block");
+        let h = document.querySelector(".select-block .hall-name-wrapper");
+        let u = document.querySelector(".select-block .row-nav");
+        let m = document.querySelector(".select-block .seats-block");
+        let f = document.querySelector(".select-block .mew-info");
+        let v = document.querySelector(".seats-wrap .wrap .seat");
+        let line = document.querySelector(".m-line");
+        let _ = p.clientWidth;
+        let g = p.clientHeight;
+        let b = m.scrollWidth;
+        let w = m.scrollHeight;
+        let y = u.children[0].clientWidth;
+        let T = (_ - b) / 2; //x
+        let E = (g - w) / 2; //y
+        let F = 0.4;
+        console.log(p, m, u);
+        console.log({ _, g, b, w, y, T, E });
+        var t = b > w ? _ / b : g / w;
+        t * w > g && (t = g / w);
+        var A = t;
+        A = A > 1 ? 1 : A;
+        A = A * 0.8;
+        A = A < F ? F : A;
+        var scale = A;
+        console.log({ x: T, y: E, t, scale });
+
+        var x2 = (-y * (1 - A)) / 2;
+        var nameX = b / 2 + T - h.clientWidth / 2;
+        //当计数列，则添加样式 -webkit-transform: translateX(-23px);transform: translateX(-23px);
+        line &&
+          "none" !== getComputedStyle(line)["transform"] &&
+          A > 0.8 &&
+          (nameX = nameX - 23);
+
+        m.style.width = `1426px`;
+        m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+        u.style.transform = `translate3d(${x2}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+
+        h.style.transform = `translate3d(${nameX}px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)`;
+
+        odiv.onmousedown = e => {
+          //算出鼠标相对元素的位置
+          let disX = e.clientX - T;
+          let disY = e.clientY - E;
+
+          console.log({ disX, disY });
+
+          document.onmousemove = e => {
+            //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
+            T = e.clientX - disX;
+            //E = e.clientY - disY;
+
+            m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+            u.style.transform = `transform: translate3d(-4.8px, -103.188px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+
+            //移动当前元素
+            // odiv.style.left = left + "px";
+            // odiv.style.top = top + "px";
+          };
+          document.onmouseup = e => {
+            document.onmousemove = null;
+            document.onmouseup = null;
+          };
+        };
+      }
+    }
   }
 };
 </script>
