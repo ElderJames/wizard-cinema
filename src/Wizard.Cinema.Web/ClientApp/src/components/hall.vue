@@ -32,8 +32,8 @@
               div 10
               div 11
             .seats-block.animate(v-drag="true" )
-              .m-line(style="-webkit-transform: translateX(-23px);transform: translateX(-23px);")
-                .divider(style="-webkit-transform: translateX(-23px);transform: translateX(-23px);")
+              .m-line(:style="maxSeatLength%2==0?'': '-webkit-transform: translateX(-23px);transform: translateX(-23px);'")
+                .divider(:style="maxSeatLength%2==0?'': '-webkit-transform: translateX(-23px);transform: translateX(-23px);'")
               .seats-wrap(data-sectionid='1', data-sectionname='花城汇IMAX', style='width: 1426px;')
                 .wrap(data-love='0', data-info='{"index":"0","row":"1", "column":"1", "rowId": "2", "columnId": "1", "type": "N", "seatNo": "9,30,0000000001"}', data-status='0', data-id='9,30,0000000001', data-bid='dp_wx_seat_select')
                   .seat
@@ -1736,7 +1736,8 @@ export default {
             sectionName: "花城汇IMAX"
           }
         ]
-      }
+      },
+      maxSeatLength: 0
       // seatBlock: {
       //   seatWidth: 46, //座位宽46px
       //   maxSeatLength: 0,
@@ -1754,30 +1755,8 @@ export default {
     };
   },
   created() {
-    // var lengtharr = this.hallData.sections[0].seats.map(x => x.columns.length);
-    // this.seatBlock.maxSeatLength = Math.max(...lengtharr);
-    // console.log(this.seatBlock);
-    // this.selectBlockStyle = {
-    //   "margin-top": "0.3rem",
-    //   height: "562.234px"
-    // };
-    // this.hallNameStyle = {
-    //   transform:
-    //     "translate3d(-50.2px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)"
-    // };
-    // this.rowNavStyle = {
-    //   transform:
-    //     "translate3d(-4.8px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
-    // };
-    // this.seatblockStyle = {
-    //   width: this.seatBlock.maxSeatLength * this.seatBlock.seatWidth + "px",
-    //   "touch-action": "none",
-    //   "user-select": "none",
-    //   "-webkit-user-drag": "none",
-    //   "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)",
-    //   transform:
-    //     "translate3d(-663.2px, 41.1095px, 0px) scale(0.4, 0.4) rotate3d(0, 0, 0, 0deg)"
-    // };
+    var lengtharr = this.hallData.sections[0].seats.map(x => x.columns.length);
+    this.maxSeatLength = Math.max(...lengtharr);
   },
   mounted() {},
   methods: {},
@@ -1795,7 +1774,7 @@ export default {
         let u = document.querySelector(".select-block .row-nav");
         let m = document.querySelector(".select-block .seats-block");
         let f = document.querySelector(".select-block .mew-info");
-        let v = document.querySelector(".seats-wrap .wrap .seat");
+        let v = document.querySelectorAll('.seats-wrap .wrap[data-status="0"]');
         let line = document.querySelector(".m-line");
         let _ = p.clientWidth;
         let g = p.clientHeight;
@@ -1805,18 +1784,21 @@ export default {
         let T = (_ - b) / 2; //x
         let E = (g - w) / 2; //y
         let F = 0.4;
-        console.log(p, m, u);
-        console.log({ _, g, b, w, y, T, E });
+
         var t = b > w ? _ / b : g / w;
         t * w > g && (t = g / w);
         var A = t;
         A = A > 1 ? 1 : A;
         A = A * 0.8;
         A = A < F ? F : A;
+        var I = T;
+        var x = E;
+        var C = A;
+
         var scale = A;
-        console.log({ x: T, y: E, t, scale });
 
         var x2 = (-y * (1 - A)) / 2;
+        //银幕位置
         var nameX = b / 2 + T - h.clientWidth / 2;
         //当计数列，则添加样式 -webkit-transform: translateX(-23px);transform: translateX(-23px);
         line &&
@@ -1827,31 +1809,128 @@ export default {
         m.style.width = `1426px`;
         m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
         u.style.transform = `translate3d(${x2}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
-
         h.style.transform = `translate3d(${nameX}px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)`;
 
-        odiv.onmousedown = e => {
+        var X = {
+          left: (b / 2) * (A - 1) + 40,
+          right: _ - (b / 2) * (1 + A) - 40,
+          top: (w / 2) * (A - 1) + 40,
+          bottom: g - (w / 2) * (1 + A) - 40
+        };
+
+        // T < X.right && (T = X.right);
+        // T > X.left && (T = X.left);
+        // E < X.bottom && (E = X.bottom);
+        // E > X.top && (E = X.top);
+
+        v.forEach(seat => {
+          seat.ontouchstart = e => {
+            var clieked = true;
+
+            var el = seat;
+            seat.ontouchmove = e => {
+              clieked = false;
+            };
+            seat.ontouchend = e => {
+              if (!clieked) return;
+
+              console.log("click-seat", el);
+
+              //没有放大，计算
+              if (!(C >= 0.8)) {
+                var t = el;
+                var cw = t.clientWidth * A;
+                var ch = t.clientHeight * A;
+                var a = JSON.parse(t.dataset["info"]);
+                var o = (function() {
+                  var pNode = t.parentNode;
+
+                  if (0 === pNode.querySelectorAll(".seats-wrap").length)
+                    return 0;
+                  var n = parseInt(a.index, 10);
+                  if (0 === n) return 0;
+                  var s = 0;
+                  return (
+                    pNode.querySelectorAll(".seats-wrap").each(function(t) {
+                      t < n && (s += this.clientHeight);
+                    }),
+                    s
+                  );
+                })();
+
+                var r = (function() {
+                  return {
+                    left: (a.column - 1) * cw,
+                    top: (a.row - 1) * ch + o * A
+                  };
+                })();
+
+                console.log({ a, o, r });
+
+                _ = document.querySelector(".seat-block .select-block")
+                  .clientWidth;
+                g = document.querySelector(".seat-block .select-block")
+                  .clientHeight;
+                var c = ((r.left + cw / 2) / (m.scrollWidth * A)) * b;
+                var d = ((r.top + ch / 2) / (m.scrollHeight * A)) * w;
+                console.log({ _, g, c, d });
+
+                T = _ / 2 - c;
+                E = g / 2 - d;
+                A = 0.9;
+                scale = A;
+                console.log({ T, E, scale, x2 });
+
+                m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+                u.style.transform = `transform: translate3d(${x2}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+              }
+            };
+          };
+        });
+
+        p.ontouchstart = e => {
+          //点击位置
+          let o_X = e.touches[0].clientX;
+          let o_Y = e.touches[0].clientY;
+
           //算出鼠标相对元素的位置
-          let disX = e.clientX - T;
-          let disY = e.clientY - E;
+          let disX = e.touches[0].clientX - T;
+          let disY = e.touches[0].clientY - E;
+          let disNX = e.touches[0].clientX - nameX;
 
           console.log({ disX, disY });
 
-          document.onmousemove = e => {
-            //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
-            T = e.clientX - disX;
+          var j = T;
+          var P = E;
+
+          document.ontouchmove = e => {
+            //位移
+            var deltaX = e.touches[0].clientX - o_X;
+            var deltaY = e.touches[0].clientY - o_Y;
+
+            console.log({ deltaX, deltaY });
+
+            // T = e.clientX - disX;
             //E = e.clientY - disY;
+            //nameX = e.clientX - disNX;
+
+            //处理滑动范围
+            T = j + deltaX;
+            E = P + deltaY;
+            _ > b * A
+              ? (T = I)
+              : (T < X.right && (T = X.right), T > X.left && (T = X.left));
+            g > w * A
+              ? (E = x)
+              : (E < X.bottom && (E = X.bottom), E > X.top && (E = X.top));
 
             m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
-            u.style.transform = `transform: translate3d(-4.8px, -103.188px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
-
-            //移动当前元素
-            // odiv.style.left = left + "px";
-            // odiv.style.top = top + "px";
+            u.style.transform = `transform: translate3d(${x2}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
+            h.style.transform = `translate3d(${nameX}px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)`;
           };
-          document.onmouseup = e => {
-            document.onmousemove = null;
-            document.onmouseup = null;
+          p.ontouchend = e => {
+            p.ontouchstart = null;
+            p.ontouchend = null;
           };
         };
       }
