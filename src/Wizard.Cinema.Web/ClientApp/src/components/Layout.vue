@@ -199,6 +199,7 @@ export default {
 .container {
   width: 100%;
   height: 100%;
+  padding: 0 0;
   overflow-y: auto;
   .header_wrap {
     position: fixed;

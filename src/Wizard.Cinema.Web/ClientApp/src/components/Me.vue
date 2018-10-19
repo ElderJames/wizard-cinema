@@ -17,6 +17,7 @@ export default {
   },
   created() {
     _self = this;
+    this.$store.state.setting.show_nav = false;
   },
   mounted() {},
   methods: {},

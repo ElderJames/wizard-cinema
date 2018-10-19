@@ -5,7 +5,7 @@
         router-view(v-if="$route.meta.keepAlive")
     transition(:name="transitionName")
       router-view(v-if="!$route.meta.keepAlive")
-    mu-bottom-nav(id="bottom-nav" :value="active_nav" @change="handleNavChange" shift)
+    mu-bottom-nav(id="bottom-nav" :value="active_nav" @change="handleNavChange" shift v-if="$store.state.setting.show_nav")
       mu-bottom-nav-item(v-for="nav in bottom_nav" :value="nav.value" :title="nav.title" :icon="nav.icon" :key="nav.title" :to="nav.value" replace)
 </template>
 <script>
