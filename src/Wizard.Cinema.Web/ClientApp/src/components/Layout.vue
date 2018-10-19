@@ -40,15 +40,6 @@
     <div class="content_wrap">
       <slot></slot>
     </div>
-    <div class="footer_wrap" v-if="has_footer && !layout_type">
-      <template>
-       <mu-paper>
-          <mu-bottom-nav :value="active_nav" @change="handleChange" shift>
-            <mu-bottom-nav-item  v-for="nav in bottom_nav" :value="nav.value" :title="nav.title" :icon="nav.icon" :key="nav.title" :to="nav.value" replace/>
-        </mu-bottom-nav>
-       </mu-paper> 
-   </template>
-    </div>
     <mu-dialog :open="dialog" title="分享到" @close="closeDialog">
       <div id="soshid"></div>
       <mu-flat-button slot="actions" @click="closeDialog" primary label="关闭" />
@@ -65,29 +56,7 @@ export default {
   data: function() {
     return {
       bg,
-      active_nav: "/",
-      bottom_nav: [
-        {
-          title: "活动",
-          value: "/",
-          icon: "subscriptions"
-        },
-        {
-          title: "报名",
-          value: "/applyer",
-          icon: "movie"
-        },
-        {
-          title: "发现",
-          value: "/dicovery",
-          icon: "tv"
-        },
-        {
-          title: "我的",
-          value: "/user",
-          icon: "favorite"
-        }
-      ],
+
       open: false,
       docked: false,
       layout_type: false,
@@ -145,10 +114,7 @@ export default {
         }
       }
     },
-    handleChange(val) {
-      this.active_nav = val;
-      // this.$router.push(val);
-    },
+
     setActiveNav() {
       let path = this.$route.path;
       this.active_nav = path;

@@ -1,14 +1,12 @@
-<template>
-  <div id="app">
-    <transition :name="transitionName">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-    </transition>
-    <transition :name="transitionName">
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
-    </transition>
-  </div>
+<template lang="pug">
+  #app
+    transition(:name="transitionName")
+      keep-alive
+        router-view(v-if="$route.meta.keepAlive")
+    transition(:name="transitionName")
+      router-view(v-if="!$route.meta.keepAlive")
+    mu-bottom-nav(id="bottom-nav" :value="active_nav" @change="handleNavChange" shift)
+      mu-bottom-nav-item(v-for="nav in bottom_nav" :value="nav.value" :title="nav.title" :icon="nav.icon" :key="nav.title" :to="nav.value" replace)
 </template>
 <script>
 let _self;
@@ -31,7 +29,30 @@ export default {
         // dark,
         // carbon,
         // teal
-      }
+      },
+      active_nav: "/",
+      bottom_nav: [
+        {
+          title: "活动",
+          value: "/",
+          icon: "subscriptions"
+        },
+        {
+          title: "报名",
+          value: "/applyer",
+          icon: "movie"
+        },
+        {
+          title: "发现",
+          value: "/dicovery",
+          icon: "tv"
+        },
+        {
+          title: "我的",
+          value: "/user",
+          icon: "favorite"
+        }
+      ]
     };
   },
   watch: {
@@ -81,6 +102,10 @@ export default {
         },
         false
       );
+    },
+    handleNavChange(val) {
+      this.active_nav = val;
+      // this.$router.push(val);
     }
   }
 };
@@ -90,6 +115,12 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#bottom-nav {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
 }
 
 .slide-right-enter-active,
