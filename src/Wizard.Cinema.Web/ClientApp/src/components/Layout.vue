@@ -217,7 +217,7 @@ export default {
     }
   }
   .content_wrap {
-    padding: 56px 0 50px 0; // background: #f5f5f5;
+    padding: 56px 0 56px 0; // background: #f5f5f5;
   }
   .footer_wrap {
     position: fixed;
