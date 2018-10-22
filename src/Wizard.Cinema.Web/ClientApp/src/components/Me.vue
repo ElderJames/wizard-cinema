@@ -1,5 +1,5 @@
 <template lang="pug">
-    Layout(:has_share="false" title="我的")
+    Layout(:has_share="false" title="我的" :has_footer="false")
       div(class="wrap")
         mu-list
           mu-list-item(title="关于" to="user/about")
@@ -17,7 +17,6 @@ export default {
   },
   created() {
     _self = this;
-    this.$store.state.setting.show_nav = false;
   },
   mounted() {},
   methods: {},

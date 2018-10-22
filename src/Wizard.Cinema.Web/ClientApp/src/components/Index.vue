@@ -3,13 +3,9 @@
       mu-carousel(class='banner' hide-controls hide-indicators)
         mu-carousel-item
           img(src="https://muse-ui.org/img/carousel4.2a7cbfca.jpg")
-      
-      //- mu-card(style="width: 100%; max-width: 375px; margin: 0 auto;")
-      //-   mu-card-media(title="Image Title")
-      //-     img(src="https://muse-ui.org/img/sun.a646a52d.jpg")
       mu-grid-list
         mu-sub-header 广州
-        mu-grid-tile(v-for="activity in activities" :cols="2" :rows="1" title-position="bottom" action-position="left" @click="onTileClick(activity)" )
+        mu-grid-tile(v-for="(activity,index) in activities" :key="index" :cols="2" :rows="1" title-position="bottom" action-position="left" @click="onTileClick(activity)" )
           img(:src="activity.picUrl" style="height:100%;width:100%")
           span(slot="title") {{activity.name}} 
           span(slot="subTitle") {{activity.summary}} 
@@ -38,13 +34,13 @@ export default {
       },
       {
         picUrl: "https://muse-ui.org/img/sun.a646a52d.jpg",
-        activityId: 1,
+        activityId: 2,
         name: "神期动物在哪里2",
         summary: "周末"
       },
       {
         picUrl: "https://muse-ui.org/img/sun.a646a52d.jpg",
-        activityId: 1,
+        activityId: 3,
         name: "神期动物在哪里2",
         summary: "三强争霸赛"
       }

@@ -92,6 +92,7 @@ export default {
     // this.setStatusBar();
   },
   activated() {
+    this.$store.state.setting.show_nav = this.has_footer;
     this.setActiveNav();
     this.getModSwitch();
     this.setStatusBar();
@@ -101,7 +102,7 @@ export default {
       this.open = !this.open;
     },
     search() {
-      this.$router.push("/all/search");
+      this.$router.push("/");
     },
     goBack() {
       if (this.leftAction) {
