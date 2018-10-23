@@ -1,4 +1,6 @@
-﻿namespace Wizard.Cinema.Application.DTOs.Request.Session
+﻿using Wizard.Cinema.Application.DTOs.EnumTypes;
+
+namespace Wizard.Cinema.Application.DTOs.Request.Session
 {
     public class CreateSessionReqs
     {
@@ -16,6 +18,11 @@
         /// 影厅Id
         /// </summary>
         public int HallId { get; set; }
+
+        /// <summary>
+        /// 选座模式
+        /// </summary>
+        public SelectMode SelectMode { get; set; }
 
         /// <summary>
         /// 锁定位置SeatNo

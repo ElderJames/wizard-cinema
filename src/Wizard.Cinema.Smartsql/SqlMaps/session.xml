@@ -33,6 +33,7 @@
       ,CinemaId
       ,HallId
       ,SeatNos
+      ,SelectMode
       ,Status
       )VALUES
       (@SessionId
@@ -41,6 +42,7 @@
       ,@CinemaId
       ,@HallId
       ,@SeatNos
+      ,@SelectMode
       ,@Status
       )
       ;SELECT last_insert_Id() as Id;
@@ -57,6 +59,9 @@
         </IsNotNull>
         <IsNotNull Prepend="," Property="SeatNos">
           SeatNos = @SeatNos
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="SelectMode">
+          SelectMode = @SelectMode
         </IsNotNull>
         <IsNotNull Prepend="," Property="Status">
           Status = @Status

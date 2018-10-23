@@ -5,14 +5,16 @@ using Infrastructures;
 using Infrastructures.Attributes;
 using Infrastructures.Exceptions;
 using Microsoft.Extensions.Logging;
+using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
-using Wizard.Cinema.Domain.Activity.EnumTypes;
 using Wizard.Cinema.Domain.Cinema;
+using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
+using ActivityStatus = Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus;
 
 namespace Wizard.Cinema.Application.Services
 {
@@ -51,7 +53,7 @@ namespace Wizard.Cinema.Application.Services
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
 
                 long sessionId = NewId.GenerateId();
-                var session = new Session(sessionId, activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
+                var session = new Session(sessionId, activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, (Domain.Cinema.EnumTypes.SelectMode)request.SelectMode, request.Seats.Select(x => x.SeatNo).ToArray());
 
                 Seat[] seats = request.Seats.Select(seatInfo =>
                 {

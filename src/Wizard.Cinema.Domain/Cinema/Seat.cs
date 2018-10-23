@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructures.Exceptions;
+using Wizard.Cinema.Domain.Wizard;
 
 namespace Wizard.Cinema.Domain.Cinema
 {
@@ -48,6 +49,10 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         public DateTime? SelectTime { get; private set; }
 
+        private Seat()
+        {
+        }
+
         /// <summary>
         /// 创建座位
         /// </summary>
@@ -72,9 +77,12 @@ namespace Wizard.Cinema.Domain.Cinema
         /// 选择此座位
         /// </summary>
         /// <param name="wizard"></param>
-        public void Choose(long wizard)
+        public void Choose(Wizards wizard)
         {
-            this.WizardId = wizard;
+            if (wizard == null)
+                throw new DomainException("当前用户不存在");
+
+            this.WizardId = wizard.WizardId;
             this.Selected = true;
             this.SelectTime = DateTime.Now;
         }

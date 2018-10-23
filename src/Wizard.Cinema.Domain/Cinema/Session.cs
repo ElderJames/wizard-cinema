@@ -42,11 +42,16 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         public SessionStatus Status { get; private set; }
 
+        /// <summary>
+        /// 选座模式
+        /// </summary>
+        public SelectMode SelectMode { get; private set; }
+
         private Session()
         {
         }
 
-        public Session(long sessionId, long divisionId, long activityId, int cinemaId, int hallId, string[] seatNos)
+        public Session(long sessionId, long divisionId, long activityId, int cinemaId, int hallId, SelectMode selectMode, string[] seatNos)
         {
             this.SessionId = sessionId;
             this.DivisionId = divisionId;
@@ -54,6 +59,7 @@ namespace Wizard.Cinema.Domain.Cinema
             this.CinemaId = cinemaId;
             this.HallId = hallId;
             this.SeatNos = seatNos;
+            this.SelectMode = selectMode;
             this.Status = SessionStatus.编辑中;
         }
 
