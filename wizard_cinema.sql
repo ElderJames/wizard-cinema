@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地
+Source Server         : localhost
 Source Server Version : 80011
 Source Host           : localhost:3306
 Source Database       : wizard_cinema
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-10-07 17:44:46
+Date: 2018-10-24 01:28:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -443,6 +443,7 @@ CREATE TABLE `sessions` (
   `CinemaId` int(9) NOT NULL,
   `HallId` int(9) NOT NULL,
   `SeatNos` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `SelectMode` tinyint(4) NOT NULL,
   `Status` tinyint(4) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -450,9 +451,9 @@ CREATE TABLE `sessions` (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('1', '1', '1', '1', '25198', '147545', '[\"4400197102#0C#03\",\"4400197102#0C#04\"]', '0');
-INSERT INTO `sessions` VALUES ('2', '1047847978628284416', '1042414403380576256', '1', '1676', '97324', '[\"3,3,0000000001\",\"3,1,0000000001\",\"2,3,0000000001\",\"2,1,0000000001\"]', '0');
-INSERT INTO `sessions` VALUES ('3', '1048866882574090240', '1', '1', '1676', '97323', '[\"6,25,0000000001\",\"5,25,0000000001\"]', '0');
+INSERT INTO `sessions` VALUES ('1', '1', '1', '1', '25198', '147545', '[\"4400197102#0C#03\",\"4400197102#0C#04\"]', '0', '0');
+INSERT INTO `sessions` VALUES ('2', '1047847978628284416', '1042414403380576256', '1', '1676', '97324', '[\"3,3,0000000001\",\"3,1,0000000001\",\"2,3,0000000001\",\"2,1,0000000001\"]', '0', '0');
+INSERT INTO `sessions` VALUES ('3', '1048866882574090240', '1', '1', '1676', '97323', '[\"6,25,0000000001\",\"5,25,0000000001\"]', '0', '0');
 
 -- ----------------------------
 -- Table structure for wizards
