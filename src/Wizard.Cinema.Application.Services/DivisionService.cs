@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Infrastructures;
 using Infrastructures.Attributes;
-using Microsoft.Extensions.DependencyInjection;
 using Wizard.Cinema.Application.DTOs.Request.Division;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Ministry;
@@ -11,7 +10,7 @@ using Wizard.Cinema.QueryServices.DTOs;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl(ServiceLifetime.Singleton)]
+    [Impl]
     public class DivisionService : IDivisionService
     {
         private readonly IDivisionQueryService _divisionQueryService;
