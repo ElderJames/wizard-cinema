@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Wizard.Cinema.Admin.Extensions
 {
@@ -21,8 +22,10 @@ namespace Wizard.Cinema.Admin.Extensions
                     if (error != null)
                     {
                         ApiResult<dynamic> result = Anonymous.ApiResult<object>(ResultStatus.EXCEPTION, error.Error.Message);
-
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(result)).ConfigureAwait(false);
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(result, new JsonSerializerSettings()
+                        {
+                            ContractResolver = new CamelCasePropertyNamesContractResolver()
+                        })).ConfigureAwait(false);
                     }
                 });
             });
