@@ -64,6 +64,20 @@
       </For>
     </Statement>
 
+    <Statement Id="BatchUpdate" ParameterMap="SeatParamMap">
+      <For Property="seats" Key="T" Separator="" Close="" Open="" Prepend="">
+        UPDATE seats SET
+        SessionId  = @SessionId
+        ,SeatNo     = @SeatNo
+        ,Position   = @Position
+        ,Selected   = @Selected
+        ,WizardId   = @WizardId
+        ,SelectTime = @SelectTime
+        WHERE
+        SeatId      = @SeatId;
+      </For>
+    </Statement>
+
     <Statement Id="ClearInSession">
       DELETE FROM seats
       WHERE

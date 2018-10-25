@@ -10,13 +10,9 @@ using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema;
-using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.Domain.Movie;
-using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
-using Wizard.Cinema.QueryServices.DTOs;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
-using ActivityStatus = Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus;
 
 namespace Wizard.Cinema.Application.Services
 {
@@ -28,9 +24,8 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISessionRepository _sessionRepository;
         private readonly IActivityRepository _activityRepository;
         private readonly ISeatRepository _seatRepository;
-        private IWizardProfileRepository _wizardProfileRepository;
         private readonly IApplicantRepository _applicantRepository;
-        private ISelectSeatTaskRepository _selectSeatTaskRepository;
+        private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
 
         private readonly ITransactionRepository _transactionRepository;
 
@@ -40,7 +35,8 @@ namespace Wizard.Cinema.Application.Services
             ITransactionRepository transactionRepository,
             IActivityRepository activityRepository,
             ISeatRepository seatRepository,
-            IWizardProfileRepository wizardProfileRepository, IApplicantRepository applicantRepository, ISelectSeatTaskRepository selectSeatTaskRepository)
+            IApplicantRepository applicantRepository,
+            ISelectSeatTaskRepository selectSeatTaskRepository)
         {
             this._logger = logger;
             this._sessionQueryService = sessionQueryService;
@@ -48,7 +44,6 @@ namespace Wizard.Cinema.Application.Services
             this._transactionRepository = transactionRepository;
             this._activityRepository = activityRepository;
             this._seatRepository = seatRepository;
-            this._wizardProfileRepository = wizardProfileRepository;
             this._applicantRepository = applicantRepository;
             this._selectSeatTaskRepository = selectSeatTaskRepository;
         }
@@ -100,7 +95,7 @@ namespace Wizard.Cinema.Application.Services
                 if (activity == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
 
-                if (activity.Status != ActivityStatus.未启动)
+                if (activity.Status != Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus.未启动)
                     return new ApiResult<bool>(ResultStatus.FAIL, "活动已启动，无法再修改了！");
 
                 session.Change(activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
@@ -172,7 +167,7 @@ namespace Wizard.Cinema.Application.Services
                 if (activity == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "所选场次对应活动不存在");
 
-                if (activity.Status != ActivityStatus.报名结束)
+                if (activity.Status != Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus.未启动)
                     return new ApiResult<bool>(ResultStatus.FAIL, $"活动{activity.Status.GetName()}");
 
                 session.Start();

@@ -7,8 +7,6 @@ namespace Wizard.Cinema.Application.Services
 {
     public interface ISelectSeatTaskService
     {
-        ApiResult<bool> Create()
-        {
-        }
+        ApiResult<bool> Create();
     }
 }
