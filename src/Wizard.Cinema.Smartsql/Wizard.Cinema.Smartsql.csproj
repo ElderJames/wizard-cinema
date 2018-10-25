@@ -37,6 +37,9 @@
     <None Update="SqlMaps\profiles.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="SqlMaps\select_seat_tasks.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="SqlMaps\session.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

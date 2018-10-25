@@ -12,7 +12,9 @@ using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.Domain.Movie;
+using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
+using Wizard.Cinema.QueryServices.DTOs;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
 using ActivityStatus = Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus;
 
@@ -26,6 +28,9 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISessionRepository _sessionRepository;
         private readonly IActivityRepository _activityRepository;
         private readonly ISeatRepository _seatRepository;
+        private IWizardProfileRepository _wizardProfileRepository;
+        private readonly IApplicantRepository _applicantRepository;
+        private ISelectSeatTaskRepository _selectSeatTaskRepository;
 
         private readonly ITransactionRepository _transactionRepository;
 
@@ -34,7 +39,8 @@ namespace Wizard.Cinema.Application.Services
             ISessionRepository sessionRepository,
             ITransactionRepository transactionRepository,
             IActivityRepository activityRepository,
-            ISeatRepository seatRepository)
+            ISeatRepository seatRepository,
+            IWizardProfileRepository wizardProfileRepository, IApplicantRepository applicantRepository, ISelectSeatTaskRepository selectSeatTaskRepository)
         {
             this._logger = logger;
             this._sessionQueryService = sessionQueryService;
@@ -42,6 +48,9 @@ namespace Wizard.Cinema.Application.Services
             this._transactionRepository = transactionRepository;
             this._activityRepository = activityRepository;
             this._seatRepository = seatRepository;
+            this._wizardProfileRepository = wizardProfileRepository;
+            this._applicantRepository = applicantRepository;
+            this._selectSeatTaskRepository = selectSeatTaskRepository;
         }
 
         public ApiResult<bool> Create(CreateSessionReqs request)
@@ -148,6 +157,44 @@ namespace Wizard.Cinema.Application.Services
             {
                 _logger.LogError("查询场次时异常", ex);
                 return new ApiResult<PagedData<SessionResp>>(ResultStatus.EXCEPTION, new PagedData<SessionResp>(), ex.Message);
+            }
+        }
+
+        public ApiResult<bool> StartSelectSeat(long sessionId)
+        {
+            try
+            {
+                Session session = _sessionRepository.Query(sessionId);
+                if (session == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "所选场次不存在");
+
+                Activity activity = _activityRepository.Query(session.ActivityId);
+                if (activity == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "所选场次对应活动不存在");
+
+                if (activity.Status != ActivityStatus.报名结束)
+                    return new ApiResult<bool>(ResultStatus.FAIL, $"活动{activity.Status.GetName()}");
+
+                session.Start();
+
+                Applicant[] applicants = _applicantRepository.QueryByActivtyId(activity.ActivityId);
+
+                SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
+
+                _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+                {
+                    _selectSeatTaskRepository.BatchInsert(tasks);
+
+                    if (_sessionRepository.Update(session) <= 0)
+                        throw new Exception("保存时异常");
+                });
+
+                return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("场次开始选座时异常", ex);
+                return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
             }
         }
     }

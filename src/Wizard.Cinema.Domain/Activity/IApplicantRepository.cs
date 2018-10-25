@@ -11,5 +11,7 @@ namespace Wizard.Cinema.Domain.Activity
         int ChangeSataus(Applicant applicant);
 
         Applicant Query(long applicantId);
+
+        Applicant[] QueryByActivtyId(long activityId);
     }
 }

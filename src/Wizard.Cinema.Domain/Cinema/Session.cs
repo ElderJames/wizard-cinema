@@ -1,4 +1,6 @@
-﻿using Wizard.Cinema.Domain.Cinema.EnumTypes;
+﻿using Infrastructures;
+using Infrastructures.Exceptions;
+using Wizard.Cinema.Domain.Cinema.EnumTypes;
 
 namespace Wizard.Cinema.Domain.Cinema
 {
@@ -74,6 +76,9 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public void Start()
         {
+            if (this.Status != SessionStatus.编辑中)
+                throw new DomainException($"该场次{this.Status.GetName()}，不能再启动");
+
             this.Status = SessionStatus.进行中;
         }
 

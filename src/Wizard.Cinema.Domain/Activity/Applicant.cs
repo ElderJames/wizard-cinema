@@ -35,6 +35,11 @@ namespace Wizard.Cinema.Domain.Activity
         public string RealName { get; private set; }
 
         /// <summary>
+        /// 微信名
+        /// </summary>
+        public string WechatName { get; private set; }
+
+        /// <summary>
         /// 手机号
         /// </summary>
         public string Mobile { get; private set; }

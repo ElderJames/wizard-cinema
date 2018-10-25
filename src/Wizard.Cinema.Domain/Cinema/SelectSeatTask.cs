@@ -1,6 +1,6 @@
 ﻿using System;
+using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
-using Wizard.Cinema.Domain.Wizard;
 
 namespace Wizard.Cinema.Domain.Cinema
 {
@@ -27,7 +27,7 @@ namespace Wizard.Cinema.Domain.Cinema
         /// <summary>
         /// 巫师名
         /// </summary>
-        public string WizardName { get; set; }
+        public string WechatName { get; set; }
 
         /// <summary>
         /// 序号，按序号排队选座，过号重入需要等两位
@@ -59,12 +59,12 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         public DateTime CreateTime { get; set; }
 
-        public SelectSeatTask(long taskId, long sessionId, WizardProfiles wizard, int serialNo)
+        public SelectSeatTask(long taskId, long sessionId, Applicant applicant, int serialNo)
         {
             this.TaskId = taskId;
             this.SessionId = sessionId;
-            this.WizardId = wizard.WizardId;
-            this.WizardName = wizard.NickName;
+            this.WizardId = applicant.WizardId;
+            this.WechatName = applicant.WechatName;
             this.SerialNo = serialNo;
             this.Status = SelectTaskStatus.待开始;
             this.CreateTime = DateTime.Now;

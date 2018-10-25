@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmartSqlMap Scope="Session"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+
+  <Statements>
+    <Statement Id="BatchInsert">
+      INSERT INTO select_seat_tasks
+      (TaskId
+      ,SessionId
+      ,WizardId
+      ,WechatName
+      ,SerialNo
+      ,Status
+      ,SeatNo
+      ,BeginTime
+      ,EndTime
+      ,CreateTime
+      )VALUES
+      <For Property="tasks" Key="T" Separator="," Open="" Close="" Prepend="">
+        (@TaskId
+        ,@SessionId
+        ,@WizardId
+        ,@WechatName
+        ,@SerialNo
+        ,@Status
+        ,@SeatNo
+        ,@BeginTime
+        ,@EndTime
+        ,@CreateTime)
+      </For>
+    </Statement>
+  </Statements>
+</SmartSqlMap>
