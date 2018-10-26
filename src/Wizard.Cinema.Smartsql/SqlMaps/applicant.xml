@@ -36,7 +36,7 @@
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
-    <Statement Id="ChangeSataus">
+    <Statement Id="ChangeStatus">
       UPDATE applicants
       <Set>
         <IsNotNull Prepend="," Property="Status">

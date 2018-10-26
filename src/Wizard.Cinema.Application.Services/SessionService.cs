@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Infrastructures;
@@ -172,7 +173,7 @@ namespace Wizard.Cinema.Application.Services
 
                 session.Start();
 
-                Applicant[] applicants = _applicantRepository.QueryByActivtyId(activity.ActivityId);
+                IEnumerable<Applicant> applicants = _applicantRepository.QueryByActivityId(activity.ActivityId);
 
                 SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
 

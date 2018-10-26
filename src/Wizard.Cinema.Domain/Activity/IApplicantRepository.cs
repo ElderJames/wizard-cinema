@@ -8,10 +8,10 @@ namespace Wizard.Cinema.Domain.Activity
     {
         int Insert(Applicant applicant);
 
-        int ChangeSataus(Applicant applicant);
+        int ChangeStatus(Applicant applicant);
 
         Applicant Query(long applicantId);
 
-        Applicant[] QueryByActivtyId(long activityId);
+        IEnumerable<Applicant> QueryByActivityId(long activityId);
     }
 }
