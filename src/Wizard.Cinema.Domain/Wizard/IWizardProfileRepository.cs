@@ -10,6 +10,6 @@ namespace Wizard.Cinema.Domain.Wizard
 
         int Update(WizardProfiles profile);
 
-        WizardProfiles Query(long wiardId);
+        WizardProfiles Query(long wizardId);
     }
 }
