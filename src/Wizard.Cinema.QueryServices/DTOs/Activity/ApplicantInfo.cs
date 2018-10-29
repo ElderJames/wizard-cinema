@@ -31,6 +31,16 @@ namespace Wizard.Cinema.QueryServices.DTOs.Activity
         public string RealName { get; set; }
 
         /// <summary>
+        /// 微信名
+        /// </summary>
+        public string WechatName { get; set; }
+
+        /// <summary>
+        /// 报名人数
+        /// </summary>
+        public int Count { get; set; }
+
+        /// <summary>
         /// 手机号
         /// </summary>
         public string Mobile { get; set; }

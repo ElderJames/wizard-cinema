@@ -40,6 +40,11 @@ namespace Wizard.Cinema.Domain.Activity
         public string WechatName { get; private set; }
 
         /// <summary>
+        /// 报名人数
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
         /// 手机号
         /// </summary>
         public string Mobile { get; private set; }
@@ -54,7 +59,7 @@ namespace Wizard.Cinema.Domain.Activity
         /// </summary>
         public DateTime ApplyTime { get; private set; }
 
-        public Applicant(long applicantId, long wizardId, Activity activity, string realName, string mobile)
+        public Applicant(long applicantId, long wizardId, Activity activity, string realName, string mobile, int count)
         {
             if (activity == null)
                 throw new DomainException("活动不存在，请选择正确的活动");
@@ -68,6 +73,7 @@ namespace Wizard.Cinema.Domain.Activity
             this.DivisionId = activity.DivisionId;
             this.RealName = realName;
             this.Mobile = mobile;
+            this.Count = count;
             this.Status = ApplicantStatus.未付款;
             this.ApplyTime = DateTime.Now;
         }

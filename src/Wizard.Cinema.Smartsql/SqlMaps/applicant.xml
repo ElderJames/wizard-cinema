@@ -20,6 +20,8 @@
       ,DivisionId
       ,ActivityId
       ,RealName
+      ,WechatName
+      ,Count
       ,Mobile
       ,Status
       ,ApplyTime
@@ -29,6 +31,8 @@
       ,@DivisionId
       ,@ActivityId
       ,@RealName
+      ,@WechatName
+      ,@Count
       ,@Mobile
       ,@Status
       ,@ApplyTime

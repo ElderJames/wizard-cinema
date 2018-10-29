@@ -3,16 +3,29 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
 
+  <ParameterMaps>
+    <ParameterMap Id="SessionParamMap">
+      <Parameter Property="SeatNos" TypeHandler="Json" />
+    </ParameterMap>
+  </ParameterMaps>
+
+  <ResultMaps>
+    <ResultMap Id="QuerySessionResultMap">
+      <Result Column="SeatNos" Property="SeatNos" TypeHandler="Json" />
+    </ResultMap>
+  </ResultMaps>
+
   <Statements>
-    <Statement Id="BatchInsert">
+    <Statement Id="BatchInsert" ParameterMap="SessionParamMap">
       INSERT INTO select_seat_tasks
       (TaskId
       ,SessionId
       ,WizardId
       ,WechatName
       ,SerialNo
+      ,Total
       ,Status
-      ,SeatNo
+      ,SeatNos
       ,BeginTime
       ,EndTime
       ,CreateTime
@@ -23,8 +36,9 @@
         ,@WizardId
         ,@WechatName
         ,@SerialNo
+        ,@Total
         ,@Status
-        ,@SeatNo
+        ,@SeatNos
         ,@BeginTime
         ,@EndTime
         ,@CreateTime)
