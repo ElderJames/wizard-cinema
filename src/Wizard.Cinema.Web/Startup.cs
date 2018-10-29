@@ -1,11 +1,15 @@
+﻿using Infrastructures.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
+using Wizard.Cinema.Application.Services.Extensions;
 using Wizard.Cinema.Remote;
 using Wizard.Cinema.Remote.Spider;
+using Wizard.Cinema.Web.Extensions;
 
 namespace Wizard.Cinema.Web
 {
@@ -21,17 +25,24 @@ namespace Wizard.Cinema.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
+            services.AddJwtAuthentication(Configuration);
+
+            services.AddApplicationService(Configuration);
+
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.Converters.Add(new Int64JsonConverter());//解决js不支持int64的问题
+                    options.SerializerSettings.Converters.Add(new NullableInt64JsonConverter());
+                    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+                }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                configuration.RootPath = "ClientApp/dist";
             });
-
-            services.AddHttpClient();
-            services.AddSingleton<RemoteSpider>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,11 +58,30 @@ namespace Wizard.Cinema.Web
                 app.UseHsts();
             }
 
+            app.UseHeaderExceptionHandler();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+
+            app.UseSpaStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc();
+
+            app.UseSpa(spa =>
+            {
+                // To learn more about options for serving an Angular SPA from ASP.NET Core, see https://go.microsoft.com/fwlink/?linkid=864501
+
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    //spa.UseAngularCliServer(npmScript: "dev");
+                    //   OR
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
+            });
         }
     }
 }
