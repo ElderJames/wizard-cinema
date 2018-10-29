@@ -1,5 +1,4 @@
-﻿using Wizard.Cinema.Web;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Wizard.Cinema.Web

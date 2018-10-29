@@ -27,13 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SmartSqlConfig.xml">
+    <None Update="Remote-SmartSqlMapConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SqlMaps\cinemas.xml">
+    <None Update="Repository\SqlMaps\cinemas.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SqlMaps\halls.xml">
+    <None Update="Repository\SqlMaps\halls.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,14 +1,11 @@
 ﻿using Infrastructures.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Wizard.Cinema.Application.Services.Extensions;
-using Wizard.Cinema.Remote;
-using Wizard.Cinema.Remote.Spider;
 using Wizard.Cinema.Web.Extensions;
 
 namespace Wizard.Cinema.Web
@@ -79,7 +76,7 @@ namespace Wizard.Cinema.Web
                 {
                     //spa.UseAngularCliServer(npmScript: "dev");
                     //   OR
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });
         }

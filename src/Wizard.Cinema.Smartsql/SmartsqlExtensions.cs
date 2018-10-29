@@ -2,7 +2,9 @@
 using Infrastructures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SmartSql.Options;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
+using SmartSql;
 
 namespace Wizard.Cinema.Smartsql
 {
@@ -10,9 +12,12 @@ namespace Wizard.Cinema.Smartsql
     {
         public static void AddSmartSqlStorage(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddSmartSql();
-            //services.AddSmartSql(configuration.GetSection("SmartSql"));
-
+            services.AddSmartSql(sp => new SmartSqlOptions()
+            {
+                Alias = "cinema",
+                LoggerFactory = sp.GetService<ILoggerFactory>(),
+                ConfigPath = "Cinema-SmartSqlMapConfig.xml"
+            });
             services.AddSmartSqlRepositoryFactory(sqlIdNamingConvert: (type, method) =>
             {
                 if (method.Name.StartsWith("Update"))
@@ -27,26 +32,16 @@ namespace Wizard.Cinema.Smartsql
             services.AddRepositoryFromAssembly(options =>
             {
                 options.AssemblyString = "Wizard.Cinema.Domain";
+                options.GetSmartSql = sp => sp.GetSmartSqlMapper("cinema");
             });
             services.AddRepositoryFromAssembly(options =>
             {
                 options.AssemblyString = "Wizard.Cinema.QueryServices";
                 options.ScopeTemplate = "I{Scope}QueryService";
-            });
-            services.AddRepositoryFromAssembly(options =>
-            {
-                options.AssemblyString = "Wizard.Cinema.Remote";
+                options.GetSmartSql = sp => sp.GetSmartSqlMapper("cinema");
             });
 
-            services.AddSingleton<ITransactionRepository, SmartSqlTransactionRepository>();
-        }
-
-        public static IServiceCollection AddSmartSql(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddOptions();
-            services.AddSmartSqlOption();
-            services.Configure<SmartSqlConfigOptions>(configuration);
-            return services;
+            services.TryAddSingleton<ITransactionRepository, SmartSqlTransactionRepository>();
         }
     }
 }

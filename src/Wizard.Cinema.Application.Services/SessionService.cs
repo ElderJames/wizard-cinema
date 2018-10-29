@@ -6,7 +6,6 @@ using Infrastructures;
 using Infrastructures.Attributes;
 using Infrastructures.Exceptions;
 using Microsoft.Extensions.Logging;
-using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
