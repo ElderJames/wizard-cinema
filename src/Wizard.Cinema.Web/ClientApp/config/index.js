@@ -30,7 +30,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'https://www.ifilm.ltd',
-        target: 'http://m.mtime.cn/Service/callback.mi',
+        target: 'https://localhost:5101',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '',
