@@ -92,7 +92,9 @@ export default {
     // this.setStatusBar();
   },
   activated() {
-    this.$store.state.setting.show_nav = this.has_footer;
+    this.has_footer
+      ? this.$store.dispatch("showNav")
+      : this.$store.dispatch("hideNav");
     this.setActiveNav();
     this.getModSwitch();
     this.setStatusBar();

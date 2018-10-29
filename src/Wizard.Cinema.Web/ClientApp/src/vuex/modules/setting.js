@@ -11,7 +11,23 @@ const mutations = {
   }
 }
 
+const actions = {
+  hideNav({
+    commit,
+    state
+  }) {
+    commit('HIDE_NAV')
+  },
+  showNav({
+    commit,
+    state
+  }) {
+    commit('SHOW_NAV')
+  }
+}
+
 export default {
-    state,
-    mutations
+  state,
+  mutations,
+  actions
 }

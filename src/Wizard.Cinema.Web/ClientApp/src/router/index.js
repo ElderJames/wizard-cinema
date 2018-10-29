@@ -22,6 +22,7 @@ const routes = [{
     name: 'Apply',
     component: Me,
     meta: {
+      needLogin: true,
       keepAlive: true
     }
   },
