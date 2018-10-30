@@ -6,6 +6,7 @@ using System.Security.Principal;
 using Infrastructures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Wizard.Cinema.Web.Models;
 using Wizard.Cinema.Web.Options;
@@ -18,20 +19,20 @@ namespace Wizard.Cinema.Web.Controllers
     {
         private readonly JwtIssuerOptions _jwtOptions;
 
-        public AccountController(JwtIssuerOptions jwtOptions)
+        public AccountController(IOptionsSnapshot<JwtIssuerOptions> jwtOptions)
         {
-            this._jwtOptions = jwtOptions;
+            this._jwtOptions = jwtOptions.Value;
         }
 
         [HttpPost("signin")]
         public IActionResult Signin(SigninModel model)
         {
-            var identity = new ClaimsIdentity(new GenericIdentity(model.UserName, "Token"), new[]
+            var identity = new ClaimsIdentity(new GenericIdentity(model.Mobile, "Token"), new[]
             {
                 new Claim("id","123" ),
                 new Claim("rol", "api_access"),
-                new Claim(ClaimTypes.Name, model.UserName),
-                new Claim(JwtRegisteredClaimNames.Sub, model.UserName),
+                new Claim(ClaimTypes.Name, model.Mobile),
+                new Claim(JwtRegisteredClaimNames.Sub, model.Mobile),
                 new Claim(JwtRegisteredClaimNames.Jti,  _jwtOptions.JtiGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
             });
@@ -50,7 +51,7 @@ namespace Wizard.Cinema.Web.Controllers
 
             string encodedJwt = handler.WriteToken(securityToken);
 
-            return Ok(Anonymous.ApiResult(ResultStatus.SUCCESS, new
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
             {
                 id = identity.Claims.Single(c => c.Type == "id").Value,
                 auth_token = encodedJwt,
