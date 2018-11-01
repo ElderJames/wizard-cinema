@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using SmartSql.Abstractions;
 using Wizard.Cinema.Application.Services.Extensions;
 using Wizard.Cinema.Web.Extensions;
 

@@ -12,7 +12,7 @@ using Wizard.Cinema.QueryServices.DTOs.Cinema;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl]
+    [Service]
     public class SeatService : ISeatService
     {
         private readonly ISeatQueryService _seatQueryService;

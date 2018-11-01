@@ -13,7 +13,7 @@ using Wizard.Cinema.QueryServices.DTOs.Activity;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl]
+    [Service]
     public class ActivityService : IActivityService
     {
         private readonly ILogger<IActivityService> _logger;
@@ -149,10 +149,11 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
-        public ApiResult<PagedData<ApplicantResp>> SearchApplicant(PagedSearch search)
+        public ApiResult<PagedData<ApplicantResp>> SearchApplicant(SearchApplicantReqs request)
         {
             try
             {
+                SearchApplicantCondition search = Mapper.Map<SearchApplicantReqs, SearchApplicantCondition>(request);
                 PagedData<ApplicantInfo> applicant = _applicantQueryService.QueryPaged(search);
 
                 return new ApiResult<PagedData<ApplicantResp>>(ResultStatus.SUCCESS,
@@ -162,6 +163,35 @@ namespace Wizard.Cinema.Application.Services
             {
                 _logger.LogError("查询报名者异常", ex);
                 return new ApiResult<PagedData<ApplicantResp>>(ResultStatus.EXCEPTION, new PagedData<ApplicantResp>(), ex.Message);
+            }
+        }
+
+        public ApiResult<IEnumerable<ApplicantResp>> GetApplicantInActivity(long activityId)
+        {
+            try
+            {
+                IEnumerable<ApplicantInfo> applicants = _applicantQueryService.QueryByActivityId(activityId);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicants));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.EXCEPTION, Enumerable.Empty<ApplicantResp>(), ex.Message);
+            }
+        }
+
+        public ApiResult<IEnumerable<ApplicantResp>> List(SearchApplicantReqs request)
+        {
+            try
+            {
+                SearchApplicantCondition search = Mapper.Map<SearchApplicantReqs, SearchApplicantCondition>(request);
+                IEnumerable<ApplicantInfo> applicants = _applicantQueryService.Query(search);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicants));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.EXCEPTION, Enumerable.Empty<ApplicantResp>(), ex.Message);
             }
         }
     }

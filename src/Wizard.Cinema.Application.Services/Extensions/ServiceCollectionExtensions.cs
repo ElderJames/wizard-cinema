@@ -14,12 +14,12 @@ namespace Wizard.Cinema.Application.Services.Extensions
     {
         public static void AddApplicationService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSmartSqlStorage(configuration);
+            services.AddSmartSqlStorage();
 
             //自动注册
-            foreach (TypeInfo implType in Assembly.GetExecutingAssembly().DefinedTypes.Where(x => x.GetCustomAttribute<ImplAttribute>() != null))
+            foreach (TypeInfo implType in Assembly.GetExecutingAssembly().DefinedTypes.Where(x => x.GetCustomAttribute<ServiceAttribute>() != null))
             {
-                ImplAttribute attr = implType.GetCustomAttribute<ImplAttribute>();
+                ServiceAttribute attr = implType.GetCustomAttribute<ServiceAttribute>();
                 IEnumerable<Type> interfaceTypes = implType.ImplementedInterfaces;
 
                 if (attr.InterfaceType != null)

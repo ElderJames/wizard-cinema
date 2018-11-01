@@ -16,7 +16,7 @@ using Wizard.Cinema.QueryServices.DTOs.Cinema;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl]
+    [Service]
     public class SessionService : ISessionService
     {
         private readonly ILogger<SessionService> _logger;

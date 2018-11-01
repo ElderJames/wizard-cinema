@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Infrastructures;
 using Microsoft.AspNetCore.Mvc;
@@ -13,20 +14,17 @@ namespace Wizard.Cinema.Web.Controllers
     [ApiController]
     public class ActivityController : ControllerBase
     {
-        private IActivityService _activityService;
-        private IApplicantService _applicantService;
+        private readonly IActivityService _activityService;
 
-        public ActivityController(IActivityService activityService,
-            IApplicantService applicantService)
+        public ActivityController(IActivityService activityService)
         {
             this._activityService = activityService;
-            this._applicantService = applicantService;
         }
 
         [HttpGet("")]
-        public ActionResult List(int page, int size)
+        public ActionResult List(int page = 1, int size = 10)
         {
-            var ApplicantReq = new SearchApplicantReqs()
+            var applicantReq = new SearchApplicantReqs()
             {
                 PageSize = size,
                 PageNow = page
@@ -34,14 +32,24 @@ namespace Wizard.Cinema.Web.Controllers
 
             if (HttpContext.IsAuthenticated())
             {
-                ApplicantReq.WizardId = HttpContext.User.ExtractUserId() ?? 0;
+                applicantReq.WizardId = HttpContext.User.ExtractUserId();
             }
 
-            ApiResult<IEnumerable<ApplicantResp>> applicantResult = _applicantService.List(ApplicantReq);
+            ApiResult<IEnumerable<ApplicantResp>> applicantResult = _activityService.List(applicantReq);
             if (applicantResult.Status != ResultStatus.SUCCESS)
                 return Ok(Anonymous.ApiResult(ResultStatus.FAIL, applicantResult.Message));
 
-            return Ok(Anonymous.ApiResult(ResultStatus.SUCCESS, new { }));
+            ApiResult<IEnumerable<ActivityResp>> activityResult = _activityService.GetByIds(applicantResult.Result.Select(x => x.ActivityId).ToArray());
+            if (activityResult.Status != ResultStatus.SUCCESS)
+                return Ok(Anonymous.ApiResult(ResultStatus.FAIL, activityResult.Message));
+
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, activityResult.Result.Select(x => new
+            {
+                x.ActivityId,
+                x.Name,
+                x.Status,
+                x.Type,
+            })));
         }
     }
 }

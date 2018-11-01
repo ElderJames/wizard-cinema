@@ -21,7 +21,7 @@ using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl(Lifetime = ServiceLifetime.Singleton)]
+    [Service(Lifetime = ServiceLifetime.Singleton)]
     public class WizardService : IWizardService
     {
         private readonly IWizardRepository _wizardRepository;

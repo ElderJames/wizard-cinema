@@ -10,7 +10,7 @@ namespace Wizard.Cinema.Smartsql
 {
     public static class SmartsqlExtensions
     {
-        public static void AddSmartSqlStorage(this IServiceCollection services, IConfiguration configuration)
+        public static void AddSmartSqlStorage(this IServiceCollection services)
         {
             services.AddSmartSql(sp => new SmartSqlOptions()
             {
@@ -18,7 +18,7 @@ namespace Wizard.Cinema.Smartsql
                 LoggerFactory = sp.GetService<ILoggerFactory>(),
                 ConfigPath = "Cinema-SmartSqlMapConfig.xml"
             });
-            services.AddSmartSqlRepositoryFactory(sqlIdNamingConvert: (type, method) =>
+            services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
             {
                 if (method.Name.StartsWith("Update"))
                     return "Update";

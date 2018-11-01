@@ -137,7 +137,7 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpGet("applicants")]
-        public IActionResult SearchApplicant([FromQuery]PagedSearch search)
+        public IActionResult SearchApplicant([FromQuery]SearchApplicantReqs search)
         {
             ApiResult<PagedData<ApplicantResp>> applicantApi = _activityService.SearchApplicant(search);
             if (!applicantApi.Result.Records.Any())

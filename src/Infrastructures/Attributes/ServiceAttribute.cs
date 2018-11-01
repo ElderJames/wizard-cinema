@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructures.Attributes
 {
-    public class ImplAttribute : Attribute
+    public class ServiceAttribute : Attribute
     {
         public Type InterfaceType { get; }
 

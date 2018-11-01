@@ -10,7 +10,7 @@ using Wizard.Cinema.QueryServices.DTOs;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Impl]
+    [Service]
     public class DivisionService : IDivisionService
     {
         private readonly IDivisionQueryService _divisionQueryService;

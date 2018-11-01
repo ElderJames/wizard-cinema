@@ -20,9 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="MySql.Data" Version="8.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="SmartSql" Version="3.7.15" />
-    <PackageReference Include="SmartSql.DIExtension" Version="3.7.15" />
-    <PackageReference Include="SmartSql.DyRepository" Version="3.7.15" />
+    <PackageReference Include="SmartSql" Version="3.8.2" />
+    <PackageReference Include="SmartSql.DIExtension" Version="3.7.16" />
+    <PackageReference Include="SmartSql.DyRepository" Version="3.7.16" />
     <PackageReference Include="System.IO" Version="4.3.0" />
   </ItemGroup>
 

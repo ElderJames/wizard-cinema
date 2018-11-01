@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Infrastructures;
 
-namespace Wizard.Cinema.Application.DTOs.Request.Activity
+namespace Wizard.Cinema.QueryServices.DTOs.Activity
 {
-    public class SearchApplicantReqs : PagedSearch
+    public class SearchApplicantCondition : PagedSearch
     {
         public long? WizardId { get; set; }
     }
