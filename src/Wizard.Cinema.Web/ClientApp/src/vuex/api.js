@@ -19,20 +19,32 @@ Vue.http.interceptors.push(function(request, next) {
     if (version_code) {
         request.params.version = version_code;
     }
+
+    //request.headers.set('X-CSRF-TOKEN', 'TOKEN');
+
+    var auth_token = store.state.user.auth_token
+    if (auth_token) {
+        request.headers.set('Authorization', 'Bearer ' + auth_token);
+    }    
+
     next(function(response) {
         if (response.ok) {
             if (response.status === 200) {
+                if (response.body.status !== 1)
+                    Toast(response.body.message);
+                else
+                    response.body = response.body.result;
                 // 正常返回
-            } else if (response.data.error === 1) {
-                // 假设该请求后端返回错误代码为1是需要登录的，则跳转至登录页面
+            } else if (response.body.status === -2) {
+                // 假设该请求后端返回错误代码为-2是需要登录的，则跳转至登录页面
                 let {fullPath} = store.state.route;
                 router.push({path: '/user/login', query: {redirect: fullPath}});
-            } else if (response.data.error === 4) {
+            } else if (response.body.status === 4) {
                 // 参数错误
                 // alert(response.data.message);
-            } else if (response.data.error === 5) {
+            } else if (response.body.status === 5) {
                 // 程序异常
-                alert(response.data.message);
+                alert(response.body.message);
             }
         } else {
             Toast('获取数据失败...');

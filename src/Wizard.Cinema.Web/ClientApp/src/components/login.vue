@@ -43,7 +43,12 @@ export default {
     submit() {
       this.$refs.form.validate().then(result => {
         console.log("form valid: ", result);
-        if (result) this.$store.dispatch("login", this.validateForm);
+        if (result)
+          this.$store.dispatch("login", this.validateForm).then(res => {
+            this.$store.commit("SET_AUTH_TOKEN", res.auth_token);
+            this.$store.commit("SET_IS_LOGIN", true);
+            this.$router.replace(this.$route.query.redirect || "/");
+          });
       });
     },
     clear() {

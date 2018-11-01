@@ -10,55 +10,55 @@ import login from '@/components/login'
 Vue.use(VueRouter)
 
 const routes = [{
-  path: '/',
-  name: 'Index',
-  component: Index,
-  meta: {
-    keepAlive: true
+    path: '/',
+    name: 'Index',
+    component: Index,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/apply',
+    name: 'Apply',
+    component: Me,
+    meta: {
+      needLogin: true,
+      keepAlive: true
+    }
+  },
+  {
+    path: '/dicovery',
+    name: 'Dicovery',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/user',
+    name: 'login',
+    component: Me,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/user/login',
+    name: 'login',
+    component: login,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/applyer',
+    name: '申请',
+    component: applyer,
+    meta: {
+      needLogin: true,
+      keepAlive: true
+    }
   }
-},
-{
-  path: '/apply',
-  name: 'Apply',
-  component: Me,
-  meta: {
-    needLogin: true,
-    keepAlive: true
-  }
-},
-{
-  path: '/dicovery',
-  name: 'Dicovery',
-  component: Me,
-  meta: {
-    keepAlive: true
-  }
-},
-{
-  path: '/user',
-  name: 'login',
-  component: Me,
-  meta: {
-    keepAlive: true
-  }
-},
-{
-  path: '/user/login',
-  name: 'login',
-  component: login,
-  meta: {
-    keepAlive: true
-  }
-},
-{
-  path: '/applyer',
-  name: '申请',
-  component: applyer,
-  meta: {
-    needLogin: true,
-    keepAlive: true
-  }
-}
 ]
 
 
@@ -99,14 +99,19 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-  console.log(from, to);
+  console.log(from);
   // 判断配置的路由中是否存在needLogin存在则做出对应的判断
   if (to.matched.some(record => record.meta.needLogin)) {
     // 从状态管理器（vuex）中获取登录状态，如果未登录过的跳转至登录页
+
     if (!store.state.user.is_login) {
       next({
         path: '/user/login',
+        query: {
+          redirect: to.fullPath
+        }
       });
+      //
     } else {
       // 如果已经登录了的就可以访问该页面
       next();
