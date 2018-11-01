@@ -50,7 +50,7 @@ namespace Wizard.Cinema.Application.Services
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到分部");
 
                 long id = NewId.GenerateId();
-                var activity = new Activity(id, request.DivisionId, request.Name, request.Description, request.Address,
+                var activity = new Activity(id, request.DivisionId, request.Name, request.Thumbnail, request.Description, request.Address,
                     request.BeginTime, request.FinishTime, request.RegistrationBeginTime, request.RegistrationFinishTime,
                     request.Price, request.CreatorId);
 
@@ -78,7 +78,7 @@ namespace Wizard.Cinema.Application.Services
                 if (activity == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到该活动");
 
-                activity.Change(request.DivisionId, request.Name, request.Description, request.Address,
+                activity.Change(request.DivisionId, request.Name, request.Thumbnail, request.Description, request.Address,
                     request.BeginTime, request.FinishTime, request.RegistrationBeginTime,
                     request.RegistrationFinishTime,
                     request.Price);

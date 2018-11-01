@@ -18,6 +18,7 @@
       (ActivityId
       ,DivisionId
       ,Name
+      ,Thumbnail
       ,Description
       ,Address
       ,Type
@@ -33,6 +34,7 @@
       (@ActivityId
       ,@DivisionId
       ,@Name
+      ,@Thumbnail
       ,@Description
       ,@Address
       ,@Type
@@ -53,6 +55,9 @@
       <Set>
         <IsNotNull Prepend="," Property="Name">
           Name = @Name
+        </IsNotNull>
+        <IsNotNull Prepend="," Property="Thumbnail">
+          Thumbnail = @Thumbnail
         </IsNotNull>
         <IsNotNull Prepend="," Property="Description">
           Description = @Description

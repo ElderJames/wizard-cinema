@@ -21,6 +21,11 @@ namespace Wizard.Cinema.QueryServices.DTOs.Activity
         public string Name { get; set; }
 
         /// <summary>
+        /// 缩略图
+        /// </summary>
+        public string Thumbnail { get; set; }
+
+        /// <summary>
         /// 活动详情
         /// </summary>
         public string Description { get; set; }
