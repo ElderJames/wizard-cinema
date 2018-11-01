@@ -34,6 +34,7 @@ const mutations = {
   },
   'SET_AUTH_TOKEN'(state, token) {
     state.auth_token = token;
+      state.is_login = true;
   }
 }
 
