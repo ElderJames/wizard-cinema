@@ -128,7 +128,24 @@ namespace Wizard.Cinema.Application.Services
         {
             try
             {
-                SessionInfo session = _sessionQueryService.Query(sessionId);
+                SessionInfo session = _sessionQueryService.QueryBySessionId(sessionId);
+                if (session == null)
+                    return new ApiResult<SessionResp>(ResultStatus.FAIL, "所选场次不存在");
+
+                return new ApiResult<SessionResp>(ResultStatus.SUCCESS, Mapper.Map<SessionInfo, SessionResp>(session));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询场次时异常", ex);
+                return new ApiResult<SessionResp>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
+        public ApiResult<SessionResp> QueryByActivityId(long activityId)
+        {
+            try
+            {
+                SessionInfo session = _sessionQueryService.QueryBySessionId(activityId);
                 if (session == null)
                     return new ApiResult<SessionResp>(ResultStatus.FAIL, "所选场次不存在");
 

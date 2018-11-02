@@ -4,61 +4,61 @@ import store from '@/vuex/store';
 
 import Index from '@/components/Index'
 import Me from '@/components/Me'
-import applyer from '@/components/hall'
+import hall from '@/components/hall'
 import login from '@/components/login'
 
 Vue.use(VueRouter)
 
 const routes = [{
-    path: '/',
-    name: 'Index',
-    component: Index,
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/apply',
-    name: 'Apply',
-    component: Me,
-    meta: {
-      needLogin: true,
-      keepAlive: true
-    }
-  },
-  {
-    path: '/dicovery',
-    name: 'Dicovery',
-    component: Me,
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/user',
-    name: 'login',
-    component: Me,
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/user/login',
-    name: 'login',
-    component: login,
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/applyer',
-    name: '申请',
-    component: applyer,
-    meta: {
-      needLogin: true,
-      keepAlive: true
-    }
+  path: '/',
+  name: 'Index',
+  component: Index,
+  meta: {
+    keepAlive: true
   }
+},
+{
+  path: '/apply',
+  name: 'Apply',
+  component: Me,
+  meta: {
+    needLogin: true,
+    keepAlive: true
+  }
+},
+{
+  path: '/dicovery',
+  name: 'Dicovery',
+  component: Me,
+  meta: {
+    keepAlive: true
+  }
+},
+{
+  path: '/user',
+  name: 'login',
+  component: Me,
+  meta: {
+    keepAlive: true
+  }
+},
+{
+  path: '/user/login',
+  name: 'login',
+  component: login,
+  meta: {
+    keepAlive: true
+  }
+},
+{
+  path: '/hall/:id',
+  name: '申请',
+  component: hall,
+  meta: {
+    needLogin: true,
+    keepAlive: true
+  }
+}
 ]
 
 

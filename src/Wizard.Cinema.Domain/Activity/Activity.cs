@@ -25,6 +25,11 @@ namespace Wizard.Cinema.Domain.Activity
         public string Name { get; private set; }
 
         /// <summary>
+        /// 概况
+        /// </summary>
+        public string Summary { get; private set; }
+
+        /// <summary>
         /// 缩略图
         /// </summary>
         public string Thumbnail { get; private set; }
@@ -88,13 +93,14 @@ namespace Wizard.Cinema.Domain.Activity
         {
         }
 
-        public Activity(long activityId, long divisionId, string name, string thumbnail, string description, string address,
+        public Activity(long activityId, long divisionId, string name, string summary, string thumbnail, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
             decimal price, long creatorId)
         {
             this.ActivityId = activityId;
             this.DivisionId = divisionId;
             this.Name = name;
+            this.Summary = summary;
             this.Thumbnail = thumbnail;
             this.Description = description;
             this.Address = address;
@@ -108,7 +114,7 @@ namespace Wizard.Cinema.Domain.Activity
             this.Status = ActivityStatus.未启动;
         }
 
-        public void Change(long divisionId, string name, string thumbnail, string description, string address,
+        public void Change(long divisionId, string name, string summary, string thumbnail, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
             decimal price)
         {
@@ -117,6 +123,7 @@ namespace Wizard.Cinema.Domain.Activity
 
             this.DivisionId = divisionId;
             this.Name = name;
+            this.Summary = summary;
             this.Thumbnail = thumbnail;
             this.Description = description;
             this.Address = address;

@@ -20,36 +20,32 @@ import Layout from "@/components/Layout";
 export default {
   data: function() {
     return {
-      activities: []
+      activities: [],
+      a_page: 1,
+      a_size: 10
     };
   },
-  created() {
+  async created() {
     _self = this;
-    this.activities = [
-      {
-        picUrl: "https://muse-ui.org/img/sun.a646a52d.jpg",
-        activityId: 1,
-        name: "神期动物在哪里2",
-        summary: "首映"
-      },
-      {
-        picUrl: "https://muse-ui.org/img/sun.a646a52d.jpg",
-        activityId: 2,
-        name: "神期动物在哪里2",
-        summary: "周末"
-      },
-      {
-        picUrl: "https://muse-ui.org/img/sun.a646a52d.jpg",
-        activityId: 3,
-        name: "神期动物在哪里2",
-        summary: "三强争霸赛"
-      }
-    ];
+    await this.setList(1, 100);
   },
   mounted() {},
   methods: {
     onTileClick(activity) {
       console.log(activity);
+      this.router.push({ path: `/hall/${activity.activityId}` });
+    },
+    async setList(page, size) {
+      var list = await this.$store.dispatch("getActivityList", { page, size });
+      console.log(list);
+      this.activities = list.map(x => {
+        return {
+          activityId: x.activityId,
+          name: x.name,
+          summary: x.summary,
+          picUrl: x.thumbnail
+        };
+      });
     }
   },
   computed: {},

@@ -23,6 +23,11 @@ namespace Wizard.Cinema.Application.DTOs.Request.Activity
         public string Name { get; set; }
 
         /// <summary>
+        /// 概况
+        /// </summary>
+        public string Summary { get; set; }
+
+        /// <summary>
         /// 缩略图
         /// </summary>
         public string Thumbnail { get; set; }

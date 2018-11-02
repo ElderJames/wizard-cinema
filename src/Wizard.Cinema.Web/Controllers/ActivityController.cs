@@ -15,10 +15,13 @@ namespace Wizard.Cinema.Web.Controllers
     public class ActivityController : ControllerBase
     {
         private readonly IActivityService _activityService;
+        private ISessionService _sessionService;
 
-        public ActivityController(IActivityService activityService)
+        public ActivityController(IActivityService activityService,
+            ISessionService sessionService)
         {
             this._activityService = activityService;
+            this._sessionService = sessionService;
         }
 
         [HttpGet("")]
@@ -49,7 +52,38 @@ namespace Wizard.Cinema.Web.Controllers
                 x.Name,
                 x.Status,
                 x.Type,
+                x.Summary,
+                x.Thumbnail
             })));
+        }
+
+        [HttpGet("{activityId}/session")]
+        public IActionResult Hall(long activityId)
+        {
+            if (activityId <= 0)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, "请选择活动"));
+
+            ApiResult<ActivityResp> activityResult = _activityService.GetById(activityId);
+            if (activityResult.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, activityResult.Message));
+
+            ApiResult<SessionResp> sessionResult = _sessionService.GetSessionByActivityId(activityId);
+            if (sessionResult.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, sessionResult.Message));
+
+            if (sessionResult.Result == null)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, "找不到场次"));
+
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
+            {
+                sessionResult.Result.ActivityId,
+                sessionResult.Result.SessionId,
+                activityResult.Result.Name,
+                activityResult.Result.Summary,
+                sessionResult.Result.HallId,
+                sessionResult.Result.SeatNos,
+                sessionResult.Result.CinemaId
+            }));
         }
     }
 }
