@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wizard.Cinema.Application.Services\Wizard.Cinema.Application.Services.csproj" />
+    <ProjectReference Include="..\Wizard.Cinema.Remote\Wizard.Cinema.Remote.csproj" />
   </ItemGroup>
 
   <ItemGroup>

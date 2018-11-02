@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using SmartSql.Abstractions;
 using Wizard.Cinema.Application.Services.Extensions;
+using Wizard.Cinema.Remote;
 using Wizard.Cinema.Web.Extensions;
 
 namespace Wizard.Cinema.Web
@@ -25,7 +26,8 @@ namespace Wizard.Cinema.Web
         {
             services.AddJwtAuthentication(Configuration);
 
-            services.AddApplicationService(Configuration);
+            services.AddApplicationService();
+            services.AddRemote();
 
             services.AddMvc()
                 .AddJsonOptions(options =>
