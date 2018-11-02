@@ -141,7 +141,7 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
-        public ApiResult<SessionResp> QueryByActivityId(long activityId)
+        public ApiResult<SessionResp> GetSessionByActivityId(long activityId)
         {
             try
             {
