@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-10-24 01:28:56
+Date: 2018-11-05 00:39:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,6 +24,8 @@ CREATE TABLE `activity` (
   `ActivityId` bigint(20) NOT NULL,
   `DivisionId` bigint(20) NOT NULL,
   `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Summary` varchar(255) DEFAULT NULL,
+  `Thumbnail` varchar(255) DEFAULT NULL,
   `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Type` tinyint(4) NOT NULL,
@@ -33,6 +35,7 @@ CREATE TABLE `activity` (
   `RegistrationBeginTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `RegistrationFinishTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `Price` decimal(10,2) NOT NULL,
+  `People` int(11) DEFAULT NULL,
   `CreatorId` bigint(20) NOT NULL,
   `CreateTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`),
@@ -43,8 +46,8 @@ CREATE TABLE `activity` (
 -- ----------------------------
 -- Records of activity
 -- ----------------------------
-INSERT INTO `activity` VALUES ('1', '1', '1', '吃鸡2', '<p>吃鸡吃鸡吃鸡afd&nbsp;</p>', '鸡场', '1', '0', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '2018-09-14 16:30:49', '100.00', '1', '2018-09-19 21:29:30');
-INSERT INTO `activity` VALUES ('4', '1042414403380576256', '1', '观影活动', '<p>观影观影</p>', 'k11', '0', '0', '2018-09-19 14:05:19', '2018-09-20 14:05:19', '2018-09-19 14:05:26', '2018-09-21 14:05:26', '11.00', '1032831325616209920', '2018-09-19 22:12:08');
+INSERT INTO `activity` VALUES ('1', '1', '1', '吃鸡2', null, null, '<p>吃鸡吃鸡吃鸡afd&nbsp;</p>', '鸡场', '1', '0', '2018-11-05 00:25:17', '2018-11-05 00:25:17', '2018-11-05 00:25:17', '2018-11-05 00:25:17', '100.00', '0', '1', '2018-11-05 00:25:17');
+INSERT INTO `activity` VALUES ('4', '1042414403380576256', '1', '观影活动', '观影活动观影活动观影活动观影活动观影活动观影活动', 'https://si.geilicdn.com/bj-wd-433608195-1539157561044-923707456_1312_1364.jpg.webp?w=750&h=750&cp=1', '<p>观影观影</p>', 'k11', '0', '0', '2018-11-05 00:25:18', '2018-11-05 00:25:18', '2018-11-05 00:25:18', '2018-11-05 00:25:18', '11.00', '0', '1032831325616209920', '2018-11-05 00:25:18');
 
 -- ----------------------------
 -- Table structure for applicants
@@ -430,6 +433,29 @@ CREATE TABLE `seats` (
 -- ----------------------------
 INSERT INTO `seats` VALUES ('1', '1048866882586673152', '1048866882574090240', null, '6,25,0000000001', '[\"5\",\"6\"]', '\0', null, null);
 INSERT INTO `seats` VALUES ('2', '1048866882586673153', '1048866882574090240', null, '5,25,0000000001', '[\"6\",\"6\"]', '\0', null, null);
+
+-- ----------------------------
+-- Table structure for select_seat_tasks
+-- ----------------------------
+DROP TABLE IF EXISTS `select_seat_tasks`;
+CREATE TABLE `select_seat_tasks` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `TaskId` bigint(20) DEFAULT NULL,
+  `SessionId` bigint(20) DEFAULT NULL,
+  `WizardId` bigint(20) DEFAULT NULL,
+  `WechatName` varchar(255) DEFAULT NULL,
+  `SerialNo` int(11) DEFAULT NULL,
+  `Status` tinyint(4) DEFAULT NULL,
+  `SeatNo` char(20) DEFAULT NULL,
+  `BeginTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `EndTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `CreateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of select_seat_tasks
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sessions
