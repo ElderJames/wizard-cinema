@@ -29,6 +29,7 @@
       ,RegistrationBeginTime
       ,RegistrationFinishTime
       ,Price
+      ,People
       ,CreatorId
       ,CreateTime
       )VALUES
@@ -46,6 +47,7 @@
       ,@RegistrationBeginTime
       ,@RegistrationFinishTime
       ,@Price
+      ,@People
       ,@CreatorId
       ,@CreateTime
       )

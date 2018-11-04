@@ -71,5 +71,10 @@ namespace Wizard.Cinema.Application.DTOs.Request.Activity
         /// 报名费用
         /// </summary>
         public decimal Price { get; set; }
+
+        /// <summary>
+        /// 人数
+        /// </summary>
+        public int People { get; set; }
     }
 }

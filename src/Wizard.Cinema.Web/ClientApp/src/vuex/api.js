@@ -35,29 +35,43 @@ Vue.http.interceptors.push(function (request, next) {
                 else
                     response.body = response.body.result;
                 // 正常返回
-            } else if (response.body.status === -2) {
-                // 假设该请求后端返回错误代码为-2是需要登录的，则跳转至登录页面
-                let { fullPath } = store.state.route;
-                router.push({ path: '/user/login', query: { redirect: fullPath } });
-            } else if (response.body.status === 4) {
-                // 参数错误
-                // alert(response.data.message);
-            } else if (response.body.status === 5) {
-                // 程序异常
-                alert(response.body.message);
             }
-        } else {
+        } else if (response.status === 401) {
+            // 假设该请求后端返回错误代码为-2是需要登录的，则跳转至登录页面
+            console.log(router.history.current.path)
+            var path = router.history.current.path;
+            router.push({ path: '/user/login', query: { redirect: path } });
+        }
+        // else if (response.body.status === 4) {
+        //     // 参数错误
+        //     // alert(response.data.message);
+        // } else if (response.body.status === 5) {
+        //     // 程序异常
+        //     alert(response.body.message);
+        // }
+        else {
             Toast('获取数据失败...');
             console.error(`${response.status}-${response.statusText}\n${response.url}`)
         }
     });
 });
 export default {
-    login({ commit, state }, params) {
-        return Vue.http.post('/api/account/signin', params);
+    async login({ commit, state }, params) {
+        var res = await Vue.http.post('/api/account/signin', params);
+        commit("SET_AUTH_TOKEN", res.body.auth_token);
+        commit("SET_IS_LOGIN", true);
+        return res.body != null;
     },
     async getActivityList({ commit, state }, params) {
-        var result = await Vue.http.get('/api/activity', params);
-        return result.body
+        var res = await Vue.http.get('/api/activity', params);
+        return res.body;
+    },
+    async getSession({ commit, state }, activityId) {
+        var res = await Vue.http.get(`/api/activity/${activityId}/session`);
+        return res.body;
+    },
+    async getHall({ commit, state }, id) {
+        var res = await Vue.http.get('/api/cinema/halls/' + id);
+        return res.body;
     }
 }

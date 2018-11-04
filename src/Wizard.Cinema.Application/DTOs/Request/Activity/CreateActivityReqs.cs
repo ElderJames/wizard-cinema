@@ -66,6 +66,11 @@ namespace Wizard.Cinema.Application.DTOs.Request.Activity
         public decimal Price { get; set; }
 
         /// <summary>
+        /// 人数
+        /// </summary>
+        public int People { get; set; }
+
+        /// <summary>
         /// 创建者id
         /// </summary>
         public long CreatorId { get; set; }

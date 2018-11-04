@@ -80,6 +80,11 @@ namespace Wizard.Cinema.Domain.Activity
         public decimal Price { get; private set; }
 
         /// <summary>
+        /// 人数
+        /// </summary>
+        public int People { get; private set; }
+
+        /// <summary>
         /// 创建者id
         /// </summary>
         public long CreatorId { get; private set; }
@@ -95,7 +100,7 @@ namespace Wizard.Cinema.Domain.Activity
 
         public Activity(long activityId, long divisionId, string name, string summary, string thumbnail, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
-            decimal price, long creatorId)
+            decimal price, int people, long creatorId)
         {
             this.ActivityId = activityId;
             this.DivisionId = divisionId;
@@ -109,6 +114,7 @@ namespace Wizard.Cinema.Domain.Activity
             this.RegistrationBeginTime = registrationBeginTime;
             this.RegistrationFinishTime = registrationFinishTime;
             this.Price = price;
+            this.People = people;
             this.CreatorId = creatorId;
             this.CreateTime = DateTime.Now;
             this.Status = ActivityStatus.未启动;
@@ -116,7 +122,7 @@ namespace Wizard.Cinema.Domain.Activity
 
         public void Change(long divisionId, string name, string summary, string thumbnail, string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
-            decimal price)
+            decimal price, int people)
         {
             if (this.Status != ActivityStatus.未启动)
                 throw new DomainException("进行中不能修改");
@@ -132,6 +138,7 @@ namespace Wizard.Cinema.Domain.Activity
             this.RegistrationBeginTime = registrationBeginTime;
             this.RegistrationFinishTime = registrationFinishTime;
             this.Price = price;
+            this.People = people;
         }
     }
 }

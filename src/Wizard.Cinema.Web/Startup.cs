@@ -58,12 +58,13 @@ namespace Wizard.Cinema.Web
                 app.UseHsts();
             }
 
-            app.UseHeaderExceptionHandler();
-
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseSpaStaticFiles();
+
+            app.UseHeaderExceptionHandler();
 
             app.UseAuthentication();
 

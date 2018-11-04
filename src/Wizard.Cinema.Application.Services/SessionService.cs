@@ -145,7 +145,7 @@ namespace Wizard.Cinema.Application.Services
         {
             try
             {
-                SessionInfo session = _sessionQueryService.QueryBySessionId(activityId);
+                SessionInfo session = _sessionQueryService.QueryByActivityId(activityId);
                 if (session == null)
                     return new ApiResult<SessionResp>(ResultStatus.FAIL, "所选场次不存在");
 

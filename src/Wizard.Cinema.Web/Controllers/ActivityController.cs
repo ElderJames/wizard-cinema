@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using Infrastructures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Application.DTOs.Request.Activity;
 using Wizard.Cinema.Application.DTOs.Response;
@@ -15,7 +16,7 @@ namespace Wizard.Cinema.Web.Controllers
     public class ActivityController : ControllerBase
     {
         private readonly IActivityService _activityService;
-        private ISessionService _sessionService;
+        private readonly ISessionService _sessionService;
 
         public ActivityController(IActivityService activityService,
             ISessionService sessionService)
@@ -57,8 +58,30 @@ namespace Wizard.Cinema.Web.Controllers
             })));
         }
 
+        [HttpGet("{activityId:long}")]
+        public ActionResult Detail(long activityId)
+        {
+            if (activityId <= 0)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, "请选择正确的活动"));
+
+            ApiResult<ActivityResp> activity = _activityService.GetById(activityId);
+            if (activity.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, activity.Message));
+
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
+            {
+                activity.Result.ActivityId,
+                activity.Result.Name,
+                activity.Result.Summary,
+                activity.Result.Thumbnail,
+                activity.Result.BeginTime,
+                activity.Result.People,
+            }));
+        }
+
+        [Authorize]
         [HttpGet("{activityId}/session")]
-        public IActionResult Hall(long activityId)
+        public IActionResult Session(long activityId)
         {
             if (activityId <= 0)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "请选择活动"));

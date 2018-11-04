@@ -52,7 +52,7 @@ namespace Wizard.Cinema.Application.Services
                 long id = NewId.GenerateId();
                 var activity = new Activity(id, request.DivisionId, request.Name, request.Summary, request.Thumbnail, request.Description, request.Address,
                     request.BeginTime, request.FinishTime, request.RegistrationBeginTime, request.RegistrationFinishTime,
-                    request.Price, request.CreatorId);
+                    request.Price, request.People, request.CreatorId);
 
                 if (_activityRepository.Insert(activity) <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "保存时出现问题，请稍后再试");
@@ -81,7 +81,7 @@ namespace Wizard.Cinema.Application.Services
                 activity.Change(request.DivisionId, request.Name, request.Summary, request.Thumbnail, request.Description, request.Address,
                     request.BeginTime, request.FinishTime, request.RegistrationBeginTime,
                     request.RegistrationFinishTime,
-                    request.Price);
+                    request.Price, request.People);
 
                 if (_activityRepository.Update(activity) <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "保存时出现问题，请稍后再试");

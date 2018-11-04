@@ -31,9 +31,11 @@ export default {
   },
   mounted() {},
   methods: {
-    onTileClick(activity) {
+    async onTileClick(activity) {
       console.log(activity);
-      this.router.push({ path: `/hall/${activity.activityId}` });
+   
+   
+      this.$router.push({ path: `/hall/${activity.activityId}` });
     },
     async setList(page, size) {
       var list = await this.$store.dispatch("getActivityList", { page, size });
@@ -46,6 +48,9 @@ export default {
           picUrl: x.thumbnail
         };
       });
+    },
+    async getSession(id) {
+      console.log(session);
     }
   },
   computed: {},

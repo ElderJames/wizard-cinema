@@ -45,9 +45,7 @@ export default {
         console.log("form valid: ", result);
         if (result)
           this.$store.dispatch("login", this.validateForm).then(res => {
-            this.$store.commit("SET_AUTH_TOKEN", res.body.auth_token);
-            this.$store.commit("SET_IS_LOGIN", true);
-            this.$router.replace(this.$route.query.redirect || "/");
+            if (res) this.$router.replace(this.$route.query.redirect || "/");
           });
       });
     },

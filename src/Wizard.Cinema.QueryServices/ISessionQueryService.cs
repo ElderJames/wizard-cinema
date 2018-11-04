@@ -7,7 +7,7 @@ namespace Wizard.Cinema.QueryServices
     {
         SessionInfo QueryBySessionId(long sessionId);
 
-        SessionInfo QueryByActivityId(long sessionId);
+        SessionInfo QueryByActivityId(long activityId);
 
         PagedData<SessionInfo> QueryPaged(SearchSessionCondition search);
     }
