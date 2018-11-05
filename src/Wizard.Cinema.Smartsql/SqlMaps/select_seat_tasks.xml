@@ -54,7 +54,7 @@
       AND Status = 0;
     </Statement>
 
-    <Statement Id="Select">
+    <Statement Id="Select" ParameterMap="SessionParamMap">
       UPDATE select_seat_tasks
       SET
       Status = @Status,

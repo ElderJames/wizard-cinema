@@ -66,13 +66,14 @@ namespace Wizard.Cinema.Application.Services
 
                 seats.ForEach(item => item.Choose(wizard));
                 canSelectTask.Select(seatNos);
-                nextTask.Begin();
+                nextTask?.Begin();
 
                 _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
                 {
                     _seatRepository.BatchUpdate(seats.ToArray());
                     _selectSeatTaskRepository.Select(canSelectTask);
-                    _selectSeatTaskRepository.Start(nextTask);
+                    if (nextTask != null)
+                        _selectSeatTaskRepository.Start(nextTask);
                 });
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);
