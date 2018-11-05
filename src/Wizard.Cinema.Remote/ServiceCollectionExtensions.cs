@@ -19,6 +19,9 @@ namespace Wizard.Cinema.Remote
 
             services.AddRepositoryFactory(sqlIdNamingConvert: (type, method) =>
             {
+                if (method.Name.StartsWith("Update"))
+                    return "Update";
+
                 int index = method.Name.IndexOf("By", StringComparison.Ordinal);
                 if (index <= 0)
                     index = method.Name.IndexOf("To", StringComparison.Ordinal);

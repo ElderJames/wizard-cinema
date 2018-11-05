@@ -64,6 +64,10 @@ namespace Wizard.Cinema.Domain.Cinema
         /// </summary>
         public DateTime CreateTime { get; private set; }
 
+        private SelectSeatTask()
+        {
+        }
+
         /// <summary>
         /// 创建一个选座任务
         /// </summary>
@@ -84,7 +88,7 @@ namespace Wizard.Cinema.Domain.Cinema
             this.CreateTime = DateTime.Now;
         }
 
-        public void Action()
+        public void Begin()
         {
             this.Status = SelectTaskStatus.进行中;
             this.BeginTime = DateTime.Now;

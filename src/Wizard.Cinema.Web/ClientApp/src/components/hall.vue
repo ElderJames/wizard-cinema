@@ -70,7 +70,7 @@
                 .selected-seat-info {{seat.rowId}}排{{seat.columnId}}座
                 .price-info ¥54
           .submit-block.box-flex
-            .submit.flex(data-bid="b_212zq") {{selectedSeats.length>0?'确认选座':'请先选座'}}
+            .submit.flex(data-bid="b_212zq" @click="submit") {{selectedSeats.length>0?'确认选座':'请先选座'}}
 
 </template>
 
@@ -86,10 +86,11 @@ export default {
       seats: [],
       selectedSeats: [],
       maxSeatLength: 0,
+      sessionId: 0,
       activity: {
         name: "神奇动物在哪里2",
-        time:"2018-11-16 00：00",
-        info:""
+        time: "2018-11-16 00：00",
+        info: ""
       }
     };
   },
@@ -97,10 +98,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     var activityId = to.params.id;
     next(async vm => {
-
       var session = await vm.$store.dispatch("getSession", activityId);
       if (session == null) vm.$router.go(-1);
       vm.canSelect = session.seatNos;
+      vm.sessionId = session.sessionId;
       var hall = await vm.$store.dispatch("getHall", session.hallId);
       vm.hallData = JSON.parse(hall.seatJson);
       var lengtharr = vm.hallData.sections[0].seats.map(x => x.columns.length);
@@ -141,8 +142,7 @@ export default {
       else this.selectASeat(seat);
     },
     selectASeat(seat) {
- 
-      if (!seat.seatNo|| seat.status != 0) return;
+      if (!seat.seatNo || seat.status != 0) return;
 
       this.selectedSeats.push(seat);
       seat.active = true;
@@ -153,6 +153,14 @@ export default {
         this.selectedSeats.findIndex(item => item.seatNo === seat.seatNo),
         1
       );
+    },
+    async submit() {
+      if (this.selectedSeats.length > 0) {
+        var seatNos = this.selectedSeats.map(x => x.seatNo);
+        var sessionId = this.sessionId;
+        console.log(sessionId, seatNos);
+        await this.$store.dispatch("selectSeat", { seatNos, sessionId });
+      }
     }
   },
   computed: {},
@@ -163,7 +171,6 @@ export default {
     drag: {
       // 指令的定义
       componentUpdated: function(el) {
-        console.log(el);
         let odiv = el; //获取当前元素
         let p = document.querySelector(".seat-block .select-block");
         let h = document.querySelector(".select-block .hall-name-wrapper");

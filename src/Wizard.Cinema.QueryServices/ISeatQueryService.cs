@@ -7,10 +7,10 @@ namespace Wizard.Cinema.QueryServices
     {
         SeatInfo QueryBySeatId(long seatId);
 
-        SeatInfo[] QueryBySessionId(long sessionId);
+        IEnumerable<SeatInfo> QueryBySessionId(long sessionId);
 
         IEnumerable<SeatInfo> QueryByActivityId(long activityId);
 
-        string[] QuerySeatNos(long sessionId, long wizardId);
+        IEnumerable<string> QuerySeatNos(long sessionId, long wizardId);
     }
 }

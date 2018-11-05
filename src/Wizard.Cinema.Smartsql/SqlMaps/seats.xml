@@ -6,11 +6,17 @@
   <MultipleResultMaps>
     <MultipleResultMap Id="QueryByPageMResult">
       <Result Property="TotalCount" />
-      <Result Property="Records" />
+      <Result Property="Records"  MapId="QuerySeatResultMap"/>
       <Result Property="PageSize" />
       <Result Property="PageNow" />
     </MultipleResultMap>
   </MultipleResultMaps>
+
+  <ResultMaps>
+    <ResultMap Id="QuerySeatResultMap">
+      <Result Column="Position" Property="Position" TypeHandler="Json"/>
+    </ResultMap>
+  </ResultMaps>
 
   <ParameterMaps>
     <ParameterMap Id="SeatParamMap">
@@ -114,13 +120,22 @@
         <IsNotNull Prepend="AND" Property="ActivityId">
           ActivityId = @ActivityId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="WizardId">
+          WizardId = @WizardId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="SessionId">
+          SessionId = @SessionId
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="Status">
           Status = @Status
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="SeatNos">
+          SeatNo IN @SeatNos
         </IsNotNull>
       </Where>
     </Statement>
 
-    <Statement Id="Query">
+    <Statement Id="Query" ResultMap="QuerySeatResultMap">
       SELECT * FROM seats
       <Include RefId="QueryParams"></Include>
     </Statement>
@@ -133,6 +148,11 @@
       <Include RefId="OrderAndPaged" />;
       SELECT @PageSize;
       SELECT @PageNow;
+    </Statement>
+
+    <Statement Id="QuerySeatNos">
+      SELECT SeatNo FROM seats
+      <Include RefId="QueryParams"></Include>
     </Statement>
   </Statements>
 </SmartSqlMap>

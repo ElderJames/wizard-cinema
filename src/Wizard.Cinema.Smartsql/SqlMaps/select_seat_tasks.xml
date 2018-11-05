@@ -44,5 +44,55 @@
         ,@CreateTime)
       </For>
     </Statement>
+
+    <Statement Id="Start">
+      UPDATE select_seat_tasks
+      SET
+      Status = @Status,
+      BeginTime = @BeginTime
+      WHERE TaskId = @TaskId
+      AND Status = 0;
+    </Statement>
+
+    <Statement Id="Select">
+      UPDATE select_seat_tasks
+      SET
+      Status = @Status,
+      EndTime = @EndTime,
+      SeatNos = @SeatNos
+      WHERE TaskId = @TaskId
+      AND Status = 5;
+    </Statement>
+
+    <Statement Id="QueryParams">
+      <Where>
+        <IsNotNull Prepend="AND" Property="TaskId">
+          TaskId = @TaskId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="SessionId">
+          SessionId = @SessionId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="WizardId">
+          WizardId = @WizardId
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="Status">
+          Status = @Status
+        </IsNotNull>
+      </Where>
+    </Statement>
+
+    <Statement Id="Query" ResultMap="QuerySessionResultMap">
+      SELECT * FROM select_seat_tasks
+      <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryNextTask" ResultMap="QuerySessionResultMap">
+      SELECT * FROM select_seat_tasks
+      WHERE
+      SessionId = @SessionId
+      AND SerialNo >= @SerialNo
+      AND Status = 5
+      LIMIT 1;
+    </Statement>
   </Statements>
 </SmartSqlMap>

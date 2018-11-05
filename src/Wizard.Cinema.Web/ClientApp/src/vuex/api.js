@@ -73,5 +73,9 @@ export default {
     async getHall({ commit, state }, id) {
         var res = await Vue.http.get('/api/cinema/halls/' + id);
         return res.body;
+    },
+    async selectSeat({ commit, state }, params) {
+        var res = await Vue.http.post('/api/session/select-seats', params);
+        return res.body;
     }
 }

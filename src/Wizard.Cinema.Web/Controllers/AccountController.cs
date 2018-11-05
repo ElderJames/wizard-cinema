@@ -31,6 +31,7 @@ namespace Wizard.Cinema.Web.Controllers
             {
                 new Claim("id","123" ),
                 new Claim("rol", "api_access"),
+                new Claim(ClaimTypes.NameIdentifier,"1037288287334563840"),
                 new Claim(ClaimTypes.Name, model.Mobile),
                 new Claim(JwtRegisteredClaimNames.Sub, model.Mobile),
                 new Claim(JwtRegisteredClaimNames.Jti,  _jwtOptions.JtiGenerator()),
