@@ -1,14 +1,13 @@
 ﻿using Infrastructures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Wizard.Cinema.Admin.Auth;
-using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Application.Services.Dto.Response;
 
 namespace Wizard.Cinema.Admin.Controllers
 {
     [Route("api")]
+    [Authorize]
     [ApiController]
     public class AccountController : BaseController
     {

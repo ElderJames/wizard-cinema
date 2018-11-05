@@ -59,6 +59,10 @@ namespace Wizard.Cinema.Domain.Activity
         /// </summary>
         public DateTime ApplyTime { get; private set; }
 
+        private Applicant()
+        {
+        }
+
         public Applicant(long applicantId, long wizardId, Activity activity, string realName, string mobile, int count)
         {
             if (activity == null)

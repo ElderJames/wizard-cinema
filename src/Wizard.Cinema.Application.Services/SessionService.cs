@@ -191,6 +191,9 @@ namespace Wizard.Cinema.Application.Services
 
                 IEnumerable<Applicant> applicants = _applicantRepository.QueryByActivityId(activity.ActivityId);
 
+                if (applicants.IsNullOrEmpty())
+                    return new ApiResult<bool>(ResultStatus.FAIL, "没人报名哦");
+
                 SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
 
                 _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>

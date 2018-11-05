@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Models;
@@ -11,6 +12,7 @@ using Wizard.Cinema.Remote.Spider.Response;
 namespace Wizard.Cinema.Admin.Controllers
 {
     [Route("api")]
+    [Authorize]
     [ApiController]
     public class CinemaController : BaseController
     {

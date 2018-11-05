@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Wizard.Cinema.Admin.Models;
@@ -14,6 +15,7 @@ using Wizard.Cinema.Remote.Spider.Response;
 namespace Wizard.Cinema.Admin.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class SessionController : BaseController
     {
@@ -21,7 +23,8 @@ namespace Wizard.Cinema.Admin.Controllers
         private readonly IDivisionService _divisionService;
         private readonly HallService _hallService;
 
-        public SessionController(ISessionService sessionService, IDivisionService divisionService,
+        public SessionController(ISessionService sessionService,
+            IDivisionService divisionService,
             HallService hallService)
         {
             this._sessionService = sessionService;
@@ -103,8 +106,8 @@ namespace Wizard.Cinema.Admin.Controllers
             else
             {
                 ApiResult<bool> apiResult = _sessionService.Change(new UpdateSessionReqs()
-
                 {
+                    ActivityId = model.ActivityId,
                     SessionId = model.SessionId.Value,
                     CinemaId = model.CinemaId,
                     HallId = model.HallId,
@@ -126,6 +129,19 @@ namespace Wizard.Cinema.Admin.Controllers
 
                 return Json(apiResult);
             }
+        }
+
+        [HttpPost("begin-select")]
+        public IActionResult BeginSelect([FromForm]long sessionId)
+        {
+            if (sessionId <= 0)
+                return Fail("请选择正确的场次");
+
+            ApiResult<bool> result = _sessionService.StartSelectSeat(sessionId);
+            if (result.Status != ResultStatus.SUCCESS || !result.Result)
+                return Fail(result.Message);
+
+            return Ok();
         }
     }
 }

@@ -8,6 +8,8 @@ import {
   SimpleTableData,
 } from '@delon/abc';
 
+import { SessionService } from '../../../../services/session.service';
+
 @Component({
   selector: 'session',
   templateUrl: './session-list.component.html',
@@ -52,9 +54,14 @@ export class SessionListComponent implements OnInit {
           click: (item: any) => `cinema/sessions/${item.sessionId}`
         },
         {
+          text: '开始选座',
+          click: (item: any) => this.beginSelect(item.sessionId),
+        },
+        {
           text: '详情',
           click: (item: any) => this.msg.success(`订阅警报${item.no}`),
         },
+
       ],
     },
   ];
@@ -82,6 +89,7 @@ export class SessionListComponent implements OnInit {
     private http: _HttpClient,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
+    private sessionSrv: SessionService
   ) { }
 
   ngOnInit() {
@@ -118,5 +126,10 @@ export class SessionListComponent implements OnInit {
         this.total = res.totalCount;
         this.data = res.records;
       });
+  }
+
+  async beginSelect(sessionId: number) {
+    await this.sessionSrv.beginSelect(sessionId);
+    this.getData();
   }
 }

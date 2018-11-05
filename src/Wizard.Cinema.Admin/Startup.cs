@@ -24,7 +24,7 @@ namespace Wizard.Cinema.Admin
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRemote();
-            services.AddApplicationService(Configuration);
+            services.AddApplicationService();
 
             services.AddJwtAuthentication(Configuration);
 
