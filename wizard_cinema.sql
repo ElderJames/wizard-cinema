@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80011
 File Encoding         : 65001
 
-Date: 2018-11-05 00:39:15
+Date: 2018-11-06 03:06:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -60,16 +60,19 @@ CREATE TABLE `applicants` (
   `DivisionId` bigint(20) DEFAULT NULL,
   `ActivityId` bigint(20) DEFAULT NULL,
   `RealName` varchar(20) DEFAULT NULL,
+  `WechatName` varchar(50) DEFAULT NULL,
   `Mobile` char(12) DEFAULT NULL,
+  `Count` int(11) DEFAULT NULL,
   `Status` tinyint(4) DEFAULT NULL,
   `ApplyTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of applicants
 -- ----------------------------
-INSERT INTO `applicants` VALUES ('1', '1', '1037288287334563840', '1', '1042414403380576256', 'yyy', '152100000000', '0', '2018-09-20 01:25:51');
+INSERT INTO `applicants` VALUES ('1', '1', '1037288287334563840', '1', '1', 'yyy', 'james!!', '152100000000', '1', '0', '2018-11-05 23:35:29');
+INSERT INTO `applicants` VALUES ('2', '2', '1037288287334563840', '1', '1', 'yyy2', 'james!!', '152100000001', '2', '0', '2018-11-05 23:35:30');
 
 -- ----------------------------
 -- Table structure for cinemas
@@ -426,13 +429,19 @@ CREATE TABLE `seats` (
   `WizardId` bigint(20) DEFAULT NULL,
   `SelectTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of seats
 -- ----------------------------
-INSERT INTO `seats` VALUES ('1', '1048866882586673152', '1048866882574090240', null, '6,25,0000000001', '[\"5\",\"6\"]', '\0', null, null);
-INSERT INTO `seats` VALUES ('2', '1048866882586673153', '1048866882574090240', null, '5,25,0000000001', '[\"6\",\"6\"]', '\0', null, null);
+INSERT INTO `seats` VALUES ('3', '1059446945136771072', '1048866882574090240', '1', '6,25,0000000001', '[\"5\",\"6\"]', '\0', null, '2018-11-06 02:52:51');
+INSERT INTO `seats` VALUES ('4', '1059446945140965376', '1048866882574090240', '1', '5,25,0000000001', '[\"6\",\"6\"]', '\0', null, '2018-11-06 02:52:51');
+INSERT INTO `seats` VALUES ('5', '1059446945140965377', '1048866882574090240', '1', '5,24,0000000001', '[\"6\",\"7\"]', '\0', null, '2018-11-06 02:52:52');
+INSERT INTO `seats` VALUES ('6', '1059446945140965378', '1048866882574090240', '1', '6,24,0000000001', '[\"5\",\"7\"]', '\0', null, '2018-11-06 02:52:52');
+INSERT INTO `seats` VALUES ('7', '1059446945140965379', '1048866882574090240', '1', '6,23,0000000001', '[\"5\",\"8\"]', '\0', null, '2018-11-06 02:52:53');
+INSERT INTO `seats` VALUES ('8', '1059446945140965380', '1048866882574090240', '1', '5,23,0000000001', '[\"6\",\"8\"]', '\0', null, '2018-11-06 02:52:53');
+INSERT INTO `seats` VALUES ('9', '1059446945140965381', '1048866882574090240', '1', '6,22,0000000001', '[\"5\",\"9\"]', '', '1037288287334563840', '2018-11-06 03:02:24');
+INSERT INTO `seats` VALUES ('10', '1059446945140965382', '1048866882574090240', '1', '5,22,0000000001', '[\"6\",\"9\"]', '', '1037288287334563840', '2018-11-06 03:02:24');
 
 -- ----------------------------
 -- Table structure for select_seat_tasks
@@ -446,16 +455,19 @@ CREATE TABLE `select_seat_tasks` (
   `WechatName` varchar(255) DEFAULT NULL,
   `SerialNo` int(11) DEFAULT NULL,
   `Status` tinyint(4) DEFAULT NULL,
-  `SeatNo` char(20) DEFAULT NULL,
+  `SeatNos` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Total` int(11) DEFAULT NULL,
   `BeginTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `EndTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `CreateTime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of select_seat_tasks
 -- ----------------------------
+INSERT INTO `select_seat_tasks` VALUES ('3', '1059471787554766848', '1048866882574090240', '1037288287334563840', 'james!!', '1', '10', 'System.String[]', '1', '2018-11-06 03:02:41', '2018-11-06 03:02:25', '2018-11-06 03:02:41');
+INSERT INTO `select_seat_tasks` VALUES ('4', '1059471787554766849', '1048866882574090240', '1037288287334563840', 'james!!', '2', '0', '[]', '2', '2018-11-06 02:50:28', '2018-11-06 02:50:28', '2018-11-06 02:50:28');
 
 -- ----------------------------
 -- Table structure for sessions
@@ -477,9 +489,9 @@ CREATE TABLE `sessions` (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('1', '1', '1', '1', '25198', '147545', '[\"4400197102#0C#03\",\"4400197102#0C#04\"]', '0', '0');
+INSERT INTO `sessions` VALUES ('1', '1', '2', '1', '25198', '147545', '[\"4400197102#0C#03\",\"4400197102#0C#04\"]', '0', '0');
 INSERT INTO `sessions` VALUES ('2', '1047847978628284416', '1042414403380576256', '1', '1676', '97324', '[\"3,3,0000000001\",\"3,1,0000000001\",\"2,3,0000000001\",\"2,1,0000000001\"]', '0', '0');
-INSERT INTO `sessions` VALUES ('3', '1048866882574090240', '1', '1', '1676', '97323', '[\"6,25,0000000001\",\"5,25,0000000001\"]', '0', '0');
+INSERT INTO `sessions` VALUES ('3', '1048866882574090240', '1', '1', '1676', '97323', '[\"6,25,0000000001\",\"5,25,0000000001\",\"5,24,0000000001\",\"6,24,0000000001\",\"6,23,0000000001\",\"5,23,0000000001\",\"6,22,0000000001\",\"5,22,0000000001\"]', '0', '5');
 
 -- ----------------------------
 -- Table structure for wizards
