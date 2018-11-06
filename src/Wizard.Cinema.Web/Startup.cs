@@ -1,4 +1,5 @@
-﻿using Infrastructures.JsonConverters;
+﻿using Infrastructures;
+using Infrastructures.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,8 @@ namespace Wizard.Cinema.Web
 
             services.AddApplicationService();
             services.AddRemote();
+
+            services.AddAutoServices();
 
             services.AddMvc()
                 .AddJsonOptions(options =>
