@@ -194,5 +194,15 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.EXCEPTION, Enumerable.Empty<ApplicantResp>(), ex.Message);
             }
         }
+
+        public ApiResult<IEnumerable<ApplicantResp>> GetApplicants(string mobile)
+        {
+            if (mobile.IsNullOrEmpty())
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.FAIL, "手机号为空");
+
+            IEnumerable<ApplicantInfo> applicats = _applicantQueryService.QueryByMobile(mobile);
+
+            return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicats));
+        }
     }
 }

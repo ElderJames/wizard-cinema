@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Net.Http;
-using Xunit;
+﻿using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Repository.Condition;

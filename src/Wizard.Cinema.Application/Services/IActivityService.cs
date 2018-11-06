@@ -19,6 +19,8 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<ApplicantResp> GetApplicant(long applicantId);
 
+        ApiResult<IEnumerable<ApplicantResp>> GetApplicants(string mobile);
+
         ApiResult<PagedData<ApplicantResp>> SearchApplicant(SearchApplicantReqs request);
 
         ApiResult<IEnumerable<ApplicantResp>> GetApplicantInActivity(long activityId);
