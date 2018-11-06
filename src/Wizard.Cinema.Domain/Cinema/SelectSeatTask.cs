@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructures.Exceptions;
 using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
 
@@ -90,12 +91,18 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public void Begin()
         {
+            if (this.Status != SelectTaskStatus.排队中)
+                throw new DomainException("此用户未在队列中");
+
             this.Status = SelectTaskStatus.进行中;
             this.BeginTime = DateTime.Now;
         }
 
         public void Select(string[] seatNos)
         {
+            if (this.Status != SelectTaskStatus.进行中)
+                throw new DomainException("此用户不在选座状态");
+
             this.Status = SelectTaskStatus.已完成;
             this.SeatNos = seatNos;
             this.EndTime = DateTime.Now;
@@ -103,6 +110,9 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public void Timedout()
         {
+            if (this.Status != SelectTaskStatus.进行中)
+                throw new DomainException("此用户未未在选座状态");
+
             this.Status = SelectTaskStatus.超时并结束;
             this.EndTime = DateTime.Now;
         }

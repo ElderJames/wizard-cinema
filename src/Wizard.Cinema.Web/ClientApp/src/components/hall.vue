@@ -106,6 +106,10 @@ export default {
       if (session == null) vm.$router.go(-1);
       vm.canSelect = session.seatNos;
       vm.sessionId = session.sessionId;
+
+      var seats = await vm.$store.dispatch("getSeats", session.sessionId);
+      vm.hadselectSeats = seats.filter(x => x.selected).map(x => x.seatNo);
+
       var hall = await vm.$store.dispatch("getHall", session.hallId);
       vm.hallData = JSON.parse(hall.seatJson);
       var lengtharr = vm.hallData.sections[0].seats.map(x => x.columns.length);

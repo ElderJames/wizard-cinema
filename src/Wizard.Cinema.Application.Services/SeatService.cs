@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
+using Infrastructures.Exceptions;
 using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
@@ -70,10 +71,14 @@ namespace Wizard.Cinema.Application.Services
 
                 _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
                 {
-                    _seatRepository.BatchUpdate(seats.ToArray());
-                    _selectSeatTaskRepository.Select(canSelectTask);
-                    if (nextTask != null)
-                        _selectSeatTaskRepository.Start(nextTask);
+                    if (_seatRepository.BatchUpdate(seats.ToArray()) < -0)
+                        throw new DomainException("保存时异常0");
+
+                    if (_selectSeatTaskRepository.Select(canSelectTask) < 0)
+                        throw new DomainException("保存时异常1");
+
+                    if (nextTask != null && _selectSeatTaskRepository.Start(nextTask) < 0)
+                        throw new DomainException("保存时异常2");
                 });
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);

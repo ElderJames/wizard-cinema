@@ -77,5 +77,9 @@ export default {
     async selectSeat({ commit, state }, params) {
         var res = await Vue.http.post('/api/session/select-seats', params);
         return res.body;
+    },
+    async getSeats({ commit, state }, sessionId) {
+        var res = await Vue.http.get('/api/session/seats', { params: { sessionId } });
+        return res.body;
     }
 }

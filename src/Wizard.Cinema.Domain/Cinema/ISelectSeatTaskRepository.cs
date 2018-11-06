@@ -7,9 +7,9 @@ namespace Wizard.Cinema.Domain.Cinema
     {
         void BatchInsert(SelectSeatTask[] tasks);
 
-        void Start(SelectSeatTask task);
+        int Start(SelectSeatTask task);
 
-        void Select(SelectSeatTask task);
+        int Select(SelectSeatTask task);
 
         SelectSeatTask Query(long taskId);
 
