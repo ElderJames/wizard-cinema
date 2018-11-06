@@ -67,6 +67,9 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public void Change(long divisionId, long activityId, int cinemaId, int hallId, string[] seatNos)
         {
+            if (this.Status != SessionStatus.编辑中)
+                throw new DomainException("场次" + this.Status.GetName());
+
             this.DivisionId = divisionId;
             this.ActivityId = activityId;
             this.CinemaId = cinemaId;
@@ -80,6 +83,14 @@ namespace Wizard.Cinema.Domain.Cinema
                 throw new DomainException($"该场次{this.Status.GetName()}，不能再启动");
 
             this.Status = SessionStatus.进行中;
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Continue()
+        {
         }
 
         public void Stop()

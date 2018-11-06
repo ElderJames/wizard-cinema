@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
+using Wizard.Cinema.Domain.Activity.EnumTypes;
 using Wizard.Cinema.Domain.Cinema;
+using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
@@ -28,6 +30,9 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
 
         private readonly ITransactionRepository _transactionRepository;
+
+        private static readonly object s_begin_locker = new object();
+        private static readonly object s_stop_locker = new object();
 
         public SessionService(ILogger<SessionService> logger,
             ISessionQueryService sessionQueryService,
@@ -95,7 +100,7 @@ namespace Wizard.Cinema.Application.Services
                 if (activity == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
 
-                if (activity.Status != Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus.未启动)
+                if (activity.Status != ActivityStatus.未启动)
                     return new ApiResult<bool>(ResultStatus.FAIL, "活动已启动，无法再修改了！");
 
                 session.Change(activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
@@ -172,44 +177,65 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
-        public ApiResult<bool> StartSelectSeat(long sessionId)
+        public ApiResult<bool> BeginSelectSeat(long sessionId)
         {
-            try
+            lock (s_begin_locker)
+            {
+                try
+                {
+                    Session session = _sessionRepository.Query(sessionId);
+                    if (session == null)
+                        return new ApiResult<bool>(ResultStatus.FAIL, "所选场次不存在");
+
+                    Activity activity = _activityRepository.Query(session.ActivityId);
+                    if (activity == null)
+                        return new ApiResult<bool>(ResultStatus.FAIL, "所选场次对应活动不存在");
+
+                    if (activity.Status != ActivityStatus.报名结束)
+                        return new ApiResult<bool>(ResultStatus.FAIL, $"活动{activity.Status.GetName()}");
+
+                    IEnumerable<Applicant> applicants = _applicantRepository.QueryByActivityId(activity.ActivityId);
+
+                    if (applicants.IsNullOrEmpty())
+                        return new ApiResult<bool>(ResultStatus.FAIL, "没人报名哦");
+
+                    session.Start();
+                    SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
+                    tasks[0].Begin();
+
+                    _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+                    {
+                        _selectSeatTaskRepository.BatchInsert(tasks);
+
+                        if (_sessionRepository.Update(session) <= 0)
+                            throw new Exception("保存时异常");
+                    });
+
+                    return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("场次开始选座时异常", ex);
+                    return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
+                }
+            }
+        }
+
+        public ApiResult<bool> StopSelectSeat(long sessionId)
+        {
+            lock (s_stop_locker)
             {
                 Session session = _sessionRepository.Query(sessionId);
                 if (session == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "所选场次不存在");
 
-                Activity activity = _activityRepository.Query(session.ActivityId);
-                if (activity == null)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "所选场次对应活动不存在");
+                IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryBySessionId(sessionId);
+                if (tasks.Any(x => x.Status == SelectTaskStatus.已完成))
+                    return new ApiResult<bool>(ResultStatus.SUCCESS, "已有选座，不能停止");
 
-                if (activity.Status != Wizard.Cinema.Domain.Activity.EnumTypes.ActivityStatus.未启动)
-                    return new ApiResult<bool>(ResultStatus.FAIL, $"活动{activity.Status.GetName()}");
-
-                session.Start();
-
-                IEnumerable<Applicant> applicants = _applicantRepository.QueryByActivityId(activity.ActivityId);
-
-                if (applicants.IsNullOrEmpty())
-                    return new ApiResult<bool>(ResultStatus.FAIL, "没人报名哦");
-
-                SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
-
-                _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
-                {
-                    _selectSeatTaskRepository.BatchInsert(tasks);
-
-                    if (_sessionRepository.Update(session) <= 0)
-                        throw new Exception("保存时异常");
-                });
+                session.Stop();
 
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("场次开始选座时异常", ex);
-                return new ApiResult<bool>(ResultStatus.EXCEPTION, ex.Message);
             }
         }
     }

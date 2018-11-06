@@ -13,6 +13,8 @@ namespace Wizard.Cinema.Domain.Cinema
 
         SelectSeatTask Query(long taskId);
 
+        IEnumerable<SelectSeatTask> QueryBySessionId(long sessionId);
+
         IEnumerable<SelectSeatTask> QueryByWizardId(long sessionId, long wizardId, SelectTaskStatus? status = null);
 
         SelectSeatTask QueryNextTask(long sessionId, int serialNo);

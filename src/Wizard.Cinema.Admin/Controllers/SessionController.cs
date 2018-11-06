@@ -137,7 +137,7 @@ namespace Wizard.Cinema.Admin.Controllers
             if (sessionId <= 0)
                 return Fail("请选择正确的场次");
 
-            ApiResult<bool> result = _sessionService.StartSelectSeat(sessionId);
+            ApiResult<bool> result = _sessionService.BeginSelectSeat(sessionId);
             if (result.Status != ResultStatus.SUCCESS || !result.Result)
                 return Fail(result.Message);
 

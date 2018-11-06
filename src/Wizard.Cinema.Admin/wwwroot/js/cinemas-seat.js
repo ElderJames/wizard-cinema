@@ -31,8 +31,8 @@
             g.show(),
             o(e),
             s(e) && o(r(e)),
-            q.removeClass("disable"),
-            void j.text(A[B.length].price.replace("元", "")))
+            q.removeClass("disable"))
+        // void j.text(A[B.length].price.replace("元", "")))
     }
     function i(e) {
         var t = e.data()
@@ -43,12 +43,12 @@
             return !(e.rowId === a && e.columnId === n)
         }),
             $('.ticket[data-index="' + s + '"]').remove(),
-            j.text(A[B.length].price.replace("元", "")),
+            //j.text(A[B.length].price.replace("元", "")),
             e.removeClass("selected").addClass("selectable")
-            $('#selected-seat').val(JSON.stringify(B));
+        $('#selected-seat').val(JSON.stringify(B));
     }
     function l(e) {
-        i(e),  s(e) && i(r(e)), 0 === B.length && (x.show(), g.hide(), q.addClass("disable"))
+        i(e), s(e) && i(r(e)), 0 === B.length && (x.show(), g.hide(), q.addClass("disable"))
     }
     function d(e, t) {
         //J.find(".icon").removeClass("ox xox"),
@@ -130,7 +130,7 @@
                 }
                 vars[hash[0]].push(hash[1]);
             } else {
-                 vars[hash[0]] = hash[1];
+                vars[hash[0]] = hash[1];
             }
         }
         return vars;
@@ -180,12 +180,20 @@
             var e = $(this);
             if (!e.hasClass("empty") && !e.hasClass("sold"))
                 return u(e) ? c(e) : h(e) ? l(e) : void 0
+        }),
+
+        $('#select-all').on('click', function () {
+        $('.seats-block .selectable').trigger('click');
+        }),
+
+        $('#select-none').on('click', function () {
+        $('.seats-block .selected').trigger('click');
         })
 
     //恢复已选座位
     var seatNos = getUrlVars()['seatNos'];
     if (seatNos && seatNos.length > 0)
         seatNos.forEach(item => {
-            $('.seats-block .seat[data-no="' + item+'"]').trigger('click');
+            $('.seats-block .seat[data-no="' + item + '"]').trigger('click');
         })
 })(window, document, jQuery);

@@ -16,6 +16,6 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<PagedData<SessionResp>> SearchSession(SearchSessionReqs search);
 
-        ApiResult<bool> StartSelectSeat(long sessionId);
+        ApiResult<bool> BeginSelectSeat(long sessionId);
     }
 }

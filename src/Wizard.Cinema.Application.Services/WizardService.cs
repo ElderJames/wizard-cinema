@@ -5,7 +5,6 @@ using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
 using Infrastructures.Encrypt.Extensions;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Request.Wizards;
 using Wizard.Cinema.Application.Services.Dto.Request;
@@ -21,7 +20,7 @@ using LoggerExtensions = Microsoft.Extensions.Logging.LoggerExtensions;
 
 namespace Wizard.Cinema.Application.Services
 {
-    [Service(Lifetime = ServiceLifetime.Singleton)]
+    [Service]
     public class WizardService : IWizardService
     {
         private readonly IWizardRepository _wizardRepository;

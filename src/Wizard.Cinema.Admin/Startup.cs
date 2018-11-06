@@ -1,4 +1,5 @@
-﻿using Infrastructures.JsonConverters;
+﻿using Infrastructures;
+using Infrastructures.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ namespace Wizard.Cinema.Admin
         {
             services.AddRemote();
             services.AddApplicationService();
+            services.AddAutoServices();
 
             services.AddJwtAuthentication(Configuration);
 

@@ -52,6 +52,7 @@
       INSERT INTO seats
       (SeatId
       ,SessionId
+      ,ActivityId
       ,SeatNo
       ,Position
       ,Selected
@@ -61,6 +62,7 @@
       <For Property="seats" Key="T" Separator="," Close="" Open="" Prepend="">
         (@SeatId
         ,@SessionId
+        ,@ActivityId
         ,@SeatNo
         ,@Position
         ,@Selected
