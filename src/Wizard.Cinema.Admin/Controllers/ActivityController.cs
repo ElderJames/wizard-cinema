@@ -170,5 +170,11 @@ namespace Wizard.Cinema.Admin.Controllers
                 })
             });
         }
+
+        [HttpPost("applicants/import")]
+        public IActionResult ImportApplicant(ImportApplicantReqs model)
+        {
+            return Ok();
+        }
     }
 }

@@ -7,7 +7,6 @@ using System.Security.Principal;
 using Infrastructures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Wizard.Cinema.Application.DTOs.Response;

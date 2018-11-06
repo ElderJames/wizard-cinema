@@ -4,6 +4,7 @@
     <i class="anticon anticon-plus"></i>
     <span>新建</span>
   </button>
+  <input type="file" (change)="import($event)" multiple="false" class="ml-sm" />
   <ng-container *ngIf="selectedRows.length > 0">
     <button nz-button class="ml-sm">批量操作</button>
     <nz-dropdown [nzPlacement]="'bottomLeft'">
@@ -12,8 +13,8 @@
         <i class="anticon anticon-down"></i>
       </button>
       <ul nz-menu>
-        <li nz-menu-item (click)="remove()">删除</li>
-        <li nz-menu-item (click)="approval()">批量审批</li>
+        <!-- <li nz-menu-item (click)="import()">导入</li> -->
+
       </ul>
     </nz-dropdown>
   </ng-container>

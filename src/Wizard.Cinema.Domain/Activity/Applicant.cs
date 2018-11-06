@@ -63,7 +63,7 @@ namespace Wizard.Cinema.Domain.Activity
         {
         }
 
-        public Applicant(long applicantId, long wizardId, Activity activity, string realName, string mobile, int count)
+        public Applicant(long applicantId, long wizardId, Activity activity, string realName, string wechatName, string mobile, int count)
         {
             if (activity == null)
                 throw new DomainException("活动不存在，请选择正确的活动");
@@ -76,6 +76,7 @@ namespace Wizard.Cinema.Domain.Activity
             this.ActivityId = activity.ActivityId;
             this.DivisionId = activity.DivisionId;
             this.RealName = realName;
+            this.WechatName = wechatName;
             this.Mobile = mobile;
             this.Count = count;
             this.Status = ApplicantStatus.未付款;

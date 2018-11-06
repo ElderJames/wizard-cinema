@@ -6,6 +6,7 @@ import {
   SimpleTableComponent,
   SimpleTableColumn,
   SimpleTableData,
+  XlsxService,
 } from '@delon/abc';
 
 @Component({
@@ -68,6 +69,7 @@ export class ApplicantListComponent implements OnInit {
   expandForm = false;
   total = 0;
   divisionData = [];
+  applicantData: any
 
   activity = {
     activityId: null,
@@ -86,6 +88,7 @@ export class ApplicantListComponent implements OnInit {
     private http: _HttpClient,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
+    private xlsx: XlsxService
   ) { }
 
   ngOnInit() {
@@ -122,5 +125,12 @@ export class ApplicantListComponent implements OnInit {
         this.total = res.totalCount;
         this.data = res.records;
       });
+  }
+
+  async import(e: Event) {
+    const node = e.target as HTMLInputElement;
+    this.applicantData = await this.xlsx.import(node.files[0])
+    node.value = '';
+    console.log(this.applicantData)
   }
 }

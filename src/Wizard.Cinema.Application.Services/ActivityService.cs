@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
@@ -8,6 +9,7 @@ using Wizard.Cinema.Application.DTOs.Request.Activity;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Ministry;
+using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Activity;
 
@@ -26,12 +28,18 @@ namespace Wizard.Cinema.Application.Services
 
         private readonly IApplicantQueryService _applicantQueryService;
 
+        private IWizardProfileRepository _wizardProfileRepository;
+        private IWizardRepository _wizardRepository;
+        private IApplicantRepository _applicantRepository;
+
+        private readonly ITransactionRepository _transactionRepository;
+
         public ActivityService(ILogger<IActivityService> logger,
             IActivityRepository activityRepository,
             IActivityQueryService activityQueryService,
             IWizardQueryService wizardQueryService,
             IDivisionRepository divisionRepository,
-            IApplicantQueryService applicantQueryService)
+            IApplicantQueryService applicantQueryService, ITransactionRepository transactionRepository, IWizardProfileRepository wizardProfileRepository, IWizardRepository wizardRepository, IApplicantRepository applicantRepository)
         {
             this._logger = logger;
             this._activityRepository = activityRepository;
@@ -39,6 +47,10 @@ namespace Wizard.Cinema.Application.Services
             this._wizardQueryService = wizardQueryService;
             this._divisionRepository = divisionRepository;
             this._applicantQueryService = applicantQueryService;
+            this._transactionRepository = transactionRepository;
+            this._wizardProfileRepository = wizardProfileRepository;
+            this._wizardRepository = wizardRepository;
+            this._applicantRepository = applicantRepository;
         }
 
         public ApiResult<bool> Create(CreateActivityReqs request)
@@ -203,6 +215,34 @@ namespace Wizard.Cinema.Application.Services
             IEnumerable<ApplicantInfo> applicats = _applicantQueryService.QueryByMobile(mobile);
 
             return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicats));
+        }
+
+        public ApiResult<bool> ImportApplicants(ImportApplicantReqs request)
+        {
+            Activity activity = _activityRepository.Query(request.ActivityId);
+            if (activity == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "活动不存在");
+
+            var wizards = new List<Wizards>();
+            var applicants = new List<Applicant>();
+
+            request.Data.ForEach(item =>
+            {
+                long wizardId = NewId.GenerateId();
+                var wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile);
+                wizard.ChangeInfo(item.WechatName, null, item.Mobile, 0, DateTime.Now, null, 0);
+
+                var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName, item.Mobile, item.Count);
+
+                wizards.Add(wizard);
+                applicants.Add(applicant);
+            });
+
+            _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+            {
+            });
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }
     }
 }

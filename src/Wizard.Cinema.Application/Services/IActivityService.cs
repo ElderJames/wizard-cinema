@@ -26,5 +26,7 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<IEnumerable<ApplicantResp>> GetApplicantInActivity(long activityId);
 
         ApiResult<IEnumerable<ApplicantResp>> List(SearchApplicantReqs request);
+
+        ApiResult<bool> ImportApplicants(ImportApplicantReqs request);
     }
 }
