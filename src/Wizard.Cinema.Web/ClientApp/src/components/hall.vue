@@ -47,8 +47,11 @@
                 span.s.icon
                 span.text 已售
               span.text-middle
-                span.l.icon
-                span.text 情侣座
+                span.n.icon
+                span.text 不可选
+              //- span.text-middle
+              //-   span.l.icon
+              //-   span.text 情侣座
           .recommend-price-block
             .recommend-block
               .title 推荐座位
@@ -84,6 +87,7 @@ export default {
       hallData: {},
       rowIds: [],
       seats: [],
+      hadselectSeats: ["6,25,0000000001"],
       selectedSeats: [],
       maxSeatLength: 0,
       sessionId: 0,
@@ -118,8 +122,10 @@ export default {
             status: !c.seatNo
               ? ""
               : vm.canSelect.findIndex(o => o == c.seatNo) >= 0
-                ? 0
-                : 1,
+                ? vm.hadselectSeats.findIndex(x => x == c.seatNo) >= 0
+                  ? 1
+                  : 0
+                : -1,
             active: false,
             info: JSON.stringify({
               index: "0",
