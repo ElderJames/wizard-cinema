@@ -42,7 +42,7 @@ namespace Wizard.Cinema.Web.Controllers
             if (wizardResult.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "手机号或者密码不正确"));
 
-            ApiResult<ProfileResp> wizardInfoResult = _wizardService.GetPrpfile(wizardResult.Result.WizardId);
+            ApiResult<ProfileResp> wizardInfoResult = _wizardService.GetProfile(wizardResult.Result.WizardId);
             if (wizardResult.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "手机号或者密码不正确"));
 

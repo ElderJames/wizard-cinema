@@ -23,7 +23,7 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<PagedData<WizardResp>> Search(SearchWizardReqs search);
 
-        ApiResult<ProfileResp> GetPrpfile(long wizardId);
+        ApiResult<ProfileResp> GetProfile(long wizardId);
 
         ApiResult<ProfileResp> ChangeProfile(ChangeProfilepReqs request);
     }

@@ -28,9 +28,9 @@ namespace Wizard.Cinema.Application.Services
 
         private readonly IApplicantQueryService _applicantQueryService;
 
-        private IWizardProfileRepository _wizardProfileRepository;
-        private IWizardRepository _wizardRepository;
-        private IApplicantRepository _applicantRepository;
+        private readonly IWizardProfileRepository _wizardProfileRepository;
+        private readonly IWizardRepository _wizardRepository;
+        private readonly IApplicantRepository _applicantRepository;
 
         private readonly ITransactionRepository _transactionRepository;
 
@@ -240,6 +240,11 @@ namespace Wizard.Cinema.Application.Services
 
             _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
             {
+                _wizardRepository.BatchCreate(wizards);
+
+                _wizardProfileRepository.BatchInsert(wizards.Select(x => x.Profile));
+
+                _applicantRepository.BatchInsert(applicants);
             });
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);

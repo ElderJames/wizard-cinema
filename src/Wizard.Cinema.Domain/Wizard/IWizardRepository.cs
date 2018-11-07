@@ -8,6 +8,8 @@ namespace Wizard.Cinema.Domain.Wizard
     {
         int Create(Wizards wizard);
 
+        void BatchCreate(IEnumerable<Wizards> wizards);
+
         int Update(Wizards wizard);
 
         int UpdatePassword(Wizards wizard);

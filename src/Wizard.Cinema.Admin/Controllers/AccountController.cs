@@ -28,7 +28,7 @@ namespace Wizard.Cinema.Admin.Controllers
             if (wizard.Status != ResultStatus.SUCCESS || wizard.Result == null)
                 return Fail("巫师不存在");
 
-            ApiResult<ProfileResp> profile = _wizardService.GetPrpfile(wizardId);
+            ApiResult<ProfileResp> profile = _wizardService.GetProfile(wizardId);
             if (profile.Status != ResultStatus.SUCCESS || wizard.Result == null)
                 return Fail("查询不到个人资料");
 

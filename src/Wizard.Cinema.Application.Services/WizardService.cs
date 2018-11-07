@@ -123,7 +123,7 @@ namespace Wizard.Cinema.Application.Services
             });
         }
 
-        public ApiResult<ProfileResp> GetPrpfile(long wizardId)
+        public ApiResult<ProfileResp> GetProfile(long wizardId)
         {
             if (wizardId <= 0)
                 return new ApiResult<ProfileResp>(ResultStatus.FAIL, "请选择正确的巫师");

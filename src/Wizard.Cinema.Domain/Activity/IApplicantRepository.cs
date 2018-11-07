@@ -8,6 +8,8 @@ namespace Wizard.Cinema.Domain.Activity
     {
         int Insert(Applicant applicant);
 
+        void BatchInsert(IEnumerable<Applicant> applicants);
+
         int ChangeStatus(Applicant applicant);
 
         Applicant Query(long applicantId);
