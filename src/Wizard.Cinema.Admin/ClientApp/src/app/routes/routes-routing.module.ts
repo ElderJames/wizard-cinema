@@ -48,7 +48,7 @@ const routes: Routes = [
       { path: 'activity', component: ActivityListComponent },
       { path: 'activity/add', component: ActivityDetailComponent, data: { title: '增加活动' } },
       { path: 'activity/:id', component: ActivityDetailComponent, data: { title: '编辑活动' } },
-      { path: 'applicants', component: ApplicantListComponent },
+      { path: 'activity/:id/applicants', component: ApplicantListComponent, data: { title: '报名列表' } },
       { path: 'divisions', component: DivisionsComponent },
       { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
       { path: 'dashboard/v1', component: DashboardV1Component },

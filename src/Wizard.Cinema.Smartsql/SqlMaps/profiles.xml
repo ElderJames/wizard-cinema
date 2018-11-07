@@ -36,6 +36,30 @@
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
+    <Statement Id="BatchInsert">
+      INSERT INTO wizard_profiles
+      (WizardId
+      ,NickName
+      ,PortraitUrl
+      ,Mobile
+      ,Gender
+      ,Birthday
+      ,Slogan
+      ,House
+      )VALUES
+      <For Property="profiles" Key="T" Separator="," Open="" Close="" Prepend="">
+        (@WizardId
+        ,@NickName
+        ,@PortraitUrl
+        ,@Mobile
+        ,@Gender
+        ,@Birthday
+        ,@Slogan
+        ,@House
+        )
+      </For>
+    </Statement>
+
     <Statement Id="Update">
       UPDATE wizard_profiles SET
       <Set>

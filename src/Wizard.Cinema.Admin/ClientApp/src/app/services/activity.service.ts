@@ -17,4 +17,43 @@ export class ActivityService {
                 })
         })
     }
+
+    getDetail = async (activityId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.get('api/activity/' + activityId)
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
+
+    getApplicants = async (size: number, page: number, activityId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.get('api/activity/' + activityId + '/applicants', {
+                PageNow: page,
+                PageSize: size
+            }).subscribe((res) => {
+                resolve(res);
+            })
+        })
+    }
+
+    // importApplicantsFromWeidian = async (activityId: number, data: any): Promise<any> => {
+    //     return new Promise((resolve, reject) => {
+    //         this.http.post('api/activity/' + activityId + '/applicants/import-from-weidian', data).subscribe((res) => {
+    //             resolve(res);
+    //         })
+    //     })
+    // }
+
+    importApplicantsFromWeidian = async (activityId: number, formData: FormData): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.post('api/activity/' + activityId + '/applicants/import-from-weidian', formData, null, { headers: { 'Content-Type': undefined } })
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
+
+    //"applicants/import-from-weidian"
 }

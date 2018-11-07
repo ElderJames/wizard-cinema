@@ -28,8 +28,8 @@
       ,IsAdmin
       ,CreateTime
       ,CreatorId
-      )VALUES(
-      @WizardId
+      )VALUES
+      (@WizardId
       ,@Email
       ,@Account
       ,@Password
@@ -39,6 +39,30 @@
       ,@CreatorId
       )
       ;SELECT last_insert_Id() as Id;
+    </Statement>
+
+    <Statement Id="BatchCreate">
+      INSERT INTO wizards
+      (WizardId
+      ,Email
+      ,Account
+      ,Password
+      ,DivisionId
+      ,IsAdmin
+      ,CreateTime
+      ,CreatorId
+      )VALUES
+      <For Property="wizards" Key="T" Separator="," Open="" Close="" Prepend="">
+        (@WizardId
+        ,@Email
+        ,@Account
+        ,@Password
+        ,@DivisionId
+        ,@IsAdmin
+        ,@CreateTime
+        ,@CreatorId
+        )
+      </For>
     </Statement>
 
     <Statement Id="Update">

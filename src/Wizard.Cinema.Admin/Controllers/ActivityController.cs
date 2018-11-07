@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Activity;
 using Wizard.Cinema.Application.DTOs.Response;
@@ -135,12 +137,14 @@ namespace Wizard.Cinema.Admin.Controllers
             return Ok(applicantApi.Result);
         }
 
-        [HttpGet("applicants")]
-        public IActionResult SearchApplicant([FromQuery]SearchApplicantReqs search)
+        [HttpGet("{activityId:long}/applicants")]
+        public IActionResult SearchApplicant(long activityId, [FromQuery]SearchApplicantReqs search)
         {
+            search.ActivityId = activityId;
+
             ApiResult<PagedData<ApplicantResp>> applicantApi = _activityService.SearchApplicant(search);
             if (!applicantApi.Result.Records.Any())
-                return Ok(applicantApi);
+                return Ok(new PagedData<ApplicantResp>());
 
             ApiResult<IEnumerable<DivisionResp>> divisionResult = _divisionService.GetByIds(applicantApi.Result.Records.Select(x => x.DivisionId).ToArray());
             ApiResult<IEnumerable<WizardResp>> wizards = _wizardService.GetWizards(applicantApi.Result.Records.Select(x => x.WizardId).ToArray());
@@ -171,10 +175,18 @@ namespace Wizard.Cinema.Admin.Controllers
             });
         }
 
-        [HttpPost("applicants/import")]
-        public IActionResult ImportApplicant(ImportApplicantReqs model)
+        [HttpPost("{activityId:long}/applicants/import-from-weidian")]
+        public IActionResult ImportApplicant(long activityId, IFormFile excelfile)
         {
-            return Ok();
+            List<ImportData> model = ExcelHelper.InputExcel<ImportData>(excelfile);
+            var req = new ImportApplicantReqs()
+            {
+                ActivityId = activityId,
+
+                Data = model
+            };
+            ApiResult<bool> result = _activityService.ImportApplicants(req);
+            return Json(result);
         }
     }
 }

@@ -59,6 +59,11 @@ export class ActivityListComponent implements OnInit {
           text: '详情',
           click: (item: any) => this.msg.success(`订阅警报${item.no}`),
         },
+        {
+          text: '报名情况',
+          type: 'link',
+          click: (item: any) => `/activity/${item.activityId}/applicants`
+        }
       ],
     },
   ];

@@ -40,6 +40,34 @@
       ;SELECT last_insert_Id() as Id;
     </Statement>
 
+    <Statement Id="BatchInsert">
+      INSERT INTO applicants
+      (ApplicantId
+      ,WizardId
+      ,DivisionId
+      ,ActivityId
+      ,RealName
+      ,WechatName
+      ,Count
+      ,Mobile
+      ,Status
+      ,ApplyTime
+      )VALUES
+      <For Property="applicants" Key="T" Separator="," Open="" Close="" Prepend="">
+        (@ApplicantId
+        ,@WizardId
+        ,@DivisionId
+        ,@ActivityId
+        ,@RealName
+        ,@WechatName
+        ,@Count
+        ,@Mobile
+        ,@Status
+        ,@ApplyTime
+        )
+      </For>
+    </Statement>
+
     <Statement Id="ChangeStatus">
       UPDATE applicants
       <Set>
