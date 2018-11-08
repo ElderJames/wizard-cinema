@@ -11,6 +11,14 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<bool> Change(UpdateActivityReqs request);
 
+        ApiResult<bool> TurnBeginRegistration(long activityId);
+
+        ApiResult<bool> TurnFinishRegistration(long activityId);
+
+        ApiResult<bool> FinishActivity(long activityId);
+
+        ApiResult<bool> BeginActivity(long activityId);
+
         ApiResult<ActivityResp> GetById(long activityId);
 
         ApiResult<IEnumerable<ActivityResp>> GetByIds(long[] activityIds);
@@ -27,6 +35,11 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<IEnumerable<ApplicantResp>> List(SearchApplicantReqs request);
 
-        ApiResult<bool> ImportApplicants(ImportApplicantReqs request);
+        /// <summary>
+        /// 从微店订单导入
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        ApiResult<bool> ImportApplicantsFromWeidian(ImportApplicantReqs request);
     }
 }

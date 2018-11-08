@@ -123,7 +123,7 @@ namespace Wizard.Cinema.Domain.Wizard
         /// </summary>
         /// <param name="oldPassward"></param>
         /// <param name="newPassward"></param>
-        public void ChangePassward(string oldPassward, string newPassward)
+        public void ChangePassword(string oldPassward, string newPassward)
         {
             if (oldPassward.ToMd5() != Password)
                 throw new DomainException("旧密码匹配失败，请填写正确的密码");

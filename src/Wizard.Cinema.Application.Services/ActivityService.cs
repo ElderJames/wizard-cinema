@@ -107,6 +107,74 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
+        public ApiResult<bool> TurnBeginRegistration(long activityId)
+        {
+            if (activityId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的活动");
+
+            Activity activity = _activityRepository.Query(activityId);
+            if (activity == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "活动不存在");
+
+            activity.BeginRegistration();
+
+            if (_activityRepository.Update(activity) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> TurnFinishRegistration(long activityId)
+        {
+            if (activityId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的活动");
+
+            Activity activity = _activityRepository.Query(activityId);
+            if (activity == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "活动不存在");
+
+            activity.FinishRegistration();
+
+            if (_activityRepository.Update(activity) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> BeginActivity(long activityId)
+        {
+            if (activityId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的活动");
+
+            Activity activity = _activityRepository.Query(activityId);
+            if (activity == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "活动不存在");
+
+            activity.BeginActivity();
+
+            if (_activityRepository.Update(activity) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> FinishActivity(long activityId)
+        {
+            if (activityId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的活动");
+
+            Activity activity = _activityRepository.Query(activityId);
+            if (activity == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "活动不存在");
+
+            activity.FinishActivity();
+
+            if (_activityRepository.Update(activity) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
         public ApiResult<ActivityResp> GetById(long activityId)
         {
             if (activityId <= 0)
@@ -217,7 +285,7 @@ namespace Wizard.Cinema.Application.Services
             return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicats));
         }
 
-        public ApiResult<bool> ImportApplicants(ImportApplicantReqs request)
+        public ApiResult<bool> ImportApplicantsFromWeidian(ImportApplicantReqs request)
         {
             Activity activity = _activityRepository.Query(request.ActivityId);
             if (activity == null)
@@ -234,6 +302,7 @@ namespace Wizard.Cinema.Application.Services
 
                 var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName, item.Mobile, item.Count);
 
+                applicant.Pay();
                 wizards.Add(wizard);
                 applicants.Add(applicant);
             });

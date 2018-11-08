@@ -1,5 +1,6 @@
 ﻿using Infrastructures.Exceptions;
 using System;
+using Infrastructures;
 using Wizard.Cinema.Domain.Activity.EnumTypes;
 
 namespace Wizard.Cinema.Domain.Activity
@@ -98,7 +99,8 @@ namespace Wizard.Cinema.Domain.Activity
         {
         }
 
-        public Activity(long activityId, long divisionId, string name, string summary, string thumbnail, string description, string address,
+        public Activity(long activityId, long divisionId, string name, string summary, string thumbnail,
+            string description, string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
             decimal price, int people, long creatorId)
         {
@@ -120,7 +122,8 @@ namespace Wizard.Cinema.Domain.Activity
             this.Status = ActivityStatus.未启动;
         }
 
-        public void Change(long divisionId, string name, string summary, string thumbnail, string description, string address,
+        public void Change(long divisionId, string name, string summary, string thumbnail, string description,
+            string address,
             DateTime beginTime, DateTime finishTime, DateTime registrationBeginTime, DateTime registrationFinishTime,
             decimal price, int people)
         {
@@ -139,6 +142,41 @@ namespace Wizard.Cinema.Domain.Activity
             this.RegistrationFinishTime = registrationFinishTime;
             this.Price = price;
             this.People = people;
+        }
+
+        /// <summary>
+        /// 开始报名
+        /// </summary>
+        public void BeginRegistration()
+        {
+            if (this.Status != ActivityStatus.未启动)
+                throw new DomainException("活动" + this.Status.GetName());
+
+            this.Status = ActivityStatus.报名中;
+        }
+
+        public void FinishRegistration()
+        {
+            if (this.Status != ActivityStatus.报名中)
+                throw new DomainException("活动" + this.Status.GetName());
+
+            this.Status = ActivityStatus.报名结束;
+        }
+
+        public void BeginActivity()
+        {
+            if (this.Status != ActivityStatus.报名结束)
+                throw new DomainException("活动" + this.Status.GetName());
+
+            this.Status = ActivityStatus.进行中;
+        }
+
+        public void FinishActivity()
+        {
+            if (this.Status != ActivityStatus.进行中)
+                throw new DomainException("活动" + this.Status.GetName());
+
+            this.Status = ActivityStatus.已结束;
         }
     }
 }
