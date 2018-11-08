@@ -71,6 +71,9 @@
         <IsNotNull Prepend="," Property="Account">
           Account = @Account
         </IsNotNull>
+        <IsNotNull Prepend="," Property="Accounts">
+          Account IN @Accounts
+        </IsNotNull>
         <IsNotNull Prepend="," Property="Email">
           Email = @Email
         </IsNotNull>

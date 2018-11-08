@@ -12,7 +12,9 @@ namespace Wizard.Cinema.Admin.Helpers
 {
     public static class ExcelHelper
     {
-        /// <summary> 导入Excel </summary> <param name="file">导入文件</param> <returns>List<T></returns>
+        /// <summary> 导入Excel </summary>
+        /// <param name="file">导入文件</param>
+        /// <returns> </returns>
         public static List<T> InputExcel<T>(IFormFile file) where T : new()
         {
             List<T> list = new List<T> { };

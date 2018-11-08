@@ -183,9 +183,6 @@ namespace Wizard.Cinema.Admin.Controllers
                 return Fail("还没上传文件");
 
             IFormFile file = Request.Form.Files[0];
-            MemoryStream ms = new MemoryStream();
-            file.CopyTo(ms);
-            ms.Seek(0, SeekOrigin.Begin);
 
             List<ImportWedianApplicantModel> model = ExcelHelper.InputExcel<ImportWedianApplicantModel>(file);
             var req = new ImportApplicantReqs()

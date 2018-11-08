@@ -294,13 +294,16 @@ namespace Wizard.Cinema.Application.Services
             var wizards = new List<Wizards>();
             var applicants = new List<Applicant>();
 
-            request.Data.ForEach(item =>
+            IEnumerable<Wizards> wizardList = _wizardRepository.Query(request.Data.Select(x => x.Mobile).ToArray());
+
+            request.Data.Where(x => wizardList.All(w => w.Account != x.Mobile)).ForEach(item =>
             {
                 long wizardId = NewId.GenerateId();
                 var wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile);
                 wizard.ChangeInfo(item.WechatName, null, item.Mobile, 0, DateTime.Now, null, 0);
 
-                var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName, item.Mobile, item.Count);
+                var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName,
+                    item.Mobile, item.Count);
 
                 applicant.Pay();
                 wizards.Add(wizard);

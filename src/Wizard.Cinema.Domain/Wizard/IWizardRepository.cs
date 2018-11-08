@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Wizard.Cinema.Domain.Wizard
 {
@@ -19,6 +17,8 @@ namespace Wizard.Cinema.Domain.Wizard
         int UpdateMobile(Wizards wizard);
 
         Wizards Query(long wizardId);
+
+        IEnumerable<Wizards> Query(string[] accounts);
 
         Wizards Query(string account);
     }
