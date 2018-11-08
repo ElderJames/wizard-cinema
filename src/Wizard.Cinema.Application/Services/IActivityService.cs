@@ -33,6 +33,8 @@ namespace Wizard.Cinema.Application.Services
 
         ApiResult<IEnumerable<ApplicantResp>> GetApplicantInActivity(long activityId);
 
+        ApiResult<IEnumerable<ApplicantResp>> GetApplicantInSession(long sessionId);
+
         ApiResult<IEnumerable<ApplicantResp>> List(SearchApplicantReqs request);
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructures;
 using Infrastructures.Exceptions;
 using Wizard.Cinema.Domain.Activity;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
@@ -87,6 +88,16 @@ namespace Wizard.Cinema.Domain.Cinema
             this.Total = applicant.Count;
             this.Status = SelectTaskStatus.待开始;
             this.CreateTime = DateTime.Now;
+        }
+
+        public void CheckIn(int serialNo)
+        {
+            if (this.Status != SelectTaskStatus.待开始)
+                throw new DomainException("此用户" + this.Status.GetName());
+
+            this.Status = SelectTaskStatus.排队中;
+            this.BeginTime = DateTime.Now;
+            this.SerialNo = serialNo;
         }
 
         public void Begin()

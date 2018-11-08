@@ -35,7 +35,7 @@ namespace Wizard.Cinema.Web.Controllers
         [HttpPost("signin")]
         public IActionResult Signin(SigninModel model)
         {
-            if (model.Mobile != model.Password)
+            if (model.Mobile.Substring(5, 6) != model.Password)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "手机号或者密码不正确"));
 
             ApiResult<WizardResp> wizardResult = _wizardService.GetWizard(model.Mobile, model.Password);

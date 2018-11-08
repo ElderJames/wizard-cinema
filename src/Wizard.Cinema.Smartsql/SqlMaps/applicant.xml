@@ -102,6 +102,12 @@
         <IsNotNull Prepend="AND" Property="ActivityId">
           ActivityId = @ActivityId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="SessionId">
+          EXISTS ( SELECT 1 FROM sessions s
+          WHERE
+          s.ActivityId = a.ActivityId
+          AND s.SessionId = @SessionId)
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="WizardId">
           WizardId = @WizardId
         </IsNotNull>
@@ -115,7 +121,7 @@
     </Statement>
 
     <Statement Id="Query">
-      SELECT * FROM applicants
+      SELECT * FROM applicants a
       <Include RefId="QueryParams"></Include>
     </Statement>
 

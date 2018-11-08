@@ -15,5 +15,7 @@ namespace Wizard.Cinema.QueryServices
         IEnumerable<ApplicantInfo> QueryByMobile(string mobile);
 
         IEnumerable<ApplicantInfo> QueryByActivityId(long activityId);
+
+        IEnumerable<ApplicantInfo> QueryBySessionId(long sessionId);
     }
 }

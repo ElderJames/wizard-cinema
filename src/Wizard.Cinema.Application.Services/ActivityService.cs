@@ -260,6 +260,20 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
+        public ApiResult<IEnumerable<ApplicantResp>> GetApplicantInSession(long sessionId)
+        {
+            try
+            {
+                IEnumerable<ApplicantInfo> applicants = _applicantQueryService.QueryBySessionId(sessionId);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicants));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<IEnumerable<ApplicantResp>>(ResultStatus.EXCEPTION, Enumerable.Empty<ApplicantResp>(), ex.Message);
+            }
+        }
+
         public ApiResult<IEnumerable<ApplicantResp>> List(SearchApplicantReqs request)
         {
             try
@@ -299,7 +313,7 @@ namespace Wizard.Cinema.Application.Services
             request.Data.Where(x => wizardList.All(w => w.Account != x.Mobile)).ForEach(item =>
             {
                 long wizardId = NewId.GenerateId();
-                var wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile);
+                var wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile.Substring(5, 6));
                 wizard.ChangeInfo(item.WechatName, null, item.Mobile, 0, DateTime.Now, null, 0);
 
                 var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName,

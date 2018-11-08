@@ -59,6 +59,9 @@ namespace Wizard.Cinema.Application.Services
                 if (canSelectTask == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "没有可选的名额了");
 
+                if (canSelectTask.Total != seatNos.Length)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "选座数量必须为" + canSelectTask.Total);
+
                 SelectSeatTask nextTask = _selectSeatTaskRepository.QueryNextTask(sessionId, canSelectTask.SerialNo);
 
                 IEnumerable<Seat> seats = _seatRepository.Query(sessionId, seatNos);

@@ -9,6 +9,6 @@ namespace Wizard.Cinema.QueryServices
     {
         IEnumerable<SelectSeatTaskInfo> Query(long sessionId);
 
-        SelectSeatTaskInfo QueryByWizardId(long wizardId);
+        IEnumerable<SelectSeatTaskInfo> QueryByWizardId(long sessionId, long wizardId);
     }
 }
