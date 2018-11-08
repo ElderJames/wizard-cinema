@@ -58,7 +58,7 @@ namespace Wizard.Cinema.Remote.Spider
             var doc = new HtmlDocument();
             doc.LoadHtml(text);
 
-            return doc.DocumentNode.SelectSingleNode(request.XPath).OuterHtml;
+            return doc.DocumentNode.SelectSingleNode(request.XPath)?.OuterHtml;
         }
     }
 }

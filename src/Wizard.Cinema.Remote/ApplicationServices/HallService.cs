@@ -33,7 +33,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
             if (cinemaId <= 0)
                 return Enumerable.Empty<Hall>();
 
-            var halls = _repository.QueryByCinemaId(cinemaId);
+            IEnumerable<Hall> halls = _repository.QueryByCinemaId(cinemaId);
             if (halls.IsNullOrEmpty())
             {
                 lock (_locker)
@@ -43,7 +43,7 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                     {
                         CinemaMoviesResponse movies = _remoteCall.SendAsync(new CinemaMoviesRequest() { CinemaId = cinemaId }).Result;
 
-                        var seats = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist))
+                        var shows = movies.showData.movies.SelectMany(x => x.shows.SelectMany(o => o.plist))
                             .AsParallel().Select(x =>
                             {
                                 try
@@ -62,34 +62,32 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                                     _logger.LogError("获取场次异常， seqNo:" + x.seqNo, ex);
                                     return null;
                                 }
-                            }).Where(x => x != null)
-                            .ToList();
+                            }).Where(x => x != null).Distinct(new SeatListResponseEqualityComparer()).ToList();
 
-                        halls = seats.Distinct(new SeatListResponseEqualityComparer()).Select(x =>
+                        halls = shows.Select(x =>
                             {
+                                string html = String.Empty;
                                 try
                                 {
-                                    string html = _remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest()
-                                    { SeqNo = x.seatData.show.seqNo }).Result;
-
-                                    return new Hall()
-                                    {
-                                        HallId = x.seatData.hall.hallId,
-                                        Name = x.seatData.hall.hallName,
-                                        CinemaId = x.seatData.cinema.cinemaId,
-                                        SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
-                                        SeatHtml = html.IsNullOrEmpty()
-                                            ? null
-                                            : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline)
-                                                .Replace("seat sold", "seat selectable"),
-                                        LastUpdateTime = DateTime.Now
-                                    };
+                                    html = _remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = x.seatData.show.seqNo }).Result;
                                 }
                                 catch (Exception ex)
                                 {
                                     _logger.LogError("获取此次html异常， seqNo:" + x.seatData.show.seqNo, ex);
-                                    return null;
                                 }
+
+                                return new Hall()
+                                {
+                                    HallId = x.seatData.hall.hallId,
+                                    Name = x.seatData.hall.hallName,
+                                    CinemaId = x.seatData.cinema.cinemaId,
+                                    SeatJson = JsonConvert.SerializeObject(x.seatData.seat),
+                                    SeatHtml = html.IsNullOrEmpty()
+                                        ? null
+                                        : Regex.Replace(html, @"\s*(<[^>]+>)\s*", "$1", RegexOptions.Singleline)
+                                            .Replace("seat sold", "seat selectable"),
+                                    LastUpdateTime = DateTime.Now
+                                };
                             }).Where(x => x != null)
                             .ToList();
 

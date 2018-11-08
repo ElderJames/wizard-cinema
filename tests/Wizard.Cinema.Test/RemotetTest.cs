@@ -38,5 +38,13 @@ namespace Wizard.Cinema.Test
 
             Assert.NotNull(movies.showData);
         }
+
+        [Fact]
+        public void GetHallHtmlTest()
+        {
+            var remoteCall = ServiceProvider.GetService<RemoteSpider>();
+            var html = remoteCall.FeatchHtmlAsync(new FetchSeatHtmlRequest() { SeqNo = "201811080132900" }).Result;
+            Assert.NotNull(html);
+        }
     }
 }
