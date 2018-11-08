@@ -238,7 +238,7 @@ namespace Wizard.Cinema.Application.Services
                 applicants.Add(applicant);
             });
 
-            _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
+            _transactionRepository.UseTransaction(IsolationLevel.ReadCommitted, () =>
             {
                 _wizardRepository.BatchCreate(wizards);
 

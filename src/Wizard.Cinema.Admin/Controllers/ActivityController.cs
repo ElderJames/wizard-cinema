@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Http;
@@ -176,14 +177,21 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpPost("{activityId:long}/applicants/import-from-weidian")]
-        public IActionResult ImportApplicant(long activityId, IFormFile excelfile)
+        public IActionResult ImportApplicant(long activityId)
         {
-            List<ImportData> model = ExcelHelper.InputExcel<ImportData>(excelfile);
+            if (Request.Form.Files.Count <= 0)
+                return Fail("还没上传文件");
+
+            IFormFile file = Request.Form.Files[0];
+            MemoryStream ms = new MemoryStream();
+            file.CopyTo(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            List<ImportWedianApplicantModel> model = ExcelHelper.InputExcel<ImportWedianApplicantModel>(file);
             var req = new ImportApplicantReqs()
             {
                 ActivityId = activityId,
-
-                Data = model
+                Data = Mapper.Map<ImportWedianApplicantModel, ImportData>(model)
             };
             ApiResult<bool> result = _activityService.ImportApplicants(req);
             return Json(result);

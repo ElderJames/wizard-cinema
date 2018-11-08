@@ -146,41 +146,16 @@ export class ApplicantListComponent implements OnInit {
     this.data = res.records;
   }
 
-  async import(e: any) {
-    const file = e.target.files[0];
-    // var data = await this.xlsx.import(node.files[0])
-    // node.value = '';
-    // var importModel = {
-    //   ActivityId: 0,
-    //   Data: [{
-    //     OrderNo: '',
-    //     Name: '',
-    //     Mobile: '',
-    //     RealName: '',
-    //     WechatName: '',
-    //     Count: '',
-    //     CreateTime: ''
-    //   }]
-    // }
-    //data.excelReport.splice(0, 1);
+  async upload(files) {
+    if (files.length === 0)
+      return;
+
     var formdata = new FormData();
-    formdata.append('excelfile', file)
+
+    for (let file of files)
+      formdata.append(file.name, file);
     console.log(formdata)
-
-
-    // this.applicantData = data.excelReport.map(x => {
-    //   return {
-    //     OrderNo: x[0],
-    //     Mobile: x[23],
-    //     RealName: x[23],
-    //     WechatName: x[41],
-    //     Count: x[14],
-    //     CreateTime: x[6],
-    //   }
-    // })
-    // console.log(this.applicantData)
-    await this.activitySrv.importApplicantsFromWeidian(this.activity.activityId, this.applicantData);
-
+    await this.activitySrv.importApplicantsFromWeidian(this.activity.activityId, formdata);
   }
 }
 

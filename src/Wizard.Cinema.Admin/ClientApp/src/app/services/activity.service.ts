@@ -46,14 +46,12 @@ export class ActivityService {
     //     })
     // }
 
-    importApplicantsFromWeidian = async (activityId: number, formData: FormData): Promise<any> => {
+    importApplicantsFromWeidian = (activityId: number, formData: FormData): Promise<any> => {
         return new Promise((resolve, reject) => {
-            this.http.post('api/activity/' + activityId + '/applicants/import-from-weidian', formData, null, { headers: { 'Content-Type': undefined } })
+            this.http.post('api/activity/' + activityId + '/applicants/import-from-weidian', formData)
                 .subscribe((res) => {
                     resolve(res);
                 })
         })
     }
-
-    //"applicants/import-from-weidian"
 }
