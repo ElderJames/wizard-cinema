@@ -70,8 +70,6 @@ export class ApplicantListComponent implements OnInit {
   totalCallNo = 0;
   expandForm = false;
   total = 0;
-  divisionData = [];
-  applicantData: any
 
   activity = {
     activityId: null,
@@ -121,6 +119,13 @@ export class ApplicantListComponent implements OnInit {
     var res = await this.activitySrv.getApplicants(this.q.ps, this.q.pi, this.activity.activityId);
     this.total = res.totalCount;
     this.data = res.records;
+
+    console.log(this.total, this.q.pi, this.q.ps)
+  }
+
+  async change(e) {
+    this.q.pi = this.st.pi;
+    await this.getData();
   }
 
   async upload(files) {
