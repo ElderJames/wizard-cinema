@@ -14,6 +14,8 @@ namespace Wizard.Cinema.Remote.Repository
 
         Hall QueryById(int hallId);
 
+        IEnumerable<Hall> QueryByIds(IEnumerable<long> hallIds);
+
         IEnumerable<Hall> Query(PagedSearch condition);
 
         PagedData<Hall> QueryPaged(PagedSearch condition);

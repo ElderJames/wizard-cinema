@@ -16,6 +16,8 @@ namespace Wizard.Cinema.Remote.Repository
 
         IEnumerable<Models.Cinema> Query(SearchCinemaCondition condition);
 
+        IEnumerable<Models.Cinema> Query(IEnumerable<long> cinemaIds);
+
         PagedData<Models.Cinema> QueryPaged(SearchCinemaCondition condition);
     }
 }

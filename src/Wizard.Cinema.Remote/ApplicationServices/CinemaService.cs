@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
 using Wizard.Cinema.Remote.Repository;
@@ -61,6 +62,12 @@ namespace Wizard.Cinema.Remote.ApplicationServices
                 return new PagedData<Models.Cinema>() { PageNow = condition.PageNow, PageSize = condition.PageSize, TotalCount = count, Records = cinemas };
             }
             return _cinemaRepository.QueryPaged(condition);
+        }
+
+        public ApiResult<IEnumerable<Models.Cinema>> GetByIds(IEnumerable<long> cinemaIds)
+        {
+            IEnumerable<Models.Cinema> cinemas = _cinemaRepository.Query(cinemaIds);
+            return new ApiResult<IEnumerable<Models.Cinema>>(ResultStatus.SUCCESS, cinemas);
         }
     }
 }

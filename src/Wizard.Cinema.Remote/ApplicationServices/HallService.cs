@@ -104,5 +104,10 @@ namespace Wizard.Cinema.Remote.ApplicationServices
         {
             return _repository.QueryById(hallId);
         }
+
+        public ApiResult<IEnumerable<Hall>> GetByIds(IEnumerable<long> hallIds)
+        {
+            return new ApiResult<IEnumerable<Hall>>(ResultStatus.SUCCESS, _repository.QueryByIds(hallIds));
+        }
     }
 }

@@ -18,6 +18,9 @@
         <IsNotNull Prepend="and" Property="HallId">
           HallId = @HallId
         </IsNotNull>
+        <IsNotNull Prepend="and" Property="HallIds">
+          HallId IN @HallIds
+        </IsNotNull>
         <IsNotNull Prepend="and" Property="CinemaId">
           CinemaId = @CinemaId
         </IsNotNull>

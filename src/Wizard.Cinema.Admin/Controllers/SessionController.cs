@@ -8,6 +8,7 @@ using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
+using Wizard.Cinema.QueryServices.DTOs.Activity;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Models;
 using Wizard.Cinema.Remote.Spider.Response;
@@ -22,14 +23,18 @@ namespace Wizard.Cinema.Admin.Controllers
         private readonly ISessionService _sessionService;
         private readonly IDivisionService _divisionService;
         private readonly HallService _hallService;
+        private CinemaService _cinemaService;
+        private IActivityService _activityService;
 
         public SessionController(ISessionService sessionService,
             IDivisionService divisionService,
-            HallService hallService)
+            HallService hallService, CinemaService cinemaService, IActivityService activityService)
         {
             this._sessionService = sessionService;
             this._divisionService = divisionService;
             this._hallService = hallService;
+            this._cinemaService = cinemaService;
+            this._activityService = activityService;
         }
 
         [HttpGet("{id:long}")]
@@ -46,8 +51,10 @@ namespace Wizard.Cinema.Admin.Controllers
             if (sessionApi.Status != ResultStatus.SUCCESS)
                 return Ok(new PagedData<SessionResp>());
 
-            ApiResult<IEnumerable<DivisionResp>> divisions =
-                _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
+            ApiResult<IEnumerable<DivisionResp>> divisions = _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
+            ApiResult<IEnumerable<Remote.Models.Cinema>> cinemas = _cinemaService.GetByIds(sessionApi.Result.Records.Select(x => x.CinemaId));
+            ApiResult<IEnumerable<ActivityResp>> activityList = _activityService.GetByIds(sessionApi.Result.Records.Select(x => x.ActivityId).ToArray());
+            ApiResult<IEnumerable<Hall>> hallList = _hallService.GetByIds(sessionApi.Result.Records.Select(o => o.HallId));
 
             return Ok(new
             {
@@ -57,12 +64,16 @@ namespace Wizard.Cinema.Admin.Controllers
                 Records = sessionApi.Result.Records.Select(x =>
                 {
                     DivisionResp division = divisions.Result.FirstOrDefault(o => o.DivisionId == x.DivisionId);
+                    Remote.Models.Cinema cinema = cinemas.Result.FirstOrDefault(o => o.CinemaId == x.CinemaId);
+                    ActivityResp activity = activityList.Result.FirstOrDefault(o => o.ActivityId == x.ActivityId);
+                    Hall hall = hallList.Result.FirstOrDefault(o => o.HallId == x.HallId);
                     return new
                     {
                         x.SessionId,
-                        Cinema = x.CinemaId,
-                        Hall = x.HallId,
                         Division = division?.Name,
+                        Cinema = cinema?.Name,
+                        Hall = hall?.Name,
+                        Activity = activity?.Name,
                         Status = x.Status.GetName(),
                     };
                 })

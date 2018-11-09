@@ -58,6 +58,9 @@
         <IsNotNull Prepend="and" Property="CityId">
           CityId = @CityId
         </IsNotNull>
+        <IsNotNull Prepend="and" Property="CinemaIds">
+          CinemaId IN @CinemaIds
+        </IsNotNull>
       </Where>
     </Statement>
 

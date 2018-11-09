@@ -41,6 +41,7 @@ export class SessionListComponent implements OnInit {
 
   columns: SimpleTableColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
+    { title: '关联活动', index: 'activity' },
     { title: '影院', index: 'cinema' },
     { title: '影厅', index: 'hall' },
     { title: '分部', index: 'division' },
