@@ -17,7 +17,7 @@ namespace Wizard.Cinema.Admin.Helpers
         /// <returns> </returns>
         public static List<T> InputExcel<T>(IFormFile file) where T : new()
         {
-            List<T> list = new List<T> { };
+            var list = new List<T>();
 
             using (var ms = new MemoryStream())
             {

@@ -59,6 +59,11 @@ namespace Wizard.Cinema.Domain.Activity
         /// </summary>
         public DateTime ApplyTime { get; private set; }
 
+        /// <summary>
+        /// 外部系统订单号，唯一值
+        /// </summary>
+        public string ExtOrderNo { get; private set; }
+
         private Applicant()
         {
         }
@@ -81,6 +86,13 @@ namespace Wizard.Cinema.Domain.Activity
             this.Count = count;
             this.Status = ApplicantStatus.未付款;
             this.ApplyTime = DateTime.Now;
+            this.ExtOrderNo = string.Empty;
+        }
+
+        public Applicant(long applicantId, long wizardId, Activity activity, string realName, string wechatName,
+            string mobile, int count, string orderNo) : this(applicantId, wizardId, activity, realName, wechatName, mobile, count)
+        {
+            this.ExtOrderNo = orderNo;
         }
 
         public void Pay()

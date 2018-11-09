@@ -19,6 +19,7 @@
       ,WizardId
       ,DivisionId
       ,ActivityId
+      ,ExtOrderNo
       ,RealName
       ,WechatName
       ,Count
@@ -30,6 +31,7 @@
       ,@WizardId
       ,@DivisionId
       ,@ActivityId
+      ,@ExtOrderNo
       ,@RealName
       ,@WechatName
       ,@Count
@@ -46,6 +48,7 @@
       ,WizardId
       ,DivisionId
       ,ActivityId
+      ,ExtOrderNo
       ,RealName
       ,WechatName
       ,Count
@@ -58,6 +61,7 @@
         ,@WizardId
         ,@DivisionId
         ,@ActivityId
+        ,@ExtOrderNo
         ,@RealName
         ,@WechatName
         ,@Count
@@ -116,6 +120,9 @@
         </IsNotNull>
         <IsNotNull Prepend="AND" Property="Status">
           Status = @Status
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="OrderNo">
+          ExtOrderNo = @OrderNo
         </IsNotNull>
       </Where>
     </Statement>

@@ -15,5 +15,7 @@ namespace Wizard.Cinema.Domain.Activity
         Applicant Query(long applicantId);
 
         IEnumerable<Applicant> QueryByActivityId(long activityId);
+
+        IEnumerable<Applicant> QueryByOrderNo(string orderNo);
     }
 }

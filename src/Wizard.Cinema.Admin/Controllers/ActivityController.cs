@@ -188,7 +188,7 @@ namespace Wizard.Cinema.Admin.Controllers
             var req = new ImportApplicantReqs()
             {
                 ActivityId = activityId,
-                Data = Mapper.Map<ImportWedianApplicantModel, ImportData>(model)
+                Data = Mapper.Map<ImportWedianApplicantModel, ImportApplicantReqs.ImportData>(model)
             };
             ApiResult<bool> result = _activityService.ImportApplicantsFromWeidian(req);
             return Json(result);

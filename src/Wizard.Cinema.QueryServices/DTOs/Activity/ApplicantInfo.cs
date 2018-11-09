@@ -54,5 +54,10 @@ namespace Wizard.Cinema.QueryServices.DTOs.Activity
         /// 申请时间
         /// </summary>
         public DateTime ApplyTime { get; set; }
+
+        /// <summary>
+        /// 外部系统订单号，唯一值
+        /// </summary>
+        public string ExtOrderNo { get; set; }
     }
 }

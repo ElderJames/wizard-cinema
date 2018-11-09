@@ -13,7 +13,7 @@ namespace Wizard.Cinema.Application.Services
     public class SelectSeatTaskService : ISelectSeatTaskService
     {
         private readonly ISelectSeatTaskQueryService _seatTaskQueryService;
-        private ISelectSeatTaskRepository _selectSeatTaskRepository;
+        private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
 
         public SelectSeatTaskService(ISelectSeatTaskQueryService seatTaskQueryService,
             ISelectSeatTaskRepository selectSeatTaskRepository)

@@ -309,28 +309,38 @@ namespace Wizard.Cinema.Application.Services
             var applicants = new List<Applicant>();
 
             IEnumerable<Wizards> wizardList = _wizardRepository.Query(request.Data.Select(x => x.Mobile).ToArray());
+            IEnumerable<Applicant> applicantList = _applicantRepository.QueryByActivityId(request.ActivityId);
 
-            request.Data.Where(x => wizardList.All(w => w.Account != x.Mobile)).ForEach(item =>
+            request.Data.ForEach(item =>
             {
-                long wizardId = NewId.GenerateId();
-                var wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile.Substring(5, 6));
-                wizard.ChangeInfo(item.WechatName, null, item.Mobile, 0, DateTime.Now, null, 0);
+                Wizards wizard = wizardList.FirstOrDefault(w => w.Account != item.Mobile);
+                if (wizard != null)
+                {
+                    long wizardId = NewId.GenerateId();
+                    wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile.Substring(5, 6));
+                    wizard.ChangeInfo(item.WechatName, null, item.Mobile, 0, DateTime.Now, null, 0);
+                    wizards.Add(wizard);
+                }
 
-                var applicant = new Applicant(NewId.GenerateId(), wizardId, activity, item.RealName, item.WechatName,
-                    item.Mobile, item.Count);
-
-                applicant.Pay();
-                wizards.Add(wizard);
-                applicants.Add(applicant);
+                Applicant applicant = applicantList.FirstOrDefault(x => x.ExtOrderNo == item.OrderNo);
+                if (applicant == null)
+                {
+                    applicant = new Applicant(NewId.GenerateId(), wizard.WizardId, activity, item.RealName, item.WechatName, item.Mobile, item.Count, item.OrderNo);
+                    applicant.Pay();
+                    applicants.Add(applicant);
+                }
             });
 
             _transactionRepository.UseTransaction(IsolationLevel.ReadCommitted, () =>
             {
-                _wizardRepository.BatchCreate(wizards);
+                if (wizards.Any())
+                {
+                    _wizardRepository.BatchCreate(wizards);
 
-                _wizardProfileRepository.BatchInsert(wizards.Select(x => x.Profile));
-
-                _applicantRepository.BatchInsert(applicants);
+                    _wizardProfileRepository.BatchInsert(wizards.Select(x => x.Profile));
+                }
+                if (applicants.Any())
+                    _applicantRepository.BatchInsert(applicants);
             });
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
