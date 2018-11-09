@@ -15,7 +15,7 @@ import { UserLoginComponent } from './passport/login/login.component';
 import { UserRegisterComponent } from './passport/register/register.component';
 import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
 // single pages
-import { CallbackComponent } from './callback/callback.component';
+
 import { UserLockComponent } from './passport/lock/lock.component';
 import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
@@ -39,8 +39,7 @@ const routes: Routes = [
     path: '',
     component: LayoutDefaultComponent,
     children: [
-      { path: '', redirectTo: 'cinema/shows1', pathMatch: 'full', canActivate: [JWTGuard] },
-      { path: 'cinema/shows1', component: CinemaShows1Component },
+      { path: '', redirectTo: 'cinema/sessions', pathMatch: 'full', canActivate: [JWTGuard] },
       { path: 'cinema/sessions', component: SessionListComponent },
       { path: 'cinema/sessions/add', component: SessionEditComponent, data: { title: '增加场次' } },
       { path: 'cinema/sessions/:id', component: SessionEditComponent, data: { title: '编辑场次' } },
@@ -50,19 +49,6 @@ const routes: Routes = [
       { path: 'activity/:id', component: ActivityDetailComponent, data: { title: '编辑活动' } },
       { path: 'activity/:id/applicants', component: ApplicantListComponent, data: { title: '报名列表' } },
       { path: 'divisions', component: DivisionsComponent },
-      { path: 'dashboard', redirectTo: 'dashboard/v1', pathMatch: 'full' },
-      { path: 'dashboard/v1', component: DashboardV1Component },
-      { path: 'dashboard/analysis', component: DashboardAnalysisComponent },
-      { path: 'dashboard/monitor', component: DashboardMonitorComponent },
-      { path: 'dashboard/workplace', component: DashboardWorkplaceComponent },
-      {
-        path: 'widgets',
-        loadChildren: './widgets/widgets.module#WidgetsModule',
-      },
-      { path: 'style', loadChildren: './style/style.module#StyleModule' },
-      { path: 'delon', loadChildren: './delon/delon.module#DelonModule' },
-      { path: 'extras', loadChildren: './extras/extras.module#ExtrasModule' },
-      { path: 'pro', loadChildren: './pro/pro.module#ProModule' },
     ],
   },
   // 全屏布局
@@ -96,7 +82,6 @@ const routes: Routes = [
     ],
   },
   // 单页不包裹Layout
-  { path: 'callback/:type', component: CallbackComponent },
   {
     path: 'lock',
     component: UserLockComponent,
