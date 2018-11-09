@@ -187,7 +187,7 @@ namespace Wizard.Cinema.Admin.Controllers
                     {
                         x.TaskId,
                         Mobile = applicant?.Mobile,
-                        RealName = applicant.RealName,
+                        RealName = applicant?.RealName,
                         x.WechatName,
                         x.SerialNo,
                         x.WizardId,

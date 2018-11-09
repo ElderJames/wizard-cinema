@@ -25,7 +25,7 @@
   </ResultMaps>
 
   <Statements>
-    <Statement Id="BatchInsert" ParameterMap="taskParamMap">
+    <Statement Id="BatchInsert" ParameterMap="taskParamMap" Transaction="ReadCommitted">
       INSERT INTO select_seat_tasks
       (TaskId
       ,SessionId
@@ -33,6 +33,7 @@
       ,WechatName
       ,SerialNo
       ,Total
+      ,OverdueTaskId
       ,Status
       ,SeatNos
       ,BeginTime
@@ -46,6 +47,7 @@
         ,@WechatName
         ,@SerialNo
         ,@Total
+        ,@OverdueTaskId
         ,@Status
         ,@SeatNos
         ,@BeginTime
@@ -73,10 +75,20 @@
       AND Status = 5;
     </Statement>
 
+    <Statement Id="CheckIn" Transaction="ReadCommitted">
+      <For Open="" Close="" Prepend="" Property="tasks" Key="T" Separator="">
+        UPDATE select_seat_tasks
+        SET
+        Status = @Status
+        WHERE TaskId = @TaskId
+        AND Status = 0;
+      </For>
+    </Statement>
+
     <Statement Id="OrderAndPaged">
       <Switch Prepend="Order By" Property="OrderBy">
         <Default>
-          id Desc
+          SerialNo
         </Default>
       </Switch>
       <IsNotNull Prepend="" Property="PageSize">
@@ -119,6 +131,14 @@
     <Statement Id="Query" ResultMap="taskResultMap">
       SELECT * FROM select_seat_tasks
       <Include RefId="QueryParams"></Include>
+    </Statement>
+
+    <Statement Id="QueryCurrent" ResultMap="taskResultMap">
+      SELECT * FROM select_seat_tasks
+      WHERE
+      SessionId = @SessionId
+      AND Status = 10
+      LIMIT 1;
     </Statement>
 
     <Statement Id="QueryNextTask" ResultMap="taskResultMap">

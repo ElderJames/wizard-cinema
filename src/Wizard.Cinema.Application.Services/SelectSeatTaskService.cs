@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
+using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
 using Wizard.Cinema.QueryServices.DTOs.Sessions;
@@ -32,15 +34,34 @@ namespace Wizard.Cinema.Application.Services
         /// <returns></returns>
         public ApiResult<bool> CheckIn(long wizardId, long sessionId)
         {
-            //IEnumerable<SelectSeatTask> tasks = selectSeatTaskRepository.QueryByWizardId(sessionId, wizardId);
-            //if (tasks == null || tasks.IsNullOrEmpty())
-            //    return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
+            IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryByWizardId(sessionId, wizardId);
+            if (tasks.IsNullOrEmpty())
+                return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
 
-            //tasks.ForEach(x =>
-            //{
-            //    x.CheckIn()
-            //});
-            throw new NotImplementedException();
+            IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队);
+            SelectSeatTask wipTask = tasks.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
+            IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时并结束);
+
+            if (notInQueueTasks.IsNullOrEmpty() && overdueTasks.IsNullOrEmpty())
+                return new ApiResult<bool>(ResultStatus.FAIL, wipTask == null ? "全部都选完了" : "已在排队");
+
+            //如果有未排队
+            if (notInQueueTasks.Any())
+            {
+                notInQueueTasks.ForEach(task => task.CheckIn());
+                _selectSeatTaskRepository.CheckIn(notInQueueTasks);
+            }
+
+            //有超时的任务，重新插入并排队
+            if (overdueTasks.Any())
+            {
+                SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId);
+                IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x => new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo + 2));
+
+                _selectSeatTaskRepository.BatchInsert(newTasks.ToArray());
+            }
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }
 
         public ApiResult<PagedData<SelectSeatTaskResp>> Search(SearchSelectSeatTaskReqs request)

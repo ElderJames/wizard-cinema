@@ -42,6 +42,11 @@ namespace Wizard.Cinema.Domain.Cinema
         public int Total { get; private set; }
 
         /// <summary>
+        /// 在此排队
+        /// </summary>
+        public long OverdueTaskId { get; private set; }
+
+        /// <summary>
         /// 状态
         /// </summary>
         public SelectTaskStatus Status { get; private set; }
@@ -77,7 +82,6 @@ namespace Wizard.Cinema.Domain.Cinema
         /// <param name="sessionId">场次id</param>
         /// <param name="applicant">报名者</param>
         /// <param name="serialNo">序号</param>
-        /// <param name="total">可选座位数</param>
         public SelectSeatTask(long taskId, long sessionId, Applicant applicant, int serialNo)
         {
             this.TaskId = taskId;
@@ -86,17 +90,29 @@ namespace Wizard.Cinema.Domain.Cinema
             this.WechatName = applicant.WechatName;
             this.SerialNo = serialNo;
             this.Total = applicant.Count;
-            this.Status = SelectTaskStatus.待开始;
+            this.Status = SelectTaskStatus.未排队;
             this.CreateTime = DateTime.Now;
+        }
+
+        public SelectSeatTask(long taskId, SelectSeatTask task, int serialNo)
+        {
+            this.TaskId = taskId;
+            this.SessionId = task.SessionId;
+            this.WizardId = task.WizardId;
+            this.WechatName = task.WechatName;
+            this.SerialNo = serialNo;
+            this.Total = task.Total;
+            this.Status = SelectTaskStatus.未排队;
+            this.CreateTime = DateTime.Now;
+            this.OverdueTaskId = task.TaskId;
         }
 
         public void CheckIn()
         {
-            if (this.Status != SelectTaskStatus.待开始)
+            if (this.Status != SelectTaskStatus.未排队)
                 throw new DomainException("此用户" + this.Status.GetName());
 
             this.Status = SelectTaskStatus.排队中;
-            this.BeginTime = DateTime.Now;
         }
 
         public void Begin()

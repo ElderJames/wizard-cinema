@@ -201,7 +201,7 @@ namespace Wizard.Cinema.Application.Services
 
                     session.Start();
                     SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
-                    tasks[0].CheckIn();
+                    // tasks[0].CheckIn();
 
                     _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
                     {

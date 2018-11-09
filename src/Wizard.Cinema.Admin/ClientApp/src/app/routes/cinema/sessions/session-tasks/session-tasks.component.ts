@@ -99,6 +99,7 @@ export class SessionTaskComponent implements OnInit {
     var res = await this.sessionSrv.getTaskList(this.sessionId, this.q.ps, this.q.pi)
     this.total = res.totalCount;
     this.data = res.records;
+    this.loading = false;
   }
 
   async change(e) {
