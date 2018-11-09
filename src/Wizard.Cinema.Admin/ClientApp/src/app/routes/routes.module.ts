@@ -27,6 +27,7 @@ import { ActivityDetailComponent } from './activity/detail/activity-detail.compo
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
 import { SessionListComponent } from './cinema/sessions/session-list/session-list.component';
 import { SessionEditComponent } from './cinema/sessions/session-edit/session-edit.component';;
+import { SessionTaskComponent } from './cinema/sessions/session-tasks/session-tasks.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -50,7 +51,8 @@ const COMPONENTS = [
   ActivityDetailComponent,
   ApplicantListComponent,
   SessionListComponent,
-  SessionEditComponent
+  SessionEditComponent,
+  SessionTaskComponent
 ];
 const COMPONENTS_NOROUNT = [];
 

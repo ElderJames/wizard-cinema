@@ -7,14 +7,14 @@ import {
   SimpleTableColumn,
   SimpleTableData,
 } from '@delon/abc';
-
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SessionService } from '../../../../services/session.service';
 
 @Component({
   selector: 'session',
-  templateUrl: './session-list.component.html',
+  templateUrl: './session-tasks.component.html',
 })
-export class SessionListComponent implements OnInit {
+export class SessionTaskComponent implements OnInit {
   q: any = {
     pi: 1,
     ps: 10,
@@ -61,7 +61,7 @@ export class SessionListComponent implements OnInit {
         {
           text: '详情',
           type: 'link',
-          click: (item: any) => `cinema/sessions/${item.sessionId}/tasks`
+          click: (item: any) => `cinema/session/${item.sessionId}/tasks`
         },
 
       ],
@@ -73,6 +73,7 @@ export class SessionListComponent implements OnInit {
   expandForm = false;
   total = 0;
   divisionData = [];
+  sessionId: number;
 
   activity = {
     activityId: null,
@@ -91,43 +92,35 @@ export class SessionListComponent implements OnInit {
     private http: _HttpClient,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
-    private sessionSrv: SessionService
+    private sessionSrv: SessionService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
-  ngOnInit() {
-    this.getData();
+  async ngOnInit() {
+    this.sessionId = await this.getId();
+    await this.getData();
   }
 
-  getData() {
+  getId = async (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      this.route.params.subscribe(async (params: Params) => {
+        resolve(params['id']);
+      })
+    });
+  }
+
+  async getData() {
     this.loading = true;
     this.q.statusList = this.status
       .filter(w => w.checked)
       .map(item => item.index);
     if (this.q.status !== null && this.q.status > -1)
       this.q.statusList.push(this.q.status);
-    this.http
-      .get('api/session',
-        {
-          PageNow: this.q.pi,
-          PageSize: this.q.ps,
-        }
-      )
-      .pipe(
-        map((res: any) => res
-          // list.records.map(i => {
-          //   return i;
-          //   // const statusItem = this.status[i.status];
-          //   // i.statusText = statusItem.text;
-          //   // i.statusType = statusItem.type;
-          //   // return i;
-          // }),
-        ),
-        tap(() => (this.loading = false)),
-      )
-      .subscribe(res => {
-        this.total = res.totalCount;
-        this.data = res.records;
-      });
+
+    var res = await this.sessionSrv.getTaskList(this.sessionId, this.q.ps, this.q.pi)
+    this.total = res.totalCount;
+    this.data = res.records;
   }
 
   async beginSelect(sessionId: number) {

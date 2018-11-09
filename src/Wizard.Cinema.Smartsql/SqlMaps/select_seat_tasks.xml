@@ -1,22 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SmartSqlMap Scope="SelectSeatTask"  xmlns="http://SmartSql.net/schemas/SmartSqlMap.xsd"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd Smartsql/SmartSqlMap.xsd">
+             xsi:schemaLocation="http://SmartSql.net/schemas/SmartSqlMapConfig.xsd smartsql/SmartSqlMap.xsd">
+
+  <MultipleResultMaps>
+    <MultipleResultMap Id="QueryByPageMResult">
+      <Result Property="TotalCount" />
+      <Result Property="Records" MapId="taskResultMap" />
+      <Result Property="PageSize" />
+      <Result Property="PageNow" />
+    </MultipleResultMap>
+  </MultipleResultMaps>
 
   <ParameterMaps>
-    <ParameterMap Id="SessionParamMap">
+    <ParameterMap Id="taskParamMap">
       <Parameter Property="SeatNos" TypeHandler="Json" />
     </ParameterMap>
   </ParameterMaps>
 
   <ResultMaps>
-    <ResultMap Id="QuerySessionResultMap">
+    <ResultMap Id="taskResultMap">
       <Result Column="SeatNos" Property="SeatNos" TypeHandler="Json" />
     </ResultMap>
   </ResultMaps>
 
   <Statements>
-    <Statement Id="BatchInsert" ParameterMap="SessionParamMap">
+    <Statement Id="BatchInsert" ParameterMap="taskParamMap">
       INSERT INTO select_seat_tasks
       (TaskId
       ,SessionId
@@ -54,7 +63,7 @@
       AND Status = 0;
     </Statement>
 
-    <Statement Id="Select" ParameterMap="SessionParamMap">
+    <Statement Id="Select" ParameterMap="taskParamMap">
       UPDATE select_seat_tasks
       SET
       Status = @Status,
@@ -62,6 +71,22 @@
       SeatNos = @SeatNos
       WHERE TaskId = @TaskId
       AND Status = 5;
+    </Statement>
+
+    <Statement Id="OrderAndPaged">
+      <Switch Prepend="Order By" Property="OrderBy">
+        <Default>
+          id Desc
+        </Default>
+      </Switch>
+      <IsNotNull Prepend="" Property="PageSize">
+        <IsNotNull Prepend="" Property="StartIndex">
+          LIMIT @StartIndex,@PageSize
+        </IsNotNull>
+        <IsNull Prepend="" Property="StartIndex">
+          LIMIT @PageSize
+        </IsNull>
+      </IsNotNull>
     </Statement>
 
     <Statement Id="QueryParams">
@@ -81,12 +106,22 @@
       </Where>
     </Statement>
 
-    <Statement Id="Query" ResultMap="QuerySessionResultMap">
+    <Statement Id="QueryPaged" MultipleResultMap="QueryByPageMResult">
+      SELECT COUNT(1) FROM select_seat_tasks
+      <Include RefId="QueryParams" />;
+      SELECT * FROM select_seat_tasks
+      <Include RefId="QueryParams" />
+      <Include RefId="OrderAndPaged" />;
+      SELECT @PageSize;
+      SELECT @PageNow;
+    </Statement>
+
+    <Statement Id="Query" ResultMap="taskResultMap">
       SELECT * FROM select_seat_tasks
       <Include RefId="QueryParams"></Include>
     </Statement>
 
-    <Statement Id="QueryNextTask" ResultMap="QuerySessionResultMap">
+    <Statement Id="QueryNextTask" ResultMap="taskResultMap">
       SELECT * FROM select_seat_tasks
       WHERE
       SessionId = @SessionId

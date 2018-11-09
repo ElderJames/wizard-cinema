@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Wizard.Cinema.Application.DTOs.EnumTypes;
+using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
 using Wizard.Cinema.Web.Extensions;
@@ -62,15 +64,19 @@ namespace Wizard.Cinema.Web.Controllers
             if (sessionId <= 0)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "请选择正确的场次"));
 
-            ApiResult<IEnumerable<SelectSeatTaskResp>> result = _selectSeatTaskService.Search(sessionId);
+            ApiResult<PagedData<SelectSeatTaskResp>> result = _selectSeatTaskService.Search(new SearchSelectSeatTaskReqs()
+            {
+                SessionId = sessionId,
+                PageSize = int.MaxValue,
+            });
             if (result.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<bool>(ResultStatus.FAIL, result.Message));
 
             //当前在选的巫师
-            SelectSeatTaskResp currentWizard = result.Result.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
-            SelectSeatTaskResp nextWizard = result.Result.Where(x => x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault();
-            SelectSeatTaskResp myTask = result.Result.FirstOrDefault(x => x.WizardId == HttpContext?.User?.ExtractUserId());
-            int people = result.Result.Count(x => x.SerialNo >= currentWizard.SerialNo && x.SerialNo < myTask.SerialNo);
+            SelectSeatTaskResp currentWizard = result.Result.Records.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
+            SelectSeatTaskResp nextWizard = result.Result.Records.Where(x => x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault();
+            SelectSeatTaskResp myTask = result.Result.Records.FirstOrDefault(x => x.WizardId == HttpContext?.User?.ExtractUserId());
+            int people = result.Result.Records.Count(x => x.SerialNo >= currentWizard.SerialNo && x.SerialNo < myTask.SerialNo);
             int waitTime = people * 5;
 
             return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
@@ -95,7 +101,7 @@ namespace Wizard.Cinema.Web.Controllers
                     waitTime = waitTime,
                     people = people
                 },
-                selectedList = result.Result.Where(x => x.Status == SelectTaskStatus.已完成).SelectMany(x => x.SeatNos)
+                selectedList = result.Result.Records.Where(x => x.Status == SelectTaskStatus.已完成).SelectMany(x => x.SeatNos)
             }));
         }
     }

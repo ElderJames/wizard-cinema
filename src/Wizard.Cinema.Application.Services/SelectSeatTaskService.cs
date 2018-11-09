@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using Infrastructures;
 using Infrastructures.Attributes;
+using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
+using Wizard.Cinema.QueryServices.DTOs.Sessions;
 
 namespace Wizard.Cinema.Application.Services
 {
@@ -41,14 +43,12 @@ namespace Wizard.Cinema.Application.Services
             throw new NotImplementedException();
         }
 
-        public ApiResult<IEnumerable<SelectSeatTaskResp>> Search(long sessionId)
+        public ApiResult<PagedData<SelectSeatTaskResp>> Search(SearchSelectSeatTaskReqs request)
         {
-            if (sessionId <= 0)
-                return new ApiResult<IEnumerable<SelectSeatTaskResp>>(ResultStatus.FAIL, "请选择正确的场次");
+            SearchSelectSeatTaskCondition condition = Mapper.Map<SearchSelectSeatTaskReqs, SearchSelectSeatTaskCondition>(request);
+            PagedData<SelectSeatTaskInfo> tasks = _seatTaskQueryService.QueryPaged(condition);
 
-            IEnumerable<SelectSeatTaskInfo> tasks = _seatTaskQueryService.Query(sessionId);
-
-            return new ApiResult<IEnumerable<SelectSeatTaskResp>>(ResultStatus.SUCCESS, Mapper.Map<SelectSeatTaskInfo, SelectSeatTaskResp>(tasks));
+            return new ApiResult<PagedData<SelectSeatTaskResp>>(ResultStatus.SUCCESS, Mapper.Map<PagedData<SelectSeatTaskInfo>, PagedData<SelectSeatTaskResp>>(tasks));
         }
 
         public ApiResult<IEnumerable<SelectSeatTaskResp>> GetByWizardId(long sessionId, long wizardId)

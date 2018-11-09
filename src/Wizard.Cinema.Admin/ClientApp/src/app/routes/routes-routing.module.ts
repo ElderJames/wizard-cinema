@@ -21,17 +21,14 @@ import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
 
-//cinema pages
-import { CinemaShows1Component } from './cinema/shows1/shows1.component';
-
 import { HeadWizardsComponent } from './wizards/head-wizards/head-wizards.component';
 import { DivisionsComponent } from './wizards/divisions/divisions.component';
 import { ActivityListComponent } from './activity/list/activity-list.component';
 import { ActivityDetailComponent } from './activity/detail/activity-detail.component';
 import { ApplicantListComponent } from './activity/applicants/applicant-list.component';
 import { SessionListComponent } from './cinema/sessions/session-list/session-list.component';
-import { SessionEditComponent } from './cinema/sessions/session-edit/session-edit.component';;
-
+import { SessionEditComponent } from './cinema/sessions/session-edit/session-edit.component';
+import { SessionTaskComponent } from './cinema/sessions/session-tasks/session-tasks.component';
 import { JWTGuard } from '@delon/auth';
 
 const routes: Routes = [
@@ -43,20 +40,13 @@ const routes: Routes = [
       { path: 'cinema/sessions', component: SessionListComponent },
       { path: 'cinema/sessions/add', component: SessionEditComponent, data: { title: '增加场次' } },
       { path: 'cinema/sessions/:id', component: SessionEditComponent, data: { title: '编辑场次' } },
+      { path: 'cinema/sessions/:id/tasks', component: SessionTaskComponent, data: { title: '选座情况' } },
       { path: 'wizards/head-wizards', component: HeadWizardsComponent },
       { path: 'activity', component: ActivityListComponent },
       { path: 'activity/add', component: ActivityDetailComponent, data: { title: '增加活动' } },
       { path: 'activity/:id', component: ActivityDetailComponent, data: { title: '编辑活动' } },
       { path: 'activity/:id/applicants', component: ApplicantListComponent, data: { title: '报名列表' } },
       { path: 'divisions', component: DivisionsComponent },
-    ],
-  },
-  // 全屏布局
-  {
-    path: 'data-v',
-    component: LayoutFullScreenComponent,
-    children: [
-      { path: '', loadChildren: './data-v/data-v.module#DataVModule' },
     ],
   },
   // passport

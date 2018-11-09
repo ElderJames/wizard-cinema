@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Infrastructures;
+using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 
 namespace Wizard.Cinema.Application.Services
@@ -17,7 +18,7 @@ namespace Wizard.Cinema.Application.Services
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns></returns>
-        ApiResult<IEnumerable<SelectSeatTaskResp>> Search(long sessionId);
+        ApiResult<PagedData<SelectSeatTaskResp>> Search(SearchSelectSeatTaskReqs request);
 
         /// <summary>
         /// 查询个人状态

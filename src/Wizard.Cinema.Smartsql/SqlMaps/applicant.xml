@@ -115,6 +115,9 @@
         <IsNotNull Prepend="AND" Property="WizardId">
           WizardId = @WizardId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="WizardIds">
+          WizardId IN @WizardIds
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="Mobile">
           Mobile = @Mobile
         </IsNotNull>

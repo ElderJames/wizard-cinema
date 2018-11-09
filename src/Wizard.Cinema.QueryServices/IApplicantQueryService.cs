@@ -12,6 +12,8 @@ namespace Wizard.Cinema.QueryServices
 
         IEnumerable<ApplicantInfo> Query(SearchApplicantCondition search);
 
+        IEnumerable<ApplicantInfo> Query(long[] wizardIds);
+
         IEnumerable<ApplicantInfo> QueryByMobile(string mobile);
 
         IEnumerable<ApplicantInfo> QueryByActivityId(long activityId);

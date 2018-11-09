@@ -8,6 +8,7 @@ using Wizard.Cinema.Admin.Models;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
+using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Activity;
 using Wizard.Cinema.Remote.ApplicationServices;
 using Wizard.Cinema.Remote.Models;
@@ -23,18 +24,21 @@ namespace Wizard.Cinema.Admin.Controllers
         private readonly ISessionService _sessionService;
         private readonly IDivisionService _divisionService;
         private readonly HallService _hallService;
-        private CinemaService _cinemaService;
-        private IActivityService _activityService;
+        private readonly CinemaService _cinemaService;
+        private readonly IActivityService _activityService;
+        private ISelectSeatTaskService _selectSeatTaskService;
 
         public SessionController(ISessionService sessionService,
             IDivisionService divisionService,
-            HallService hallService, CinemaService cinemaService, IActivityService activityService)
+            HallService hallService, CinemaService cinemaService, IActivityService activityService,
+            ISelectSeatTaskService selectSeatTaskService)
         {
             this._sessionService = sessionService;
             this._divisionService = divisionService;
             this._hallService = hallService;
             this._cinemaService = cinemaService;
             this._activityService = activityService;
+            this._selectSeatTaskService = selectSeatTaskService;
         }
 
         [HttpGet("{id:long}")]
@@ -51,10 +55,14 @@ namespace Wizard.Cinema.Admin.Controllers
             if (sessionApi.Status != ResultStatus.SUCCESS)
                 return Ok(new PagedData<SessionResp>());
 
-            ApiResult<IEnumerable<DivisionResp>> divisions = _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
-            ApiResult<IEnumerable<Remote.Models.Cinema>> cinemas = _cinemaService.GetByIds(sessionApi.Result.Records.Select(x => x.CinemaId));
-            ApiResult<IEnumerable<ActivityResp>> activityList = _activityService.GetByIds(sessionApi.Result.Records.Select(x => x.ActivityId).ToArray());
-            ApiResult<IEnumerable<Hall>> hallList = _hallService.GetByIds(sessionApi.Result.Records.Select(o => o.HallId));
+            ApiResult<IEnumerable<DivisionResp>> divisions =
+                _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
+            ApiResult<IEnumerable<Remote.Models.Cinema>> cinemas =
+                _cinemaService.GetByIds(sessionApi.Result.Records.Select(x => x.CinemaId));
+            ApiResult<IEnumerable<ActivityResp>> activityList =
+                _activityService.GetByIds(sessionApi.Result.Records.Select(x => x.ActivityId).ToArray());
+            ApiResult<IEnumerable<Hall>> hallList =
+                _hallService.GetByIds(sessionApi.Result.Records.Select(o => o.HallId));
 
             return Ok(new
             {
@@ -143,7 +151,7 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpPost("begin-select")]
-        public IActionResult BeginSelect([FromForm]long sessionId)
+        public IActionResult BeginSelect([FromForm] long sessionId)
         {
             if (sessionId <= 0)
                 return Fail("请选择正确的场次");
@@ -153,6 +161,42 @@ namespace Wizard.Cinema.Admin.Controllers
                 return Fail(result.Message);
 
             return Ok();
+        }
+
+        [HttpGet("{sessionId}/tasks")]
+        public IActionResult GetTasks(long sessionId, [FromQuery] SearchSelectSeatTaskReqs search)
+        {
+            search.SessionId = sessionId;
+            ApiResult<PagedData<SelectSeatTaskResp>> taskResult = _selectSeatTaskService.Search(search);
+
+            if (taskResult.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, "队列查询异常"));
+
+            ApiResult<IEnumerable<ApplicantResp>> applicants =
+                _activityService.GetApplicants(taskResult.Result.Records.Select(x => x.WizardId).ToArray());
+
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
+            {
+                taskResult.Result.PageNow,
+                taskResult.Result.PageSize,
+                taskResult.Result.TotalCount,
+                Records = taskResult.Result.Records.Select(x =>
+                {
+                    ApplicantResp applicant = applicants.Result.FirstOrDefault(o => o.WizardId == x.WizardId);
+                    return new
+                    {
+                        x.TaskId,
+                        Mobile = applicant?.Mobile,
+                        RealName = applicant.RealName,
+                        x.WechatName,
+                        x.SerialNo,
+                        x.WizardId,
+                        Status = x.Status.GetName(),
+                        x.SeatNos,
+                        x.SessionId
+                    };
+                })
+            }));
         }
     }
 }
