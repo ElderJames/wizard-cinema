@@ -175,7 +175,7 @@ namespace Wizard.Cinema.Admin.Controllers
             ApiResult<IEnumerable<ApplicantResp>> applicants =
                 _activityService.GetApplicants(taskResult.Result.Records.Select(x => x.WizardId).ToArray());
 
-            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
+            return Ok(new
             {
                 taskResult.Result.PageNow,
                 taskResult.Result.PageSize,
@@ -196,7 +196,7 @@ namespace Wizard.Cinema.Admin.Controllers
                         x.SessionId
                     };
                 })
-            }));
+            });
         }
     }
 }

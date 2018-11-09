@@ -41,10 +41,11 @@ export class SessionTaskComponent implements OnInit {
 
   columns: SimpleTableColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
-    { title: '关联活动', index: 'activity' },
-    { title: '影院', index: 'cinema' },
-    { title: '影厅', index: 'hall' },
-    { title: '分部', index: 'division' },
+    { title: '排序', index: 'serialNo' },
+    { title: '手机', index: 'mobile' },
+    { title: '姓名', index: 'realName' },
+    { title: '微信', index: 'wechatName' },
+    { title: '座位号', index: 'seatNos' },
     { title: '状态', index: 'status' },
     {
       title: '操作',
@@ -54,16 +55,6 @@ export class SessionTaskComponent implements OnInit {
           type: 'link',
           click: (item: any) => `cinema/sessions/${item.sessionId}`
         },
-        {
-          text: '开始选座',
-          click: (item: any) => this.beginSelect(item.sessionId),
-        },
-        {
-          text: '详情',
-          type: 'link',
-          click: (item: any) => `cinema/session/${item.sessionId}/tasks`
-        },
-
       ],
     },
   ];
@@ -74,19 +65,6 @@ export class SessionTaskComponent implements OnInit {
   total = 0;
   divisionData = [];
   sessionId: number;
-
-  activity = {
-    activityId: null,
-    divisionId: 0,
-    name: '',
-    description: '',
-    address: '',
-    price: '',
-    beginTime: new Date(),
-    finishTime: new Date(),
-    registrationBeginTime: new Date(),
-    registrationFinishTime: new Date(),
-  }
 
   constructor(
     private http: _HttpClient,
@@ -123,8 +101,13 @@ export class SessionTaskComponent implements OnInit {
     this.data = res.records;
   }
 
+  async change(e) {
+    this.q.pi = this.st.pi;
+    await this.getData();
+  }
+
   async beginSelect(sessionId: number) {
     await this.sessionSrv.beginSelect(sessionId);
-    this.getData();
+    await this.getData();
   }
 }

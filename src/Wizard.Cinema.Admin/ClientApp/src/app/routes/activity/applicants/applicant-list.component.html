@@ -25,31 +25,3 @@
     </ng-template>
   </simple-table>
 </nz-card>
-<ng-template #modalContent>
-  <nz-form-item>
-    <nz-form-label nzFor="name">活动名</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="activity.name" name="name" placeholder="请填写分部名" id="name">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="divisionId">举办分部</nz-form-label>
-    <nz-form-control>
-      <nz-select [(ngModel)]="activity.divisionId" id="divisionId">
-        <nz-option *ngFor="let p of divisionData" [nzValue]="p.divisionId" [nzLabel]="p.name"></nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="name">详情</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="activity.name" name="name" placeholder="请填写分部名" id="name">
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="beginTime">开始时间</nz-form-label>
-    <nz-form-control>
-      <nz-date-picker nzPlaceHolder="选择开始日期" [(ngModel)]="activity.beginTime"></nz-date-picker>
-    </nz-form-control>
-  </nz-form-item>
-</ng-template>

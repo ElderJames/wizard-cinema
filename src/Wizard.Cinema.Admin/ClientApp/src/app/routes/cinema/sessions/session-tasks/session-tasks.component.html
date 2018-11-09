@@ -18,7 +18,7 @@
     </nz-dropdown>
   </ng-container>
   <simple-table #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (checkboxChange)="checkboxChange($event)"
-    (filterChange)="getData()">
+    (filterChange)="getData()" (change)="change()" [ps]="q.ps" [pi]="q.pi" [frontPagination]="false">
     <ng-template st-row="status" let-i>
       <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
     </ng-template>

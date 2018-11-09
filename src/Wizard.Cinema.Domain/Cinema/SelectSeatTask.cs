@@ -90,14 +90,13 @@ namespace Wizard.Cinema.Domain.Cinema
             this.CreateTime = DateTime.Now;
         }
 
-        public void CheckIn(int serialNo)
+        public void CheckIn()
         {
             if (this.Status != SelectTaskStatus.待开始)
                 throw new DomainException("此用户" + this.Status.GetName());
 
             this.Status = SelectTaskStatus.排队中;
             this.BeginTime = DateTime.Now;
-            this.SerialNo = serialNo;
         }
 
         public void Begin()

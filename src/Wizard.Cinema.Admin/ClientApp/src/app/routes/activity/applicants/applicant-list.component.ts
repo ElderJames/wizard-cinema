@@ -119,8 +119,6 @@ export class ApplicantListComponent implements OnInit {
     var res = await this.activitySrv.getApplicants(this.q.ps, this.q.pi, this.activity.activityId);
     this.total = res.totalCount;
     this.data = res.records;
-
-    console.log(this.total, this.q.pi, this.q.ps)
   }
 
   async change(e) {
