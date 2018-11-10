@@ -79,9 +79,14 @@ namespace Wizard.Cinema.Web.Controllers
 
             //当前在选的巫师
             SelectSeatTaskResp currentWizard = result.Result.Records.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
-            if (currentWizard == null)
-                return Ok(new ApiResult<bool>(ResultStatus.FAIL, "没有巫师在选，系统可能出错了"));
-            SelectSeatTaskResp nextWizard = result.Result.Records.Where(x => x.TaskId != currentWizard.TaskId && x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault();
+            //if (currentWizard == null)
+            //    return Ok(new ApiResult<bool>(ResultStatus.FAIL, "没有巫师在选，系统可能出错了"));
+            SelectSeatTaskResp nextWizard = currentWizard != null
+                ? result.Result.Records
+                    .Where(x => x.TaskId != currentWizard.TaskId && x.SerialNo >= currentWizard.SerialNo)
+                    .OrderBy(x => x.SerialNo).FirstOrDefault()
+                : result.Result.Records.Where(x => x.Status == SelectTaskStatus.排队中).OrderBy(x => x.SerialNo)
+                    .FirstOrDefault();
             IEnumerable<SelectSeatTaskResp> myTasks = result.Result.Records.Where(x => x.WizardId == HttpContext?.User?.ExtractUserId()).OrderBy(x => x.SerialNo);
             SelectSeatTaskResp myFirst = myTasks.FirstOrDefault();
             SelectSeatTaskResp canSelectTask = myTasks.OrderBy(x => x.SerialNo).FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
@@ -111,7 +116,7 @@ namespace Wizard.Cinema.Web.Controllers
                 unfinishedTasks = myTasks.Where(x => x.Status != SelectTaskStatus.超时已重排 && x.Status != SelectTaskStatus.已完成)
                     .Select(x =>
                     {
-                        int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && x.SerialNo >= currentWizard.SerialNo && o.SerialNo < x.SerialNo);
+                        int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && x.SerialNo >= (currentWizard?.SerialNo ?? 0) && o.SerialNo < x.SerialNo);
 
                         return new
                         {
@@ -148,10 +153,11 @@ namespace Wizard.Cinema.Web.Controllers
         {
             if (sessionId <= 0)
                 return Ok(new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的场次"));
-            long wizardId = (long)HttpContext?.User?.ExtractUserId();
-            ApiResult<bool> result = _selectSeatTaskService.CheckIn(wizardId, sessionId);
+
+            ApiResult<bool> result = _selectSeatTaskService.CheckIn(HttpContext?.User?.ExtractUserId() ?? 0, sessionId);
             if (result.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<bool>(ResultStatus.FAIL, result.Message));
+
             return Ok(new ApiResult<bool>(ResultStatus.SUCCESS, true));
         }
     }

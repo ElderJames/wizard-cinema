@@ -24,6 +24,9 @@ const myPlugin = store => {
     if (mutation.type == 'SET_AUTH_TOKEN') {
       Store.set('auth_token', mutation.payload)
     }
+    if (mutation.type == 'LOG_OUT') {
+      Store.remove('auth_token')
+    }
   })
 }
 

@@ -7,10 +7,10 @@
             <mu-button icon slot="left" v-if="has_menu && layout_type" @click="openMenu" >
               <mu-icon value="menu"></mu-icon>
             </mu-button>
-            <mu-button icon slot="left" v-if="!has_menu" @click="goBack" >
+            <mu-button icon slot="left"  @click="goBack" >
               <mu-icon value="arrow_back"></mu-icon>
             </mu-button>
-            <mu-menu icon="more_vert" slot="right" v-if="has_share">
+            <!-- <mu-menu icon="more_vert" slot="right" v-if="has_share">
                 <mu-button icon>
                   <mu-icon value="more_vert"></mu-icon>
                 </mu-button>
@@ -18,9 +18,9 @@
                 <mu-menu-item title="分享" @click="share" />
                 <mu-menu-item to="/user/favorite" title="我的收藏" />
               </slot>
-            </mu-menu>
-            <mu-button icon mu-icon-button slot="right" v-if="!has_share" @click="search" >
-               <mu-icon value="search"></mu-icon>
+            </mu-menu> -->
+            <mu-button flat slot="right"  @click="loginOut()" >
+              退出
             </mu-button>
           </mu-appbar>
         </template>
@@ -117,7 +117,10 @@ export default {
         }
       }
     },
-
+    loginOut() {
+      this.$store.dispatch("loginOut");
+      this.$router.replace("/");
+    },
     setActiveNav() {
       let path = this.$route.path;
       this.active_nav = path;

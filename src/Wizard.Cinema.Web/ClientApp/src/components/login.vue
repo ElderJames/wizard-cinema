@@ -40,14 +40,12 @@ export default {
     };
   },
   methods: {
-    submit() {
-      this.$refs.form.validate().then(result => {
-        console.log("form valid: ", result);
-        if (result)
-          this.$store.dispatch("login", this.validateForm).then(res => {
-            if (res) this.$router.replace(this.$route.query.redirect || "/");
-          });
-      });
+    async submit() {
+      var result = await this.$refs.form.validate();
+      if (result) {
+        var res = await this.$store.dispatch("login", this.validateForm);
+        if (res) this.$router.replace(this.$route.query.redirect || "/");
+      }
     },
     clear() {
       this.$refs.form.clear();

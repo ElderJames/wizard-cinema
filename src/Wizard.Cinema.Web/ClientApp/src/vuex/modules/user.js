@@ -17,7 +17,6 @@ const mutations = {
   'SET_SELF_USER'(state, user) {
     state.self_user = user;
   },
-
   'SET_IS_LOGIN'(state, is_login) {
     state.is_login = is_login;
   },
@@ -34,11 +33,23 @@ const mutations = {
   },
   'SET_AUTH_TOKEN'(state, token) {
     state.auth_token = token;
-      state.is_login = true;
+    state.is_login = true;
+  },
+  'LOG_OUT'(state) {
+    state.auth_token = null;
+    state.is_login = false;
   }
 }
 
+const actions = {
+  loginOut({ commit, state }) {
+    commit('LOG_OUT')
+  }
+}
+
+
 export default {
   state,
+  actions,
   mutations
 }

@@ -21,7 +21,7 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISelectSeatTaskQueryService _seatTaskQueryService;
         private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
         private readonly ISessionRepository _sessionRepository;
-        private ITransactionRepository _transactionRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public SelectSeatTaskService(ISelectSeatTaskQueryService seatTaskQueryService,
             ISelectSeatTaskRepository selectSeatTaskRepository, ISessionRepository sessionRepository, ITransactionRepository transactionRepository)
@@ -49,8 +49,8 @@ namespace Wizard.Cinema.Application.Services
             SelectSeatTask wipTask = tasks.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
             IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时未重排);
 
-            if (notInQueueTasks.IsNullOrEmpty() && overdueTasks.IsNullOrEmpty())
-                return new ApiResult<bool>(ResultStatus.FAIL, wipTask == null ? "全部都选完了" : "已经可以选了");
+            //if (notInQueueTasks.IsNullOrEmpty() && overdueTasks.IsNullOrEmpty())
+            //    return new ApiResult<bool>(ResultStatus.FAIL, wipTask == null ? "全部都选完了" : "已经可以选了");
 
             //如果有未排队
             if (notInQueueTasks.Any())

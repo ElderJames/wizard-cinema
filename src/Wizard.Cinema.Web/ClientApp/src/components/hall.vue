@@ -1,5 +1,5 @@
 <template lang="pug">
-  Layout(:has_share="false" title="选座" :has_footer="false")
+  Layout( title="选座" :has_footer="false")
     .body(style='visibility: visible;')
       section.seat-block
         .info-block
@@ -66,7 +66,8 @@
       mu-appbar(color="primary" title="选座注意事项")
         //- mu-button(slot="left" icon @click="closeFullscreenDialog")
         //-   mu-icon(value="close")
-        mu-button(slot="right" flat  @click="closeFullscreenDialog" v-if="taskInfo.unfinishedTasks.length>0") 同意
+        mu-button(slot="right" flat  @click="taskCheckIn" v-if="taskInfo.unfinishedTasks.length>0") 同意
+        mu-button(slot="right" flat  @click="logout" v-else) 退出
       div(style="padding: 24px;") 
         h1 欢迎选座
         | 亲爱的 {{taskInfo.wechatName}} ,
@@ -90,7 +91,9 @@ export default {
   data: function() {
     return {
       openFullscreen: true,
-      taskInfo: {},
+      taskInfo: {
+        unfinishedTasks: []
+      },
       canSelectSeats: [],
       canSelct: false,
       canSelectTask: null,
@@ -117,9 +120,7 @@ export default {
       vm.canSelectSeats = session.seatNos;
       vm.sessionId = session.sessionId;
 
-      vm.taskInfo = await vm.$store.dispatch("getTasks", session.sessionId);
-      vm.canSelectTask = vm.taskInfo.canSelectTask;
-      vm.canSelct = vm.canSelectTask != null;
+      await vm.refeshTasks();
 
       var seats = await vm.$store.dispatch("getSeats", session.sessionId);
       vm.hadselectSeats = seats.filter(x => x.selected).map(x => x.seatNo);
@@ -185,6 +186,10 @@ export default {
         1
       );
     },
+    logout() {
+      this.$store.dispatch("loginOut");
+      this.$router.replace("/");
+    },
     getSeatInfo(seatNo) {
       console.log(seatNo);
       var seat = this.seats.find(x => x.seatNo == seatNo);
@@ -192,9 +197,24 @@ export default {
       if (seat == null) return "";
       else return `${seat.rowId}排${seat.columnId}座`;
     },
-    async closeFullscreenDialog() {
+    async taskCheckIn() {
       await this.$store.dispatch("taskCheckIn", this.sessionId);
+      await this.refeshTasks();
+
+      var timer = setInterval(() => {
+        if (this.canSelct && this.taskInfo.unfinishedTasks.length > 0) {
+          clearInterval(timer);
+          Toast("可以选座了！");
+          return;
+        }
+        this.refeshTasks();
+      }, 1000);
       this.openFullscreen = false;
+    },
+    async refeshTasks() {
+      this.taskInfo = await this.$store.dispatch("getTasks", this.sessionId);
+      this.canSelectTask = this.taskInfo.canSelectTask;
+      this.canSelct = this.canSelectTask != null;
     },
     async submit() {
       if (this.selectedSeats.length > 0) {
