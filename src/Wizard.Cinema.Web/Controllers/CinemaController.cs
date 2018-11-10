@@ -26,7 +26,13 @@ namespace Wizard.Cinema.Web.Controllers
             if (hall == null)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "影厅不存在"));
 
-            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, hall));
+            return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
+            {
+                hall.CinemaId,
+                hall.HallId,
+                hall.Name,
+                hall.SeatJson,
+            }));
         }
     }
 }

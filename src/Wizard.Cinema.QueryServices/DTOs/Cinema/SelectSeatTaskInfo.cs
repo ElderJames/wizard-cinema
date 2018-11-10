@@ -38,7 +38,7 @@ namespace Wizard.Cinema.QueryServices.DTOs.Cinema
         /// <summary>
         /// 在此排队
         /// </summary>
-        public long OverdueTaskId { get; set; }
+        public long? OverdueTaskId { get; set; }
 
         /// <summary>
         /// 状态

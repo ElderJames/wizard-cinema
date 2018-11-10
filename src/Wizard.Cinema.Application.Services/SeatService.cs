@@ -37,7 +37,7 @@ namespace Wizard.Cinema.Application.Services
             this._transactionRepository = transactionRepository;
         }
 
-        public ApiResult<bool> Select(long wizardId, long sessionId, string[] seatNos)
+        public ApiResult<bool> Select(long sessionId, long wizardId, long taskId, string[] seatNos)
         {
             try
             {
@@ -47,37 +47,57 @@ namespace Wizard.Cinema.Application.Services
                 if (wizardId <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "wizardId须大于0");
 
+                if (taskId <= 0)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "taskId必须大于0");
+
                 Wizards wizard = _wizardRepository.Query(wizardId);
                 if (wizard == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "巫师未注册");
 
-                IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryByWizardId(sessionId, wizardId);
-                if (tasks.IsNullOrEmpty())
-                    return new ApiResult<bool>(ResultStatus.FAIL, "不在队列中");
+                SelectSeatTask selectedTask = _selectSeatTaskRepository.Query(taskId);
+                if (selectedTask == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "排队号不存在");
 
-                SelectSeatTask canSelectTask = tasks.Where(x => x.Status == SelectTaskStatus.进行中).OrderBy(x => x.SerialNo).FirstOrDefault();
-                if (canSelectTask == null)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "没有可选的名额了");
+                if (selectedTask.Status != SelectTaskStatus.进行中)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "您的号还不能选座哦，请再等等！");
 
-                if (canSelectTask.Total != seatNos.Length)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "选座数量必须为" + canSelectTask.Total);
+                if (selectedTask.WizardId != wizardId)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的任务");
 
-                SelectSeatTask nextTask = _selectSeatTaskRepository.QueryNextTask(sessionId, canSelectTask.SerialNo);
+                if (selectedTask.Total != seatNos.Length)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "选座数量必须为" + selectedTask.Total + "个");
+
+                //IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryByWizardId(sessionId, wizardId);
+                //if (tasks.IsNullOrEmpty())
+                //    return new ApiResult<bool>(ResultStatus.FAIL, "不在队列中");
+
+                //SelectSeatTask canSelectTask = tasks.Where(x => x.Status == SelectTaskStatus.进行中).OrderBy(x => x.SerialNo).FirstOrDefault();
+                //if (canSelectTask == null)
+                //    return new ApiResult<bool>(ResultStatus.FAIL, "没有可选的名额了");
+
+                //if (canSelectTask.Total != seatNos.Length)
+                //    return new ApiResult<bool>(ResultStatus.FAIL, "选座数量必须为" + canSelectTask.Total);
+
+                SelectSeatTask nextTask = _selectSeatTaskRepository.QueryNextTask(selectedTask);
 
                 IEnumerable<Seat> seats = _seatRepository.Query(sessionId, seatNos);
                 if (seats.Count() != seatNos.Length)
                     return new ApiResult<bool>(ResultStatus.FAIL, "seatNos传参错误");
 
-                seats.ForEach(item => item.Choose(wizard));
-                canSelectTask.Select(seatNos);
+                var selectedSeats = seats.Select(item =>
+                {
+                    item.Choose(wizard);
+                    return item;
+                }).ToList();
+                selectedTask.Select(seatNos);
                 nextTask?.Begin();
 
                 _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
                 {
-                    if (_seatRepository.BatchUpdate(seats.ToArray()) < -0)
+                    if (_seatRepository.BatchUpdate(selectedSeats.ToArray()) < 0)
                         throw new DomainException("保存时异常0");
 
-                    if (_selectSeatTaskRepository.Select(canSelectTask) < 0)
+                    if (_selectSeatTaskRepository.Select(selectedTask) < 0)
                         throw new DomainException("保存时异常1");
 
                     if (nextTask != null && _selectSeatTaskRepository.Start(nextTask) < 0)

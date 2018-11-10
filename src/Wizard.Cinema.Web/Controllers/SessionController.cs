@@ -22,7 +22,9 @@ namespace Wizard.Cinema.Web.Controllers
         private readonly ISelectSeatTaskService _selectSeatTaskService;
         private ISessionService _sessionService;
 
-        public SessionController(ISeatService seatService, ISelectSeatTaskService selectSeatTaskService, ISessionService sessionService)
+        public SessionController(ISeatService seatService,
+            ISelectSeatTaskService selectSeatTaskService,
+            ISessionService sessionService)
         {
             this._seatService = seatService;
             this._selectSeatTaskService = selectSeatTaskService;
@@ -32,7 +34,8 @@ namespace Wizard.Cinema.Web.Controllers
         [HttpPost("select-seats")]
         public IActionResult Select(SelectSeatModel model)
         {
-            ApiResult<bool> result = _seatService.Select(HttpContext?.User?.ExtractUserId() ?? 0, model.SessionId, model.SeatNos);
+            long wizardId = (long)HttpContext?.User?.ExtractUserId();
+            ApiResult<bool> result = _seatService.Select(model.SessionId, wizardId, model.TaskId, model.SeatNos);
             if (result.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<bool>(ResultStatus.FAIL, result.Message));
 
@@ -76,42 +79,67 @@ namespace Wizard.Cinema.Web.Controllers
 
             //当前在选的巫师
             SelectSeatTaskResp currentWizard = result.Result.Records.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
-            SelectSeatTaskResp nextWizard = result.Result.Records.Where(x => x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault();
+            if (currentWizard == null)
+                return Ok(new ApiResult<bool>(ResultStatus.FAIL, "没有巫师在选，系统可能出错了"));
+            SelectSeatTaskResp nextWizard = result.Result.Records.Where(x => x.TaskId != currentWizard.TaskId && x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault();
             IEnumerable<SelectSeatTaskResp> myTasks = result.Result.Records.Where(x => x.WizardId == HttpContext?.User?.ExtractUserId()).OrderBy(x => x.SerialNo);
             SelectSeatTaskResp myFirst = myTasks.FirstOrDefault();
+            SelectSeatTaskResp canSelectTask = myTasks.OrderBy(x => x.SerialNo).FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
+            string[] selectedSeatNos = result.Result.Records.Where(x => x.Status == SelectTaskStatus.已完成).SelectMany(x => x.SeatNos).ToArray();
 
             return Ok(new ApiResult<object>(ResultStatus.SUCCESS, new
             {
                 myFirst?.WechatName,
-                myTasks = myTasks.Select(x =>
+                overdueTasks = myTasks.Where(x => x.Status == SelectTaskStatus.超时未重排 || x.Status == SelectTaskStatus.超时已重排).Select(x => new
                 {
-                    int people = result.Result.Records.Count(o => x.SerialNo >= currentWizard.SerialNo && o.SerialNo < x.SerialNo);
-
-                    return new
-                    {
-                        x.BeginTime,
-                        x.Total,
-                        x.SerialNo,
-                        Status = x.Status.GetName(),
-                        People = people,
-                        WaitTime = people * 5
-                    };
+                    x.TaskId,
+                    x.OverdueTaskId,
+                    x.EndTime,
                 }),
-
-                current = currentWizard == null ? null : new
+                canSelectTask = canSelectTask == null ? null : new
                 {
-                    currentWizard.BeginTime,
-                    currentWizard.WechatName,
-                    currentWizard.Total
+                    canSelectTask.BeginTime,
+                    canSelectTask.Total,
+                    canSelectTask.TaskId
                 },
-
-                next = nextWizard == null ? null : new
+                myTasks = myTasks.OrderByDescending(x => x.EndTime).Select(x => new
                 {
-                    nextWizard.BeginTime,
-                    nextWizard.WechatName,
-                    nextWizard.Total
-                },
-                selectedList = result.Result.Records.Where(x => x.Status == SelectTaskStatus.已完成).SelectMany(x => x.SeatNos)
+                    x.EndTime,
+                    x.SeatNos,
+                    Status = x.Status.GetName(),
+                }),
+                unfinishedTasks = myTasks.Where(x => x.Status != SelectTaskStatus.超时已重排 && x.Status != SelectTaskStatus.已完成)
+                    .Select(x =>
+                    {
+                        int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && x.SerialNo >= currentWizard.SerialNo && o.SerialNo < x.SerialNo);
+
+                        return new
+                        {
+                            x.BeginTime,
+                            x.Total,
+                            x.SerialNo,
+                            Status = x.Status.GetName(),
+                            People = people,
+                            WaitTime = people * 5
+                        };
+                    }),
+                current = currentWizard == null
+                    ? null
+                    : new
+                    {
+                        currentWizard.BeginTime,
+                        currentWizard.WechatName,
+                        currentWizard.Total
+                    },
+                next = nextWizard == null
+                    ? null
+                    : new
+                    {
+                        nextWizard.BeginTime,
+                        nextWizard.WechatName,
+                        nextWizard.Total
+                    },
+                selectedList = selectedSeatNos
             }));
         }
 

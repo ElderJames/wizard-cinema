@@ -44,7 +44,7 @@ namespace Wizard.Cinema.Domain.Cinema
         /// <summary>
         /// 在此排队
         /// </summary>
-        public long OverdueTaskId { get; private set; }
+        public long? OverdueTaskId { get; private set; }
 
         /// <summary>
         /// 状态
@@ -139,8 +139,16 @@ namespace Wizard.Cinema.Domain.Cinema
             if (this.Status != SelectTaskStatus.进行中)
                 throw new DomainException("此用户未未在选座状态");
 
-            this.Status = SelectTaskStatus.超时并结束;
+            this.Status = SelectTaskStatus.超时未重排;
             this.EndTime = DateTime.Now;
+        }
+
+        public void CheckInAgain()
+        {
+            if (this.Status != SelectTaskStatus.超时未重排)
+                throw new DomainException("此用户" + this.Status.GetName());
+
+            this.Status = SelectTaskStatus.超时已重排;
         }
     }
 }

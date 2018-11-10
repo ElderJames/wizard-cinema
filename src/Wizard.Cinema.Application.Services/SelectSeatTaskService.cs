@@ -38,12 +38,12 @@ namespace Wizard.Cinema.Application.Services
             if (tasks.IsNullOrEmpty())
                 return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
 
-            IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队);
+            IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队 || x.Status == SelectTaskStatus.超时未重排);
             SelectSeatTask wipTask = tasks.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
-            IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时并结束);
+            IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时未重排);
 
             if (notInQueueTasks.IsNullOrEmpty() && overdueTasks.IsNullOrEmpty())
-                return new ApiResult<bool>(ResultStatus.FAIL, wipTask == null ? "全部都选完了" : "已在排队");
+                return new ApiResult<bool>(ResultStatus.FAIL, wipTask == null ? "全部都选完了" : "已经可以选了");
 
             //如果有未排队
             if (notInQueueTasks.Any())
@@ -60,9 +60,21 @@ namespace Wizard.Cinema.Application.Services
             if (overdueTasks.Any())
             {
                 SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId);
-                IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x => new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo + 2));
+                IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x =>
+                {
+                    var newTask = new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo + 2);
+                    newTask.CheckIn();
+                    return newTask;
+                }).ToList();
 
-                _selectSeatTaskRepository.BatchInsert(newTasks.ToArray());
+                IEnumerable<SelectSeatTask> oldTasks = overdueTasks.Select(x =>
+                {
+                    x.CheckInAgain();
+                    return x;
+                }).ToList();
+
+                _selectSeatTaskRepository.BatchInsert(newTasks);
+                _selectSeatTaskRepository.CheckInAgain(oldTasks);
             }
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);

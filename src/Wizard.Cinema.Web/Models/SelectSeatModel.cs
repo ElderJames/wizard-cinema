@@ -9,6 +9,8 @@ namespace Wizard.Cinema.Web.Models
     {
         public long SessionId { get; set; }
 
+        public long TaskId { get; set; }
+
         public string[] SeatNos { get; set; }
     }
 }

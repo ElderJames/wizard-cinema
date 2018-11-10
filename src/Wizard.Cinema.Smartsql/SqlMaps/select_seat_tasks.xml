@@ -62,7 +62,7 @@
       Status = @Status,
       BeginTime = @BeginTime
       WHERE TaskId = @TaskId
-      AND Status = 0;
+      AND Status = 10;
     </Statement>
 
     <Statement Id="Select" ParameterMap="taskParamMap">
@@ -72,7 +72,7 @@
       EndTime = @EndTime,
       SeatNos = @SeatNos
       WHERE TaskId = @TaskId
-      AND Status = 5;
+      AND Status = 15;
     </Statement>
 
     <Statement Id="CheckIn" Transaction="ReadCommitted">
@@ -82,6 +82,16 @@
         Status = @Status
         WHERE TaskId = @TaskId
         AND Status = 0;
+      </For>
+    </Statement>
+
+    <Statement Id="CheckInAgain" Transaction="ReadCommitted">
+      <For Open="" Close="" Prepend="" Property="tasks" Key="T" Separator="">
+        UPDATE select_seat_tasks
+        SET
+        Status = @Status
+        WHERE TaskId = @TaskId
+        AND Status = 25;
       </For>
     </Statement>
 
@@ -137,7 +147,7 @@
       SELECT * FROM select_seat_tasks
       WHERE
       SessionId = @SessionId
-      AND Status = 10
+      AND Status = 15
       LIMIT 1;
     </Statement>
 
@@ -145,8 +155,10 @@
       SELECT * FROM select_seat_tasks
       WHERE
       SessionId = @SessionId
+      AND not TaskId = @TaskId
       AND SerialNo >= @SerialNo
-      AND Status = 5
+      AND Status = 10
+      ORDER BY SerialNo
       LIMIT 1;
     </Statement>
   </Statements>

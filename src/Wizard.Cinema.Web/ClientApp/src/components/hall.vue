@@ -22,7 +22,7 @@
               span.hall-name IMAX厅
             .row-nav.animate
               div(v-for="rowId in rowIds") {{rowId}}
-            .seats-block.animate(v-drag="true" :data-maxLength="maxSeatLength" :style='"width:"+maxSeatLength * 46 +"px"' )
+            .seats-block.animate(v-drag="true" :data-maxLength="maxSeatLength" :style='"width:"+maxSeatLength * 46 +"px"' :data-can-selct="canSelct" )
               .m-line(:style="maxSeatLength%2==0?'': '-webkit-transform: translateX(-23px);transform: translateX(-23px);'")
                 .divider(:style="maxSeatLength%2==0?'': '-webkit-transform: translateX(-23px);transform: translateX(-23px);'")
               //- .seats-wrap(data-sectionid='1', data-sectionname='花城汇IMAX', style='width: 1426px;')
@@ -52,16 +52,16 @@
               //-   span.text 情侣座
           .recommend-price-block
             .recommend-block
-              .title 推荐座位
+              .title {{canSelectTask==null?'还不能选':('请选择选'+canSelectTask.total+'个座位')}}
               .recommend-list.grid-4
           .price-block
-            .title-block 已选座位
+            .title-block(v-if="canSelectTask!=null") 已选座位 ({{selectedSeats.length}}/{{canSelectTask.total}})
             .box-flex.selected-block
-              .selected-seat-item(v-for="seat in selectedSeats" :data-id="seat.seatNo" @click="deleteSeat(seat)")
+              .selected-seat-item(v-for="seat in selectedSeats" :data-id="seat.seatNo" @click="deleteASeat(seat)")
                 .selected-seat-info {{seat.rowId}}排{{seat.columnId}}座
-                .price-info ¥54
+                //- .price-info ¥54
           .submit-block.box-flex
-            .submit.flex(data-bid="b_212zq" @click="submit") {{selectedSeats.length>0?'确认选座':'请先选座'}}
+            .submit.flex(data-bid="b_212zq" @click="submit") {{canSelectTask==null?'还不能选座': selectedSeats.length==canSelectTask.total?'确认选座':'请先选座'}}
     mu-dialog(width="360" transition="slide-bottom" fullscreen :open.sync="openFullscreen")
       mu-appbar(color="primary" title="选座注意事项")
         mu-button(slot="left" icon @click="closeFullscreenDialog")
@@ -70,21 +70,30 @@
       div(style="padding: 24px;") 
         h1 欢迎选座
         | 亲爱的 {{taskInfo.wechatName}} ,
-        | 以下是选座注意事项：
-        | 您一共需要选{{taskInfo.myTasks.length}}次：
-        p(v-for="(task, index) in taskInfo.myTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位，等待{{task.waitTime}}分钟
-
+        span(v-if='taskInfo.unfinishedTasks.length>0') 
+          | 以下是选座注意事项：
+          | 您一共需要选{{taskInfo.unfinishedTasks.length}}次：
+          p(v-for="(task, index) in taskInfo.unfinishedTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位，等待{{task.waitTime}}分钟
+        span(v-else)
+          | 您没有需要选的座位了，以下是选座情况：
+          p(v-for="(task, index) in taskInfo.myTasks") {{index+1}}，
+            span(v-if="task.seatNos!=null&&task.seatNos.length>0") {{task.endTime}} --&gt;
+              span(v-for="seatNo in task.seatNos") 已选 [{{getSeatInfo(seatNo)}}]
+            span(v-else) {{task.endTime}} --&gt; {{task.status}}
 </template>
 
 <script>
 import Layout from "@/components/Layout";
+import { Toast } from "mint-ui";
 
 export default {
   data: function() {
     return {
       openFullscreen: true,
       taskInfo: {},
-      canSelect: [],
+      canSelectSeats: [],
+      canSelct: false,
+      canSelectTask: null,
       hallData: {},
       rowIds: [],
       seats: [],
@@ -105,11 +114,12 @@ export default {
     next(async vm => {
       var session = await vm.$store.dispatch("getSession", activityId);
       if (session == null) vm.$router.go(-1);
-      vm.canSelect = session.seatNos;
+      vm.canSelectSeats = session.seatNos;
       vm.sessionId = session.sessionId;
 
       vm.taskInfo = await vm.$store.dispatch("getTasks", session.sessionId);
-      console.log(vm.taskInfo);
+      vm.canSelectTask = vm.taskInfo.canSelectTask;
+      vm.canSelct = vm.canSelectTask != null;
 
       var seats = await vm.$store.dispatch("getSeats", session.sessionId);
       vm.hadselectSeats = seats.filter(x => x.selected).map(x => x.seatNo);
@@ -129,7 +139,7 @@ export default {
             st: c.st,
             status: !c.seatNo
               ? ""
-              : vm.canSelect.findIndex(o => o == c.seatNo) >= 0
+              : vm.canSelectSeats.findIndex(o => o == c.seatNo) >= 0
                 ? vm.hadselectSeats.findIndex(x => x == c.seatNo) >= 0
                   ? 1
                   : 0
@@ -157,7 +167,14 @@ export default {
     },
     selectASeat(seat) {
       if (!seat.seatNo || seat.status != 0) return;
-
+      if (!this.canSelct) {
+        Toast("还不能选座");
+        return;
+      }
+      if (this.selectedSeats.length == this.canSelectTask.total) {
+        Toast("最多选择" + this.canSelectTask.total + "个");
+        return;
+      }
       this.selectedSeats.push(seat);
       seat.active = true;
     },
@@ -168,16 +185,32 @@ export default {
         1
       );
     },
+    getSeatInfo(seatNo) {
+      console.log(seatNo);
+      var seat = this.seats.find(x => x.seatNo == seatNo);
+      console.log(seat);
+      if (seat == null) return "";
+      else return `${seat.rowId}排${seat.columnId}座`;
+    },
     async closeFullscreenDialog() {
       await this.$store.dispatch("taskCheckIn", this.sessionId);
       this.openFullscreen = false;
     },
     async submit() {
       if (this.selectedSeats.length > 0) {
+        if (this.selectedSeats.length != this.canSelectTask.total) {
+          Toast("请选择" + this.canSelectTask.total + "个座位！");
+          return;
+        }
+
         var seatNos = this.selectedSeats.map(x => x.seatNo);
         var sessionId = this.sessionId;
         console.log(sessionId, seatNos);
-        await this.$store.dispatch("selectSeat", { seatNos, sessionId });
+        await this.$store.dispatch("selectSeat", {
+          seatNos,
+          sessionId,
+          taskId: this.canSelectTask.taskId
+        });
       }
     }
   },
@@ -196,6 +229,7 @@ export default {
 
         if (u.children.length <= 0) return;
         let m = document.querySelector(".select-block .seats-block");
+
         let f = document.querySelector(".select-block .mew-info");
         let v = document.querySelectorAll('.seats-wrap .wrap[data-status="0"]');
         let line = document.querySelector(".m-line");
@@ -235,7 +269,7 @@ export default {
           document.querySelector(".buy-block").clientHeight +
           "px";
 
-        //m.style.width = (m.dataset['maxLength'] * 46 )+'px'
+        m.style.width = m.dataset["maxLength"] * 46 + "px";
         m.style.transform = `translate3d(${T}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
         u.style.transform = `translate3d(${x2}px, ${E}px, 0px) scale(${scale}, ${scale}) rotate3d(0, 0, 0, 0deg)`;
         h.style.transform = `translate3d(${nameX}px, 0px, 0px) scale(1, 1) rotate3d(0, 0, 0, 0deg)`;
@@ -314,6 +348,7 @@ export default {
             };
             seat.ontouchend = e => {
               if (!clieked) return;
+              if (!m.dataset["can-selct"]) return;
 
               //没有放大，计算
               if (!(C >= 0.8)) {

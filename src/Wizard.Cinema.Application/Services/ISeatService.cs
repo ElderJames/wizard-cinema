@@ -12,7 +12,7 @@ namespace Wizard.Cinema.Application.Services
         /// <param name="sessionId"></param>
         /// <param name="seatNo"></param>
         /// <returns></returns>
-        ApiResult<bool> Select(long wizardId, long sessionId, string[] seatNos);
+        ApiResult<bool> Select(long sessionId, long wizardId, long taskId, string[] seatNos);
 
         /// <summary>
         /// 获取被用户选择了的座位
