@@ -19,7 +19,7 @@
                 <mu-menu-item to="/user/favorite" title="我的收藏" />
               </slot>
             </mu-menu> -->
-            <mu-button flat slot="right"  @click="loginOut()" >
+            <mu-button flat slot="right" v-if="$store.state.is_login"  @click="loginOut()" >
               退出
             </mu-button>
           </mu-appbar>
@@ -119,7 +119,7 @@ export default {
     },
     loginOut() {
       this.$store.dispatch("loginOut");
-      this.$router.replace("/");
+      // this.$router.replace("/");
     },
     setActiveNav() {
       let path = this.$route.path;

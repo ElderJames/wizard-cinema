@@ -40,7 +40,7 @@ Vue.http.interceptors.push(function (request, next) {
             // 假设该请求后端返回错误代码为-2是需要登录的，则跳转至登录页面
             console.log(router.history.current.path)
             var path = router.history.current.path;
-            router.push({ path: '/user/login', query: { redirect: path } });
+            router.replace({ path: '/user/login', query: { redirect: path } });
         }
         // else if (response.body.status === 4) {
         //     // 参数错误

@@ -115,6 +115,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     var activityId = to.params.id;
     next(async vm => {
+      vm.openFullscreen = true;
       var session = await vm.$store.dispatch("getSession", activityId);
       if (session == null) vm.$router.go(-1);
       vm.canSelectSeats = session.seatNos;
@@ -187,8 +188,9 @@ export default {
       );
     },
     logout() {
+      this.openFullscreen = false;
       this.$store.dispatch("loginOut");
-      this.$router.replace("/");
+      // this.$router.replace("/");
     },
     getSeatInfo(seatNo) {
       console.log(seatNo);
@@ -226,11 +228,13 @@ export default {
         var seatNos = this.selectedSeats.map(x => x.seatNo);
         var sessionId = this.sessionId;
         console.log(sessionId, seatNos);
-        await this.$store.dispatch("selectSeat", {
+        var result = await this.$store.dispatch("selectSeat", {
           seatNos,
           sessionId,
           taskId: this.canSelectTask.taskId
         });
+        await this.refeshTasks();
+        if (result) this.openFullscreen = true;
       }
     }
   },

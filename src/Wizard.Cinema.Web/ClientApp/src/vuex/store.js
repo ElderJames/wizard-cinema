@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Store from "storejs";
-
+import router from '../router';
 import actions from './api';
 
 import user from './modules/user.js';
@@ -26,6 +26,7 @@ const myPlugin = store => {
     }
     if (mutation.type == 'LOG_OUT') {
       Store.remove('auth_token')
+      router.replace('/user/login')
     }
   })
 }

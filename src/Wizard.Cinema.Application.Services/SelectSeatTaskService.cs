@@ -45,7 +45,7 @@ namespace Wizard.Cinema.Application.Services
             if (tasks.IsNullOrEmpty())
                 return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
 
-            IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队 || x.Status == SelectTaskStatus.超时未重排);
+            IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队);
             SelectSeatTask wipTask = tasks.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
             IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时未重排);
 
@@ -66,10 +66,12 @@ namespace Wizard.Cinema.Application.Services
             //有超时的任务，重新插入并排队
             if (overdueTasks.Any())
             {
-                SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId);
+                SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId)
+                                         ?? _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
+
                 IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x =>
                 {
-                    var newTask = new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo);
+                    var newTask = new SelectSeatTask(NewId.GenerateId(), x, (current ?? x).SerialNo);
                     newTask.CheckIn();
                     return newTask;
                 }).ToList();
@@ -82,6 +84,14 @@ namespace Wizard.Cinema.Application.Services
 
                 _selectSeatTaskRepository.BatchInsert(newTasks);
                 _selectSeatTaskRepository.CheckInAgain(oldTasks);
+            }
+
+            if (wipTask == null)
+            {
+                SelectSeatTask task = _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
+                task?.Begin();
+                if (task != null)
+                    _selectSeatTaskRepository.Start(task);
             }
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
