@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Infrastructures;
 using Infrastructures.Attributes;
@@ -19,14 +20,16 @@ namespace Wizard.Cinema.Application.Services
     {
         private readonly ISelectSeatTaskQueryService _seatTaskQueryService;
         private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
-        private ISessionRepository _sessionRepository;
+        private readonly ISessionRepository _sessionRepository;
+        private ITransactionRepository _transactionRepository;
 
         public SelectSeatTaskService(ISelectSeatTaskQueryService seatTaskQueryService,
-            ISelectSeatTaskRepository selectSeatTaskRepository, ISessionRepository sessionRepository)
+            ISelectSeatTaskRepository selectSeatTaskRepository, ISessionRepository sessionRepository, ITransactionRepository transactionRepository)
         {
             this._seatTaskQueryService = seatTaskQueryService;
             this._selectSeatTaskRepository = selectSeatTaskRepository;
             this._sessionRepository = sessionRepository;
+            this._transactionRepository = transactionRepository;
         }
 
         public ApiResult<bool> CheckIn(long wizardId, long sessionId)
@@ -95,8 +98,17 @@ namespace Wizard.Cinema.Application.Services
 
             task.Timedout();
 
-            if (_selectSeatTaskRepository.SetTimeout(task) <= 0)
-                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
+            SelectSeatTask nextTask = _selectSeatTaskRepository.QueryNextTask(task);
+            nextTask?.Begin();
+
+            _transactionRepository.UseTransaction(IsolationLevel.ReadCommitted, () =>
+            {
+                if (nextTask != null && _selectSeatTaskRepository.Start(nextTask) <= 0)
+                    throw new Exception("保存时异常0");
+
+                if (_selectSeatTaskRepository.SetTimeout(task) <= 0)
+                    throw new Exception("保存时异常1");
+            });
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }

@@ -46,13 +46,14 @@ export class SessionTaskComponent implements OnInit {
     { title: '姓名', index: 'realName' },
     { title: '微信', index: 'wechatName' },
     { title: '座位号', index: 'seats' },
-    { title: '状态', index: 'status' },
+    { title: '状态', index: 'statusDesc' },
     {
       title: '操作',
       buttons: [
         {
           text: '设为超时',
-          click: (item: any) => this.setOverdue(item)
+          click: (item: any) => this.setOverdue(item),
+          iif: (item: any) => item.status == 15
         },
       ],
     },

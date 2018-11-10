@@ -61,7 +61,7 @@ export class SessionService {
 
     setOverdue = (sessionId: number, taskId: number): Promise<any> => {
         return new Promise((resolve, reject) => {
-            this.http.post('api/tasks/set-overdue', { sessionId, taskId })
+            this.http.post(`api/session/${sessionId}/tasks/set-overdue`, "taskId=" + taskId, null, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
                 .subscribe((res) => {
                     resolve(res);
                 })

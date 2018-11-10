@@ -95,15 +95,13 @@
       </For>
     </Statement>
 
-    <Statement Id="SetTimeout" Transaction="ReadCommitted">
-      <For Open="" Close="" Prepend="" Property="tasks" Key="T" Separator="">
-        UPDATE select_seat_tasks
-        SET
-        Status = @Status,
-        EndTime = @EndTime
-        WHERE TaskId = @TaskId
-        AND Status = 15;
-      </For>
+    <Statement Id="SetTimeout">
+      UPDATE select_seat_tasks
+      SET
+      Status = @Status,
+      EndTime = @EndTime
+      WHERE TaskId = @TaskId
+      AND Status = 15;
     </Statement>
 
     <Statement Id="OrderAndPaged">

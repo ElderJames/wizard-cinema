@@ -196,7 +196,8 @@ namespace Wizard.Cinema.Admin.Controllers
                         x.WechatName,
                         Seats = seats,
                         x.WizardId,
-                        Status = x.Status.GetName(),
+                        StatusDesc = x.Status.GetName(),
+                        x.Status,
                         x.SeatNos,
                         x.SessionId
                     };
@@ -205,7 +206,7 @@ namespace Wizard.Cinema.Admin.Controllers
         }
 
         [HttpPost("{sessionId}/tasks/set-overdue")]
-        public IActionResult SetTaskOverdue(long sessionId, long taskId)
+        public IActionResult SetTaskOverdue(long sessionId, [FromForm]long taskId)
         {
             ApiResult<bool> result = _selectSeatTaskService.SetOverdue(sessionId, taskId);
 
