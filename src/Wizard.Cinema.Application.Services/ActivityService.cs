@@ -229,6 +229,23 @@ namespace Wizard.Cinema.Application.Services
             }
         }
 
+        public ApiResult<ApplicantResp> GetApplicant(long activityId, long wizardId)
+        {
+            try
+            {
+                ApplicantInfo applicant = _applicantQueryService.Query(activityId, wizardId);
+                if (applicant == null)
+                    return new ApiResult<ApplicantResp>(ResultStatus.FAIL, "该报名者不存在");
+
+                return new ApiResult<ApplicantResp>(ResultStatus.SUCCESS, Mapper.Map<ApplicantInfo, ApplicantResp>(applicant));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("查询报名者异常", ex);
+                return new ApiResult<ApplicantResp>(ResultStatus.EXCEPTION, ex.Message);
+            }
+        }
+
         public ApiResult<IEnumerable<ApplicantResp>> GetApplicants(long[] wizardIds)
         {
             try

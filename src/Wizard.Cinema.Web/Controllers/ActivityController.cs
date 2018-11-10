@@ -90,6 +90,10 @@ namespace Wizard.Cinema.Web.Controllers
             if (activityResult.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, activityResult.Message));
 
+            ApiResult<ApplicantResp> applicantResult = _activityService.GetApplicant(activityId, HttpContext?.User?.ExtractUserId() ?? 0);
+            if (applicantResult.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, applicantResult.Message));
+
             ApiResult<SessionResp> sessionResult = _sessionService.GetSessionByActivityId(activityId);
             if (sessionResult.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, sessionResult.Message));

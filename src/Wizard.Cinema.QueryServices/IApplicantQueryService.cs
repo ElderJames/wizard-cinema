@@ -19,5 +19,7 @@ namespace Wizard.Cinema.QueryServices
         IEnumerable<ApplicantInfo> QueryByActivityId(long activityId);
 
         IEnumerable<ApplicantInfo> QueryBySessionId(long sessionId);
+
+        ApplicantInfo Query(long activityId, long wizardId);
     }
 }

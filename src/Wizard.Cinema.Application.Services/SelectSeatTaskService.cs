@@ -48,8 +48,12 @@ namespace Wizard.Cinema.Application.Services
             //如果有未排队
             if (notInQueueTasks.Any())
             {
-                notInQueueTasks.ForEach(task => task.CheckIn());
-                _selectSeatTaskRepository.CheckIn(notInQueueTasks);
+                var checkedInTasks = notInQueueTasks.Select(task =>
+                {
+                    task.CheckIn();
+                    return task;
+                }).ToList();
+                _selectSeatTaskRepository.CheckIn(checkedInTasks);
             }
 
             //有超时的任务，重新插入并排队

@@ -79,7 +79,15 @@ export default {
         return res.body;
     },
     async getSeats({ commit, state }, sessionId) {
-        var res = await Vue.http.get('/api/session/seats', { params: { sessionId } });
+        var res = await Vue.http.get(`/api/session/${sessionId}/seats`);
+        return res.body;
+    },
+    async getTasks({ commit, state }, sessionId) {
+        var res = await Vue.http.get(`/api/session/${sessionId}/tasks`);
+        return res.body;
+    },
+    async taskCheckIn({ commit, state }, sessionId) {
+        var res = await Vue.http.post(`/api/session/${sessionId}/checkIn`);
         return res.body;
     }
 }
