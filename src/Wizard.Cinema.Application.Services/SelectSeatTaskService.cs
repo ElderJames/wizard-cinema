@@ -7,6 +7,7 @@ using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
+using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
 using Wizard.Cinema.QueryServices.DTOs.Sessions;
@@ -18,22 +19,25 @@ namespace Wizard.Cinema.Application.Services
     {
         private readonly ISelectSeatTaskQueryService _seatTaskQueryService;
         private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
+        private ISessionRepository _sessionRepository;
 
         public SelectSeatTaskService(ISelectSeatTaskQueryService seatTaskQueryService,
-            ISelectSeatTaskRepository selectSeatTaskRepository)
+            ISelectSeatTaskRepository selectSeatTaskRepository, ISessionRepository sessionRepository)
         {
             this._seatTaskQueryService = seatTaskQueryService;
             this._selectSeatTaskRepository = selectSeatTaskRepository;
+            this._sessionRepository = sessionRepository;
         }
 
-        /// <summary>
-        /// 登记预约
-        /// </summary>
-        /// <param name="wizardId"></param>
-        /// <param name="sessionId"></param>
-        /// <returns></returns>
         public ApiResult<bool> CheckIn(long wizardId, long sessionId)
         {
+            Session session = _sessionRepository.Query(sessionId);
+            if (session == null)
+                return new ApiResult<bool>(ResultStatus.SUCCESS, "场次不存在");
+
+            if (session.Status != SessionStatus.进行中)
+                return new ApiResult<bool>(ResultStatus.FAIL, "场次" + session.Status.GetName());
+
             IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryByWizardId(sessionId, wizardId);
             if (tasks.IsNullOrEmpty())
                 return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
@@ -62,7 +66,7 @@ namespace Wizard.Cinema.Application.Services
                 SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId);
                 IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x =>
                 {
-                    var newTask = new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo + 2);
+                    var newTask = new SelectSeatTask(NewId.GenerateId(), x, current.SerialNo);
                     newTask.CheckIn();
                     return newTask;
                 }).ToList();
@@ -76,6 +80,23 @@ namespace Wizard.Cinema.Application.Services
                 _selectSeatTaskRepository.BatchInsert(newTasks);
                 _selectSeatTaskRepository.CheckInAgain(oldTasks);
             }
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> SetOverdue(long sessionId, long taskId)
+        {
+            SelectSeatTask task = _selectSeatTaskRepository.Query(taskId);
+            if (task == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "任务不存在");
+
+            if (task.SessionId != sessionId)
+                return new ApiResult<bool>(ResultStatus.FAIL, "场次与任务不对应");
+
+            task.Timedout();
+
+            if (_selectSeatTaskRepository.SetTimeout(task) <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "保存时异常");
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }

@@ -8,6 +8,7 @@ namespace Wizard.Cinema.Domain.Cinema.EnumTypes
     {
         编辑中 = 0,
         进行中 = 5,
-        已满员 = 10
+        已暂停 = 10,
+        已满员 = 15
     }
 }

@@ -95,6 +95,17 @@
       </For>
     </Statement>
 
+    <Statement Id="SetTimeout" Transaction="ReadCommitted">
+      <For Open="" Close="" Prepend="" Property="tasks" Key="T" Separator="">
+        UPDATE select_seat_tasks
+        SET
+        Status = @Status,
+        EndTime = @EndTime
+        WHERE TaskId = @TaskId
+        AND Status = 15;
+      </For>
+    </Statement>
+
     <Statement Id="OrderAndPaged">
       <Switch Prepend="Order By" Property="OrderBy">
         <Default>
@@ -151,6 +162,15 @@
       LIMIT 1;
     </Statement>
 
+    <Statement Id="QuerySessionNextTask" ResultMap="taskResultMap">
+      SELECT * FROM select_seat_tasks
+      WHERE
+      SessionId = @SessionId
+      AND Status = 10
+      ORDER BY SerialNo,TaskId
+      LIMIT 1;
+    </Statement>
+
     <Statement Id="QueryNextTask" ResultMap="taskResultMap">
       SELECT * FROM select_seat_tasks
       WHERE
@@ -158,7 +178,7 @@
       AND not TaskId = @TaskId
       AND SerialNo >= @SerialNo
       AND Status = 10
-      ORDER BY SerialNo
+      ORDER BY SerialNo,TaskId
       LIMIT 1;
     </Statement>
   </Statements>

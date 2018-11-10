@@ -96,11 +96,14 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public SelectSeatTask(long taskId, SelectSeatTask task, int serialNo)
         {
+            if (serialNo < task.SerialNo)
+                throw new DomainException("超时任务序号大于当前进行中的序号");
+
             this.TaskId = taskId;
             this.SessionId = task.SessionId;
             this.WizardId = task.WizardId;
             this.WechatName = task.WechatName;
-            this.SerialNo = serialNo;
+            this.SerialNo = serialNo + 2;
             this.Total = task.Total;
             this.Status = SelectTaskStatus.未排队;
             this.CreateTime = DateTime.Now;

@@ -45,15 +45,14 @@ export class SessionTaskComponent implements OnInit {
     { title: '手机', index: 'mobile' },
     { title: '姓名', index: 'realName' },
     { title: '微信', index: 'wechatName' },
-    { title: '座位号', index: 'seatNos' },
+    { title: '座位号', index: 'seats' },
     { title: '状态', index: 'status' },
     {
       title: '操作',
       buttons: [
         {
-          text: '编辑',
-          type: 'link',
-          click: (item: any) => `cinema/sessions/${item.sessionId}`
+          text: '设为超时',
+          click: (item: any) => this.setOverdue(item)
         },
       ],
     },
@@ -111,4 +110,10 @@ export class SessionTaskComponent implements OnInit {
     await this.sessionSrv.beginSelect(sessionId);
     await this.getData();
   }
+
+  async setOverdue(item: any) {
+    await this.sessionSrv.setOverdue(item.sessionId, item.taskId);
+    await this.getData();
+  }
+
 }

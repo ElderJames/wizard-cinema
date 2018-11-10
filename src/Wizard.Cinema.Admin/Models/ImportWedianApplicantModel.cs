@@ -20,7 +20,7 @@ namespace Wizard.Cinema.Admin.Models
         [Column("购买数量")]
         public int Count { get; set; }
 
-        [Column("下单时间")]
+        [Column("付款时间")]
         public string CreateTime { get; set; }
     }
 }

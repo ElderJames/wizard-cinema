@@ -26,12 +26,13 @@ namespace Wizard.Cinema.Admin.Controllers
         private readonly HallService _hallService;
         private readonly CinemaService _cinemaService;
         private readonly IActivityService _activityService;
-        private ISelectSeatTaskService _selectSeatTaskService;
+        private readonly ISelectSeatTaskService _selectSeatTaskService;
+        private readonly ISeatService _seatService;
 
         public SessionController(ISessionService sessionService,
             IDivisionService divisionService,
             HallService hallService, CinemaService cinemaService, IActivityService activityService,
-            ISelectSeatTaskService selectSeatTaskService)
+            ISelectSeatTaskService selectSeatTaskService, ISeatService seatService)
         {
             this._sessionService = sessionService;
             this._divisionService = divisionService;
@@ -39,6 +40,7 @@ namespace Wizard.Cinema.Admin.Controllers
             this._cinemaService = cinemaService;
             this._activityService = activityService;
             this._selectSeatTaskService = selectSeatTaskService;
+            this._seatService = seatService;
         }
 
         [HttpGet("{id:long}")]
@@ -82,7 +84,8 @@ namespace Wizard.Cinema.Admin.Controllers
                         Cinema = cinema?.Name,
                         Hall = hall?.Name,
                         Activity = activity?.Name,
-                        Status = x.Status.GetName(),
+                        StatusDesc = x.Status.GetName(),
+                        Status = x.Status,
                     };
                 })
             });
@@ -172,9 +175,8 @@ namespace Wizard.Cinema.Admin.Controllers
             if (taskResult.Status != ResultStatus.SUCCESS)
                 return Ok(new ApiResult<object>(ResultStatus.FAIL, "队列查询异常"));
 
-            ApiResult<IEnumerable<ApplicantResp>> applicants =
-                _activityService.GetApplicants(taskResult.Result.Records.Select(x => x.WizardId).ToArray());
-
+            ApiResult<IEnumerable<ApplicantResp>> applicants = _activityService.GetApplicants(taskResult.Result.Records.Select(x => x.WizardId).ToArray());
+            ApiResult<IEnumerable<SeatResp>> seatList = _seatService.GetBySession(sessionId);
             return Ok(new
             {
                 taskResult.Result.PageNow,
@@ -183,13 +185,16 @@ namespace Wizard.Cinema.Admin.Controllers
                 Records = taskResult.Result.Records.Select(x =>
                 {
                     ApplicantResp applicant = applicants.Result.FirstOrDefault(o => o.WizardId == x.WizardId);
+                    IEnumerable<string> seats = seatList.Result.Where(o => x.SeatNos != null && o.SeatNo.IsIn(x.SeatNos)).Select(o => o.Position[0] + "排" + o.Position[1] + "坐");
+
                     return new
                     {
                         x.TaskId,
-                        Mobile = applicant?.Mobile,
-                        RealName = applicant?.RealName,
-                        x.WechatName,
                         x.SerialNo,
+                        applicant?.Mobile,
+                        applicant?.RealName,
+                        x.WechatName,
+                        Seats = seats,
                         x.WizardId,
                         Status = x.Status.GetName(),
                         x.SeatNos,
@@ -197,6 +202,30 @@ namespace Wizard.Cinema.Admin.Controllers
                     };
                 })
             });
+        }
+
+        [HttpPost("{sessionId}/tasks/set-overdue")]
+        public IActionResult SetTaskOverdue(long sessionId, long taskId)
+        {
+            ApiResult<bool> result = _selectSeatTaskService.SetOverdue(sessionId, taskId);
+
+            return Json(result);
+        }
+
+        [HttpPost("{sessionId}/pause")]
+        public IActionResult Pause(long sessionId)
+        {
+            ApiResult<bool> result = _sessionService.PauseSelectSeat(sessionId);
+
+            return Json(result);
+        }
+
+        [HttpPost("{sessionId}/continue")]
+        public IActionResult Continue(long sessionId)
+        {
+            ApiResult<bool> result = _sessionService.ContinueSelectSeat(sessionId);
+
+            return Json(result);
         }
     }
 }

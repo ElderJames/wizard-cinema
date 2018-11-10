@@ -45,7 +45,7 @@ export class SessionListComponent implements OnInit {
     { title: '影院', index: 'cinema' },
     { title: '影厅', index: 'hall' },
     { title: '分部', index: 'division' },
-    { title: '状态', index: 'status' },
+    { title: '状态', index: 'statusDesc' },
     {
       title: '操作',
       buttons: [
@@ -57,6 +57,17 @@ export class SessionListComponent implements OnInit {
         {
           text: '开始选座',
           click: (item: any) => this.beginSelect(item.sessionId),
+          iif: (item: any) => item.status == 0,
+        },
+        {
+          text: '暂停选座',
+          click: (item: any) => this.pauseSelect(item.sessionId),
+          iif: (item: any) => item.status == 5,
+        },
+        {
+          text: '继续选座',
+          click: (item: any) => this.continueSelect(item.sessionId),
+          iif: (item: any) => item.status == 10,
         },
         {
           text: '详情',
@@ -98,40 +109,31 @@ export class SessionListComponent implements OnInit {
     this.getData();
   }
 
-  getData() {
+  async getData() {
     this.loading = true;
     this.q.statusList = this.status
       .filter(w => w.checked)
       .map(item => item.index);
     if (this.q.status !== null && this.q.status > -1)
       this.q.statusList.push(this.q.status);
-    this.http
-      .get('api/session',
-        {
-          PageNow: this.q.pi,
-          PageSize: this.q.ps,
-        }
-      )
-      .pipe(
-        map((res: any) => res
-          // list.records.map(i => {
-          //   return i;
-          //   // const statusItem = this.status[i.status];
-          //   // i.statusText = statusItem.text;
-          //   // i.statusType = statusItem.type;
-          //   // return i;
-          // }),
-        ),
-        tap(() => (this.loading = false)),
-      )
-      .subscribe(res => {
-        this.total = res.totalCount;
-        this.data = res.records;
-      });
+
+    var res = await this.sessionSrv.getSessionList(this.q.ps, this.q.pi);
+    this.total = res.totalCount;
+    this.data = res.records;
   }
 
   async beginSelect(sessionId: number) {
     await this.sessionSrv.beginSelect(sessionId);
-    this.getData();
+    await this.getData();
+  }
+
+  async pauseSelect(sessionId: number) {
+    await this.sessionSrv.pauseSelect(sessionId);
+    await this.getData();
+  }
+
+  async continueSelect(sessionId: number) {
+    await this.sessionSrv.continueSelect(sessionId);
+    await this.getData();
   }
 }

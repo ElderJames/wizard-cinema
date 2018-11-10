@@ -238,5 +238,48 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<bool>(ResultStatus.SUCCESS, true);
             }
         }
+
+        public ApiResult<bool> PauseSelectSeat(long sessionId)
+        {
+            if (sessionId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的场次");
+
+            Session session = _sessionRepository.Query(sessionId);
+            if (session == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "场次不存在");
+
+            session.Pause();
+
+            _sessionRepository.Update(session);
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<bool> ContinueSelectSeat(long sessionId)
+        {
+            if (sessionId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的场次");
+
+            Session session = _sessionRepository.Query(sessionId);
+            if (session == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "场次不存在");
+
+            session.Continue();
+
+            SelectSeatTask task = _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
+
+            task?.Begin();
+
+            _transactionRepository.UseTransaction(IsolationLevel.ReadCommitted, () =>
+            {
+                if (task != null && _selectSeatTaskRepository.Start(task) <= 0)
+                    throw new DomainException("保存时异常0");
+
+                if (_sessionRepository.Update(session) <= 0)
+                    throw new DomainException("保存时异常1");
+            });
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
     }
 }

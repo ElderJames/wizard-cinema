@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Cinema;
 using Wizard.Cinema.Domain.Cinema.EnumTypes;
+using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.Domain.Wizard;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
@@ -22,12 +23,12 @@ namespace Wizard.Cinema.Application.Services
         private readonly ISeatRepository _seatRepository;
         private readonly IWizardRepository _wizardRepository;
         private readonly ISelectSeatTaskRepository _selectSeatTaskRepository;
-
+        private ISessionRepository _sessionRepository;
         private readonly ITransactionRepository _transactionRepository;
 
         private readonly ILogger<SeatService> _logger;
 
-        public SeatService(ISeatQueryService seatQueryService, ISeatRepository seatRepository, ILogger<SeatService> logger, IWizardRepository wizardRepository, ISelectSeatTaskRepository selectSeatTaskRepository, ITransactionRepository transactionRepository)
+        public SeatService(ISeatQueryService seatQueryService, ISeatRepository seatRepository, ILogger<SeatService> logger, IWizardRepository wizardRepository, ISelectSeatTaskRepository selectSeatTaskRepository, ITransactionRepository transactionRepository, ISessionRepository sessionRepository)
         {
             this._seatQueryService = seatQueryService;
             this._seatRepository = seatRepository;
@@ -35,6 +36,7 @@ namespace Wizard.Cinema.Application.Services
             this._wizardRepository = wizardRepository;
             this._selectSeatTaskRepository = selectSeatTaskRepository;
             this._transactionRepository = transactionRepository;
+            this._sessionRepository = sessionRepository;
         }
 
         public ApiResult<bool> Select(long sessionId, long wizardId, long taskId, string[] seatNos)
@@ -49,6 +51,9 @@ namespace Wizard.Cinema.Application.Services
 
                 if (taskId <= 0)
                     return new ApiResult<bool>(ResultStatus.FAIL, "taskId必须大于0");
+
+                //if (session.Status != SessionStatus.进行中)
+                //    return new ApiResult<bool>(ResultStatus.SUCCESS, "场次" + session.Status.GetName() + "，无法选座");
 
                 Wizards wizard = _wizardRepository.Query(wizardId);
                 if (wizard == null)
@@ -78,8 +83,6 @@ namespace Wizard.Cinema.Application.Services
                 //if (canSelectTask.Total != seatNos.Length)
                 //    return new ApiResult<bool>(ResultStatus.FAIL, "选座数量必须为" + canSelectTask.Total);
 
-                SelectSeatTask nextTask = _selectSeatTaskRepository.QueryNextTask(selectedTask);
-
                 IEnumerable<Seat> seats = _seatRepository.Query(sessionId, seatNos);
                 if (seats.Count() != seatNos.Length)
                     return new ApiResult<bool>(ResultStatus.FAIL, "seatNos传参错误");
@@ -89,8 +92,19 @@ namespace Wizard.Cinema.Application.Services
                     item.Choose(wizard);
                     return item;
                 }).ToList();
+
                 selectedTask.Select(seatNos);
-                nextTask?.Begin();
+
+                Session session = _sessionRepository.Query(sessionId);
+                if (session == null)
+                    return new ApiResult<bool>(ResultStatus.FAIL, "场次不存在");
+
+                SelectSeatTask nextTask = null;
+                if (session.Status == SessionStatus.进行中)
+                {
+                    nextTask = _selectSeatTaskRepository.QueryNextTask(selectedTask);
+                    nextTask?.Begin();
+                }
 
                 _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>
                 {

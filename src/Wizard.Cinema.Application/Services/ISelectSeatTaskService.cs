@@ -14,6 +14,14 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<bool> CheckIn(long wizardId, long sessionId);
 
         /// <summary>
+        /// 设置成超时
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
+        ApiResult<bool> SetOverdue(long sessionId, long taskId);
+
+        /// <summary>
         /// 查看队列
         /// </summary>
         /// <param name="sessionId"></param>

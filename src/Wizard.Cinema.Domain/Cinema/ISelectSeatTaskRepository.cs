@@ -5,7 +5,7 @@ namespace Wizard.Cinema.Domain.Cinema
 {
     public interface ISelectSeatTaskRepository
     {
-        void BatchInsert(IEnumerable<SelectSeatTask> tasks);
+        int BatchInsert(IEnumerable<SelectSeatTask> tasks);
 
         int Start(SelectSeatTask task);
 
@@ -15,14 +15,18 @@ namespace Wizard.Cinema.Domain.Cinema
 
         SelectSeatTask QueryCurrent(long sessionId);
 
+        SelectSeatTask QuerySessionNextTask(long sessionId);
+
         IEnumerable<SelectSeatTask> QueryBySessionId(long sessionId);
 
         IEnumerable<SelectSeatTask> QueryByWizardId(long sessionId, long wizardId, SelectTaskStatus? status = null);
 
         SelectSeatTask QueryNextTask(SelectSeatTask task);
 
-        void CheckIn(IEnumerable<SelectSeatTask> tasks);
+        int CheckIn(IEnumerable<SelectSeatTask> tasks);
 
-        void CheckInAgain(IEnumerable<SelectSeatTask> tasks);
+        int CheckInAgain(IEnumerable<SelectSeatTask> tasks);
+
+        int SetTimeout(SelectSeatTask task);
     }
 }

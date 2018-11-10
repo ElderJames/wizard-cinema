@@ -12,8 +12,11 @@ export class SessionService {
      * 获取场次列表
      */
     getSessionList = (size: number, page: number, divisionId: number = null): Promise<any> => {
+        var params = { PageNow: page, PageSize: size };
+        if (divisionId != null)
+            params['DivisionId '] = divisionId;
         return new Promise((resolve, reject) => {
-            this.http.get('api/session', { DivisionId: divisionId, PageNow: page, PageSize: size })
+            this.http.get('api/session', params)
                 .subscribe((res) => {
                     resolve(res);
                 })
@@ -29,9 +32,36 @@ export class SessionService {
         })
     }
 
+    pauseSelect = (sessionId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.post(`api/session/${sessionId}/pause`)
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
+
+    continueSelect = (sessionId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.post(`api/session/${sessionId}/continue`)
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
+
     getTaskList = (sessionId: number, pageSize: number, pageNow: number): Promise<any> => {
         return new Promise((resolve, reject) => {
             this.http.get(`api/session/${sessionId}/tasks`, { pageSize, pageNow })
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
+
+    setOverdue = (sessionId: number, taskId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.post('api/tasks/set-overdue', { sessionId, taskId })
                 .subscribe((res) => {
                     resolve(res);
                 })

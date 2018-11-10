@@ -87,10 +87,18 @@ namespace Wizard.Cinema.Domain.Cinema
 
         public void Pause()
         {
+            if (this.Status != SessionStatus.进行中)
+                throw new DomainException($"该场次{this.Status.GetName()}，不能再暂停");
+
+            this.Status = SessionStatus.已暂停;
         }
 
         public void Continue()
         {
+            if (this.Status != SessionStatus.已暂停)
+                throw new DomainException($"该场次{this.Status.GetName()}，不能再继续");
+
+            this.Status = SessionStatus.进行中;
         }
 
         public void Stop()

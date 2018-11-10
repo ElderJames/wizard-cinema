@@ -64,9 +64,9 @@
             .submit.flex(data-bid="b_212zq" @click="submit") {{canSelectTask==null?'还不能选座': selectedSeats.length==canSelectTask.total?'确认选座':'请先选座'}}
     mu-dialog(width="360" transition="slide-bottom" fullscreen :open.sync="openFullscreen")
       mu-appbar(color="primary" title="选座注意事项")
-        mu-button(slot="left" icon @click="closeFullscreenDialog")
-          mu-icon(value="close")
-        mu-button(slot="right" flat  @click="closeFullscreenDialog") 同意
+        //- mu-button(slot="left" icon @click="closeFullscreenDialog")
+        //-   mu-icon(value="close")
+        mu-button(slot="right" flat  @click="closeFullscreenDialog" v-if="taskInfo.unfinishedTasks.length>0") 同意
       div(style="padding: 24px;") 
         h1 欢迎选座
         | 亲爱的 {{taskInfo.wechatName}} ,
