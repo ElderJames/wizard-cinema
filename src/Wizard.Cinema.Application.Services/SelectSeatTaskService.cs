@@ -46,7 +46,7 @@ namespace Wizard.Cinema.Application.Services
                 return new ApiResult<bool>(ResultStatus.FAIL, "你不在排队中，请联系管理员");
 
             IEnumerable<SelectSeatTask> notInQueueTasks = tasks.Where(x => x.Status == SelectTaskStatus.未排队);
-            SelectSeatTask wipTask = tasks.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
+
             IEnumerable<SelectSeatTask> overdueTasks = tasks.Where(x => x.Status == SelectTaskStatus.超时未重排);
 
             //if (notInQueueTasks.IsNullOrEmpty() && overdueTasks.IsNullOrEmpty())
@@ -63,12 +63,12 @@ namespace Wizard.Cinema.Application.Services
                 _selectSeatTaskRepository.CheckIn(checkedInTasks);
             }
 
+            SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId)
+                                     ?? _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
+
             //有超时的任务，重新插入并排队
             if (overdueTasks.Any())
             {
-                SelectSeatTask current = _selectSeatTaskRepository.QueryCurrent(sessionId)
-                                         ?? _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
-
                 IEnumerable<SelectSeatTask> newTasks = overdueTasks.Select(x =>
                 {
                     var newTask = new SelectSeatTask(NewId.GenerateId(), x, (current ?? x).SerialNo);
@@ -86,12 +86,17 @@ namespace Wizard.Cinema.Application.Services
                 _selectSeatTaskRepository.CheckInAgain(oldTasks);
             }
 
-            if (wipTask == null)
+            if (current == null)
             {
                 SelectSeatTask task = _selectSeatTaskRepository.QuerySessionNextTask(sessionId);
                 task?.Begin();
                 if (task != null)
                     _selectSeatTaskRepository.Start(task);
+            }
+            else if (current.WizardId == wizardId && current.Status != SelectTaskStatus.进行中)
+            {
+                current.Begin();
+                _selectSeatTaskRepository.Start(current);
             }
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);

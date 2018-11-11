@@ -114,7 +114,7 @@ namespace Wizard.Cinema.Web.Controllers
                 unfinishedTasks = myTasks.Where(x => x.Status != SelectTaskStatus.超时已重排 && x.Status != SelectTaskStatus.已完成)
                     .Select(x =>
                     {
-                        int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && x.SerialNo >= (currentWizard?.SerialNo ?? 0) && o.SerialNo < x.SerialNo);
+                        int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && (o.Status == SelectTaskStatus.排队中 || o.Status == SelectTaskStatus.进行中) && o.SerialNo >= (currentWizard?.SerialNo ?? 0) && o.SerialNo < x.SerialNo);
 
                         return new
                         {

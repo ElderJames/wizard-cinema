@@ -12,7 +12,7 @@
           ul.reminder-list
             li.reminder-item
               img(src='http://p1.meituan.net/movie/77717de09967c29cd5b3d1f76309ac841254.png')
-              div 每位巫师最多只有15分钟的选择时间
+              div 每位巫师最多只有5分钟的选择时间
               span.reminder-num(style='display: none;')
                 | 1个通知
                 i.fold-down
@@ -52,7 +52,7 @@
               //-   span.text 情侣座
           .recommend-price-block
             .recommend-block
-              .title {{canSelectTask==null?'还不能选':('请选择选'+canSelectTask.total+'个座位')}}
+              .title {{canSelectTask==null?('还不能选，需要等待'+waitPeople+'人'):('请选择选'+canSelectTask.total+'个座位')}}
               .recommend-list.grid-4
           .price-block
             .title-block(v-if="canSelectTask!=null") 已选座位 ({{selectedSeats.length}}/{{canSelectTask.total}})
@@ -96,11 +96,12 @@ export default {
       },
       canSelectSeats: [],
       canSelct: false,
+      waitPeople: 0,
       canSelectTask: null,
       hallData: {},
       rowIds: [],
       seats: [],
-      hadselectSeats: ["6,25,0000000001"],
+      hadselectSeats: [],
       selectedSeats: [],
       maxSeatLength: 0,
       sessionId: 0,
@@ -190,10 +191,13 @@ export default {
       this.taskInfo = await this.$store.dispatch("getTasks", this.sessionId);
       this.canSelectTask = this.taskInfo.canSelectTask;
       this.canSelct = this.canSelectTask != null;
+      if (this.taskInfo.unfinishedTasks.length > 0)
+        this.waitPeople = this.taskInfo.unfinishedTasks[0].people;
+      else this.waitPeople = 0;
     },
     refeshSeats() {
       this.hadselectSeats = this.taskInfo.selectedList;
-      this.seats = this.hallData.sections[0].seats.flatMap(x =>
+      this.seats = this._.flatMap(this.hallData.sections[0].seats, x =>
         x.columns.map((c, i) => {
           return {
             rowId: x.rowId,

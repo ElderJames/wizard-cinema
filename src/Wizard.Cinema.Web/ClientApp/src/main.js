@@ -6,6 +6,8 @@ import router from './router'
 import store from './vuex/store'
 import MuseUI from 'muse-ui' 
 import 'muse-ui/dist/muse-ui.css'
+import _ from 'lodash'
+Vue.prototype._ = _
 
 // import Fastclick from 'fastclick'
 import Store from 'storejs'

@@ -17,6 +17,7 @@ import Store from "storejs";
 // import carbon from '!raw-loader!muse-ui/dist/theme-carbon.css';
 // import teal from '!raw-loader!muse-ui/dist/theme-teal.css';
 import theme from "muse-ui/lib/theme";
+import { Toast } from "mint-ui";
 
 export default {
   name: "app",

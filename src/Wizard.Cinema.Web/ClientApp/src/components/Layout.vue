@@ -19,7 +19,7 @@
                 <mu-menu-item to="/user/favorite" title="我的收藏" />
               </slot>
             </mu-menu> -->
-            <mu-button flat slot="right" v-if="$store.state.is_login"  @click="loginOut()" >
+            <mu-button flat slot="right" v-if="$store.state.user.is_login"  @click="loginOut()" >
               退出
             </mu-button>
           </mu-appbar>
