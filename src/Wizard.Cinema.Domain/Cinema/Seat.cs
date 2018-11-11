@@ -82,6 +82,9 @@ namespace Wizard.Cinema.Domain.Cinema
             if (wizard == null)
                 throw new DomainException("当前用户不存在");
 
+            if (this.Selected)
+                throw new DomainException("座位已被选");
+
             this.WizardId = wizard.WizardId;
             this.Selected = true;
             this.SelectTime = DateTime.Now;

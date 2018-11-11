@@ -345,7 +345,7 @@ namespace Wizard.Cinema.Application.Services
             IEnumerable<Wizards> wizardList = _wizardRepository.Query(request.Data.Select(x => x.Mobile).ToArray());
             IEnumerable<Applicant> applicantList = _applicantRepository.QueryByActivityId(request.ActivityId);
 
-            request.Data.OrderBy(x => x.CreateTime).ForEach(item =>
+            request.Data.Where(x => !x.OrderNo.IsNullOrEmpty()).OrderBy(x => x.CreateTime).ForEach(item =>
             {
                 Wizards wizard = wizardList.FirstOrDefault(w => w.Account != item.Mobile);
                 if (wizard != null)
@@ -360,7 +360,7 @@ namespace Wizard.Cinema.Application.Services
                 if (applicant == null)
                 {
                     applicant = new Applicant(NewId.GenerateId(), wizard.WizardId, activity, item.RealName,
-                        item.WechatName, item.Mobile, item.Count, item.OrderNo);
+                        item.WechatName, item.Mobile, item.Count, item.OrderNo, item.CreateTime);
                     applicant.Pay();
                     applicants.Add(applicant);
                 }

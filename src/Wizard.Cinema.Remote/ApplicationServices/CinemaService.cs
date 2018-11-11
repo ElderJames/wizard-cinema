@@ -66,6 +66,9 @@ namespace Wizard.Cinema.Remote.ApplicationServices
 
         public ApiResult<IEnumerable<Models.Cinema>> GetByIds(IEnumerable<long> cinemaIds)
         {
+            if (cinemaIds.IsNullOrEmpty())
+                return new ApiResult<IEnumerable<Models.Cinema>>(ResultStatus.SUCCESS, Enumerable.Empty<Models.Cinema>());
+
             IEnumerable<Models.Cinema> cinemas = _cinemaRepository.Query(cinemaIds);
             return new ApiResult<IEnumerable<Models.Cinema>>(ResultStatus.SUCCESS, cinemas);
         }

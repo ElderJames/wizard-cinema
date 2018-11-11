@@ -6,9 +6,9 @@
           .movie-info.box-flex.middle
             .flex
               .title.line-ellipsis {{activity.name}}
-              .info.line-ellipsis
-                span {{activity.time}}
-                span(style='margin-left: 5px; ') IMAX
+              //- .info.line-ellipsis
+              //-   span {{activity.time}}
+              //-   span(style='margin-left: 5px; ') IMAX
           ul.reminder-list
             li.reminder-item
               img(src='http://p1.meituan.net/movie/77717de09967c29cd5b3d1f76309ac841254.png')
@@ -72,9 +72,9 @@
         h1 欢迎选座
         | 亲爱的 {{taskInfo.wechatName}} ,
         span(v-if='taskInfo.unfinishedTasks.length>0') 
-          | 以下是选座注意事项：
+          | 目前{{canSelct?"可以选座":"还在等待中"}}，以下是选座注意事项：
           | 您一共需要选{{taskInfo.unfinishedTasks.length}}次：
-          p(v-for="(task, index) in taskInfo.unfinishedTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位，等待{{task.waitTime}}分钟
+          p(v-for="(task, index) in taskInfo.unfinishedTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位
         span(v-else)
           | 您没有需要选的座位了，以下是选座情况：
           p(v-for="(task, index) in taskInfo.myTasks") {{index+1}}，
@@ -105,7 +105,7 @@ export default {
       maxSeatLength: 0,
       sessionId: 0,
       activity: {
-        name: "神奇动物在哪里2",
+        name: "神奇动物：格林德沃之罪",
         time: "2018-11-16 00：00",
         info: ""
       }
@@ -131,34 +131,7 @@ export default {
       var lengtharr = vm.hallData.sections[0].seats.map(x => x.columns.length);
       vm.maxSeatLength = Math.max(...lengtharr);
       vm.rowIds = vm.hallData.sections[0].seats.map(x => x.rowId);
-      vm.seats = vm.hallData.sections[0].seats.flatMap(x =>
-        x.columns.map((c, i) => {
-          return {
-            rowId: x.rowId,
-            rowNum: x.rowNum,
-            columnId: c.columnId,
-            seatNo: c.seatNo,
-            st: c.st,
-            status: !c.seatNo
-              ? ""
-              : vm.canSelectSeats.findIndex(o => o == c.seatNo) >= 0
-                ? vm.hadselectSeats.findIndex(x => x == c.seatNo) >= 0
-                  ? 1
-                  : 0
-                : -1,
-            active: false,
-            info: JSON.stringify({
-              index: "0",
-              row: x.rowNum + "",
-              column: c.columnId,
-              rowId: x.rowId,
-              columnId: c.columnId,
-              type: c.st,
-              seatNo: c.seatNo
-            })
-          };
-        })
-      );
+      vm.refeshSeats();
     });
   },
   mounted() {},
@@ -218,6 +191,37 @@ export default {
       this.canSelectTask = this.taskInfo.canSelectTask;
       this.canSelct = this.canSelectTask != null;
     },
+    refeshSeats() {
+      this.hadselectSeats = this.taskInfo.selectedList;
+      this.seats = this.hallData.sections[0].seats.flatMap(x =>
+        x.columns.map((c, i) => {
+          return {
+            rowId: x.rowId,
+            rowNum: x.rowNum,
+            columnId: c.columnId,
+            seatNo: c.seatNo,
+            st: c.st,
+            status: !c.seatNo
+              ? ""
+              : this.canSelectSeats.findIndex(o => o == c.seatNo) >= 0
+                ? this.hadselectSeats.findIndex(x => x == c.seatNo) >= 0
+                  ? 1
+                  : 0
+                : -1,
+            active: false,
+            info: JSON.stringify({
+              index: "0",
+              row: x.rowNum + "",
+              column: c.columnId,
+              rowId: x.rowId,
+              columnId: c.columnId,
+              type: c.st,
+              seatNo: c.seatNo
+            })
+          };
+        })
+      );
+    },
     async submit() {
       if (this.selectedSeats.length > 0) {
         if (this.selectedSeats.length != this.canSelectTask.total) {
@@ -234,7 +238,12 @@ export default {
           taskId: this.canSelectTask.taskId
         });
         await this.refeshTasks();
-        if (result) this.openFullscreen = true;
+
+        if (result) {
+          this.refeshSeats();
+          this.openFullscreen = true;
+          this.selectedSeats = [];
+        }
       }
     }
   },

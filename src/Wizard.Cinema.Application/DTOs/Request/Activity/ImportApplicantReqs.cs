@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Wizard.Cinema.Application.DTOs.Request.Activity
 {
@@ -20,7 +21,7 @@ namespace Wizard.Cinema.Application.DTOs.Request.Activity
 
             public int Count { get; set; }
 
-            public string CreateTime { get; set; }
+            public DateTime CreateTime { get; set; }
         }
     }
 }

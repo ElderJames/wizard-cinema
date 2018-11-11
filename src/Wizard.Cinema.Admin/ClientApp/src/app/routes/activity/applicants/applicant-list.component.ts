@@ -121,7 +121,7 @@ export class ApplicantListComponent implements OnInit {
     this.data = res.records;
   }
 
-  async change(e) {
+  async change() {
     this.q.pi = this.st.pi;
     await this.getData();
   }
@@ -138,4 +138,6 @@ export class ApplicantListComponent implements OnInit {
     await this.activitySrv.importApplicantsFromWeidian(this.activity.activityId, formdata);
     await this.getData();
   }
+
+  checkboxChange(e) { }
 }

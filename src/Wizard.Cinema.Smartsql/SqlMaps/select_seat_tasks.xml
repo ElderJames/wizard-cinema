@@ -25,7 +25,7 @@
   </ResultMaps>
 
   <Statements>
-    <Statement Id="BatchInsert" ParameterMap="taskParamMap" Transaction="ReadCommitted">
+    <Statement Id="BatchInsert" ParameterMap="taskParamMap">
       INSERT INTO select_seat_tasks
       (TaskId
       ,SessionId

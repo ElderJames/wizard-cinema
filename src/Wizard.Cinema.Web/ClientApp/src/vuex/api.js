@@ -32,8 +32,8 @@ Vue.http.interceptors.push(function (request, next) {
             if (response.status === 200) {
                 if (response.body.status !== 1)
                     Toast(response.body.message);
-                else
-                    response.body = response.body.result;
+
+                response.body = response.body.result;
                 // 正常返回
             }
         } else if (response.status === 401) {

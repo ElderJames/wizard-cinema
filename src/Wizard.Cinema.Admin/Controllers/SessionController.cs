@@ -57,14 +57,13 @@ namespace Wizard.Cinema.Admin.Controllers
             if (sessionApi.Status != ResultStatus.SUCCESS)
                 return Ok(new PagedData<SessionResp>());
 
-            ApiResult<IEnumerable<DivisionResp>> divisions =
-                _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
-            ApiResult<IEnumerable<Remote.Models.Cinema>> cinemas =
-                _cinemaService.GetByIds(sessionApi.Result.Records.Select(x => x.CinemaId));
-            ApiResult<IEnumerable<ActivityResp>> activityList =
-                _activityService.GetByIds(sessionApi.Result.Records.Select(x => x.ActivityId).ToArray());
-            ApiResult<IEnumerable<Hall>> hallList =
-                _hallService.GetByIds(sessionApi.Result.Records.Select(o => o.HallId));
+            if (sessionApi.Result.TotalCount == 0)
+                return Ok(new PagedData<SessionResp>());
+
+            ApiResult<IEnumerable<DivisionResp>> divisions = _divisionService.GetByIds(sessionApi.Result.Records.Select(x => x.DivisionId).ToArray());
+            ApiResult<IEnumerable<Remote.Models.Cinema>> cinemas = _cinemaService.GetByIds(sessionApi.Result.Records.Select(x => x.CinemaId));
+            ApiResult<IEnumerable<ActivityResp>> activityList = _activityService.GetByIds(sessionApi.Result.Records.Select(x => x.ActivityId).ToArray());
+            ApiResult<IEnumerable<Hall>> hallList = _hallService.GetByIds(sessionApi.Result.Records.Select(o => o.HallId));
 
             return Ok(new
             {

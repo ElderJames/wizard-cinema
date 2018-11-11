@@ -136,4 +136,6 @@ export class SessionListComponent implements OnInit {
     await this.sessionSrv.continueSelect(sessionId);
     await this.getData();
   }
+
+  checkboxChange(e) { }
 }

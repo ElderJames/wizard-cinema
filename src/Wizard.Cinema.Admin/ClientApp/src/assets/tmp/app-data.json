@@ -57,11 +57,6 @@
             "text": "活动列表",
             "link": "/activity",
             "i18n": "activity_list"
-          },
-          {
-            "text": "活动报名",
-            "link": "/applicants",
-            "i18n": "activity_applicants"
           }
         ]
       }

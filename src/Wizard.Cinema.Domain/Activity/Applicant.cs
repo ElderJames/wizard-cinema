@@ -90,9 +90,10 @@ namespace Wizard.Cinema.Domain.Activity
         }
 
         public Applicant(long applicantId, long wizardId, Activity activity, string realName, string wechatName,
-            string mobile, int count, string orderNo) : this(applicantId, wizardId, activity, realName, wechatName, mobile, count)
+            string mobile, int count, string orderNo, DateTime orderTime) : this(applicantId, wizardId, activity, realName, wechatName, mobile, count)
         {
             this.ExtOrderNo = orderNo;
+            this.ApplyTime = orderTime;
         }
 
         public void Pay()

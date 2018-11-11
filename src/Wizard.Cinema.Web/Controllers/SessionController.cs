@@ -81,12 +81,10 @@ namespace Wizard.Cinema.Web.Controllers
             SelectSeatTaskResp currentWizard = result.Result.Records.FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);
             //if (currentWizard == null)
             //    return Ok(new ApiResult<bool>(ResultStatus.FAIL, "没有巫师在选，系统可能出错了"));
-            SelectSeatTaskResp nextWizard = currentWizard != null
-                ? result.Result.Records
-                    .Where(x => x.TaskId != currentWizard.TaskId && x.SerialNo >= currentWizard.SerialNo)
-                    .OrderBy(x => x.SerialNo).FirstOrDefault()
-                : result.Result.Records.Where(x => x.Status == SelectTaskStatus.排队中).OrderBy(x => x.SerialNo)
-                    .FirstOrDefault();
+            SelectSeatTaskResp nextWizard = currentWizard != null ?
+                result.Result.Records.Where(x => x.TaskId != currentWizard.TaskId && x.SerialNo >= currentWizard.SerialNo).OrderBy(x => x.SerialNo).FirstOrDefault()
+                : result.Result.Records.Where(x => x.Status == SelectTaskStatus.排队中 || x.Status == SelectTaskStatus.未排队 || x.Status == SelectTaskStatus.超时未重排).OrderBy(x => x.SerialNo).FirstOrDefault();
+
             IEnumerable<SelectSeatTaskResp> myTasks = result.Result.Records.Where(x => x.WizardId == HttpContext?.User?.ExtractUserId()).OrderBy(x => x.SerialNo);
             SelectSeatTaskResp myFirst = myTasks.FirstOrDefault();
             SelectSeatTaskResp canSelectTask = myTasks.OrderBy(x => x.SerialNo).FirstOrDefault(x => x.Status == SelectTaskStatus.进行中);

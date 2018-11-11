@@ -11,6 +11,8 @@ import { _HttpClient } from '@delon/theme';
 export class ActivityDetailComponent implements OnInit {
   form: FormGroup;
   submitting = false;
+  isLoading = false;
+  custom: any;
   divisions: any[];
   activity = {
     activityId: null,
@@ -82,6 +84,8 @@ export class ActivityDetailComponent implements OnInit {
         this.divisions = res.records;
       })
   }
+
+  checkboxChange() { }
 
   loadMore() { }
 

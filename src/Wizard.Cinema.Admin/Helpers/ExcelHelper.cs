@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace Wizard.Cinema.Admin.Helpers
 {
@@ -23,8 +24,18 @@ namespace Wizard.Cinema.Admin.Helpers
             {
                 file.CopyTo(ms);
                 ms.Seek(0, SeekOrigin.Begin);
+                var ext = Path.GetExtension(file.Name);
 
-                IWorkbook workbook = new HSSFWorkbook(ms);
+                IWorkbook workbook;
+                try
+                {
+                    workbook = new XSSFWorkbook(ms);
+                }
+                catch (Exception ex)
+                {
+                    workbook = new HSSFWorkbook(ms);
+                }
+
                 ISheet sheet = workbook.GetSheetAt(0);
 
                 PropertyInfo[] propertyList = typeof(T).GetProperties();
@@ -43,7 +54,7 @@ namespace Wizard.Cinema.Admin.Helpers
                         if (cellIndex < 0)
                             continue;
 
-                        string value = row.GetCell(cellIndex).ToString();
+                        string value = row.GetCell(cellIndex)?.ToString();
                         Type propertyType = property.PropertyType;
 
                         if (propertyType == typeof(string))

@@ -14,6 +14,7 @@ import { ActivityService } from '../../../../services/activity.service';
 export class SessionEditComponent implements OnInit {
   form: FormGroup;
   submitting = false;
+  isLoading = false;
   divisions: any[];
   selectCityId = 0;
   cinemas: any[];

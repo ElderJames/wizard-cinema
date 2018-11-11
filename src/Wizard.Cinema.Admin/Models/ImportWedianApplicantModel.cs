@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using MySqlX.XDevAPI.Relational;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Wizard.Cinema.Admin.Models
 {
@@ -14,13 +14,13 @@ namespace Wizard.Cinema.Admin.Models
         [Column("收件人姓名")]
         public string RealName { get; set; }
 
-        [Column("微信")]
+        [Column("收件人姓名")]
         public string WechatName { get; set; }
 
         [Column("购买数量")]
         public int Count { get; set; }
 
         [Column("付款时间")]
-        public string CreateTime { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

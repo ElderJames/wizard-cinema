@@ -100,7 +100,7 @@ namespace Wizard.Cinema.Admin.Controllers
                     {
                         x.WizardId,
                         x.DivisionId,
-                        City = city.nm,
+                        City = city?.nm,
                         x.Account,
                         x.Email,
                         x.CreateTime,

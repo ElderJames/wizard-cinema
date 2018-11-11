@@ -200,7 +200,7 @@ namespace Wizard.Cinema.Application.Services
                         return new ApiResult<bool>(ResultStatus.FAIL, "没人报名哦");
 
                     session.Start();
-                    SelectSeatTask[] tasks = applicants.Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
+                    SelectSeatTask[] tasks = applicants.OrderBy(x => x.ApplyTime).Select((x, i) => new SelectSeatTask(NewId.GenerateId(), session.SessionId, x, i + 1)).ToArray();
                     // tasks[0].CheckIn();
 
                     _transactionRepository.UseTransaction(IsolationLevel.ReadUncommitted, () =>

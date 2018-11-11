@@ -95,6 +95,9 @@ namespace Wizard.Cinema.Application.Services
 
         public ApiResult<IEnumerable<WizardResp>> GetWizards(long[] wizardIds)
         {
+            if (wizardIds.IsNullOrEmpty())
+                return new ApiResult<IEnumerable<WizardResp>>(ResultStatus.SUCCESS, Enumerable.Empty<WizardResp>());
+
             IEnumerable<WizardInfo> wizard = _wizardQueryService.Query(wizardIds);
             if (wizard == null)
                 return new ApiResult<IEnumerable<WizardResp>>(ResultStatus.FAIL, "用户不能存在或密码不正确");
