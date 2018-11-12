@@ -228,6 +228,10 @@ export default {
     },
     async submit() {
       if (this.selectedSeats.length > 0) {
+        if (this.canSelectTask == null) {
+          Toast("还不能选座");
+          return;
+        }
         if (this.selectedSeats.length != this.canSelectTask.total) {
           Toast("请选择" + this.canSelectTask.total + "个座位！");
           return;
