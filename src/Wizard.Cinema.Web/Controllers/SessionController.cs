@@ -115,6 +115,11 @@ namespace Wizard.Cinema.Web.Controllers
                     .Select(x =>
                     {
                         int people = result.Result.Records.Count(o => x.TaskId != o.TaskId && (o.Status == SelectTaskStatus.排队中 || o.Status == SelectTaskStatus.进行中) && o.SerialNo >= (currentWizard?.SerialNo ?? 0) && o.SerialNo < x.SerialNo);
+                        if (currentWizard != null)
+                        {
+                            if (currentWizard.SerialNo == x.SerialNo && currentWizard.TaskId != x.TaskId)
+                                people += result.Result.Records.Count(o => o.TaskId != currentWizard.TaskId && o.SerialNo == x.SerialNo && o.CreateTime >= x.CreateTime);
+                        }
 
                         return new
                         {

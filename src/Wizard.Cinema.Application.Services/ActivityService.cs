@@ -347,8 +347,8 @@ namespace Wizard.Cinema.Application.Services
 
             request.Data.Where(x => !x.OrderNo.IsNullOrEmpty()).OrderBy(x => x.CreateTime).ForEach(item =>
             {
-                Wizards wizard = wizardList.FirstOrDefault(w => w.Account != item.Mobile);
-                if (wizard != null)
+                Wizards wizard = wizardList.FirstOrDefault(w => w.Account == item.Mobile) ?? wizards.FirstOrDefault(w => w.Account == item.Mobile);
+                if (wizard == null)
                 {
                     long wizardId = NewId.GenerateId();
                     wizard = new Wizards(wizardId, item.Mobile, null, item.Mobile.Substring(5, 6));

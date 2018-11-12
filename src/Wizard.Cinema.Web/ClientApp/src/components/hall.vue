@@ -180,10 +180,14 @@ export default {
       var timer = setInterval(() => {
         if (this.canSelct && this.taskInfo.unfinishedTasks.length > 0) {
           clearInterval(timer);
+          if (this.hadselectSeats.length != this.taskInfo.selectedList.length)
+            this.refeshSeats();
           Toast("可以选座了！");
           return;
         }
         this.refeshTasks();
+        if (this.hadselectSeats.length != this.taskInfo.selectedList.length)
+          this.refeshSeats();
       }, 1000);
       this.openFullscreen = false;
     },
@@ -212,7 +216,7 @@ export default {
                   ? 1
                   : 0
                 : -1,
-            active: false,
+            active: this.hadselectSeats.findIndex(x => x == c.seatNo) >= 0,
             info: JSON.stringify({
               index: "0",
               row: x.rowNum + "",

@@ -64,7 +64,7 @@ namespace Wizard.Cinema.Application.Services
                     return new ApiResult<bool>(ResultStatus.FAIL, "排队号不存在");
 
                 if (selectedTask.Status != SelectTaskStatus.进行中)
-                    return new ApiResult<bool>(ResultStatus.FAIL, "您的号还不能选座哦，请再等等！");
+                    return new ApiResult<bool>(ResultStatus.FAIL, "当前状态" + selectedTask.Status.GetName() + ",不能选座哦，请再等等或刷新！");
 
                 if (selectedTask.WizardId != wizardId)
                     return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的任务");
