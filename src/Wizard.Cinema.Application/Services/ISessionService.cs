@@ -21,5 +21,7 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<bool> PauseSelectSeat(long sessionId);
 
         ApiResult<bool> ContinueSelectSeat(long sessionId);
+
+        ApiResult<bool> Enqueue(long sessionId);
     }
 }

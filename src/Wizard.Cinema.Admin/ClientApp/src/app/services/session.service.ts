@@ -67,4 +67,13 @@ export class SessionService {
                 })
         })
     }
+
+    enqueueTasks = (sessionId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.post(`api/session/${sessionId}/enqueue`)
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
 }

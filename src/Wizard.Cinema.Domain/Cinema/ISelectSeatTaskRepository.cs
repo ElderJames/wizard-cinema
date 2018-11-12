@@ -28,5 +28,7 @@ namespace Wizard.Cinema.Domain.Cinema
         int CheckInAgain(IEnumerable<SelectSeatTask> tasks);
 
         int SetTimeout(SelectSeatTask task);
+
+        IEnumerable<SelectSeatTask> Query(long sessionId, SelectTaskStatus status);
     }
 }

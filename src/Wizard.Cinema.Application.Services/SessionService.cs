@@ -281,5 +281,29 @@ namespace Wizard.Cinema.Application.Services
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
         }
+
+        public ApiResult<bool> Enqueue(long sessionId)
+        {
+            if (sessionId <= 0)
+                return new ApiResult<bool>(ResultStatus.FAIL, "请选择正确的场次");
+
+            Session session = _sessionRepository.Query(sessionId);
+            if (session == null)
+                return new ApiResult<bool>(ResultStatus.FAIL, "场次不存在");
+
+            IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.Query(sessionId, SelectTaskStatus.未排队);
+
+            if (tasks.IsNullOrEmpty())
+                return new ApiResult<bool>(ResultStatus.FAIL, "没有为排队的任务");
+
+            foreach (SelectSeatTask task in tasks)
+            {
+                task.CheckIn();
+            }
+
+            _selectSeatTaskRepository.CheckIn(tasks);
+
+            return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
     }
 }

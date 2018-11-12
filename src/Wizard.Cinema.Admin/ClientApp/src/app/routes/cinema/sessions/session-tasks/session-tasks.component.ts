@@ -106,7 +106,9 @@ export class SessionTaskComponent implements OnInit {
     this.q.pi = this.st.pi;
     await this.getData();
   }
+
   checkboxChange(e) { }
+  
   async beginSelect(sessionId: number) {
     await this.sessionSrv.beginSelect(sessionId);
     await this.getData();
@@ -117,4 +119,8 @@ export class SessionTaskComponent implements OnInit {
     await this.getData();
   }
 
+  async enqueue() {
+    await this.sessionSrv.enqueueTasks(this.sessionId);
+    await this.getData();
+  }
 }

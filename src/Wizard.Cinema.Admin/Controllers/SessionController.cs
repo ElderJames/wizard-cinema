@@ -227,5 +227,12 @@ namespace Wizard.Cinema.Admin.Controllers
 
             return Json(result);
         }
+
+        [HttpPost("{sessionId}/enqueue")]
+        public IActionResult Enqueue(long sessionId)
+        {
+            ApiResult<bool> result = _sessionService.Enqueue(sessionId);
+            return Json(result);
+        }
     }
 }
