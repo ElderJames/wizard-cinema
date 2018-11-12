@@ -107,7 +107,7 @@
     <Statement Id="OrderAndPaged">
       <Switch Prepend="Order By" Property="OrderBy">
         <Default>
-          SerialNo
+          SerialNo,TaskId
         </Default>
       </Switch>
       <IsNotNull Prepend="" Property="PageSize">
