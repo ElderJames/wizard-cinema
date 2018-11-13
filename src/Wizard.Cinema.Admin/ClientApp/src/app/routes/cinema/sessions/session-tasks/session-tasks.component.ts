@@ -1,5 +1,9 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { NzMessageService, NzModalService, NzModalComponent } from 'ng-zorro-antd';
+import {
+  NzMessageService,
+  NzModalService,
+  NzModalComponent,
+} from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap, map } from 'rxjs/operators';
 import {
@@ -36,8 +40,10 @@ export class SessionTaskComponent implements OnInit {
     { index: 2, text: '已上线', value: false, type: 'success', checked: false },
     { index: 3, text: '异常', value: false, type: 'error', checked: false },
   ];
-  @ViewChild('st') st: SimpleTableComponent;
-  @ViewChild('modalContent') modal: TemplateRef<{}>;
+  @ViewChild('st')
+  st: SimpleTableComponent;
+  @ViewChild('modalContent')
+  modal: TemplateRef<{}>;
 
   columns: SimpleTableColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
@@ -46,6 +52,8 @@ export class SessionTaskComponent implements OnInit {
     { title: '姓名', index: 'realName' },
     { title: '微信', index: 'wechatName' },
     { title: '座位号', index: 'seats' },
+    { title: '开始时间', index: 'beginTime' },
+    { title: '选座时间', index: 'endTime' },
     { title: '状态', index: 'statusDesc' },
     {
       title: '操作',
@@ -53,7 +61,7 @@ export class SessionTaskComponent implements OnInit {
         {
           text: '设为超时',
           click: (item: any) => this.setOverdue(item),
-          iif: (item: any) => item.status == 15
+          iif: (item: any) => item.status == 15,
         },
       ],
     },
@@ -73,7 +81,7 @@ export class SessionTaskComponent implements OnInit {
     private sessionSrv: SessionService,
     private route: ActivatedRoute,
     private router: Router,
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.sessionId = await this.getId();
@@ -84,9 +92,9 @@ export class SessionTaskComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.route.params.subscribe(async (params: Params) => {
         resolve(params['id']);
-      })
+      });
     });
-  }
+  };
 
   async getData() {
     this.loading = true;
@@ -96,7 +104,11 @@ export class SessionTaskComponent implements OnInit {
     if (this.q.status !== null && this.q.status > -1)
       this.q.statusList.push(this.q.status);
 
-    var res = await this.sessionSrv.getTaskList(this.sessionId, this.q.ps, this.q.pi)
+    var res = await this.sessionSrv.getTaskList(
+      this.sessionId,
+      this.q.ps,
+      this.q.pi,
+    );
     this.total = res.totalCount;
     this.data = res.records;
     this.loading = false;
@@ -107,8 +119,8 @@ export class SessionTaskComponent implements OnInit {
     await this.getData();
   }
 
-  checkboxChange(e) { }
-  
+  checkboxChange(e) {}
+
   async beginSelect(sessionId: number) {
     await this.sessionSrv.beginSelect(sessionId);
     await this.getData();

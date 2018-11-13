@@ -198,7 +198,9 @@ namespace Wizard.Cinema.Admin.Controllers
                         StatusDesc = x.Status.GetName(),
                         x.Status,
                         x.SeatNos,
-                        x.SessionId
+                        x.SessionId,
+                        x.BeginTime,
+                        x.EndTime
                     };
                 })
             });
