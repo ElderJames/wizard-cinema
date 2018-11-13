@@ -38,7 +38,7 @@ namespace Wizard.Cinema.Admin.Quartz.Jobs
                     if (sessions.Status != ResultStatus.SUCCESS || sessions.Result.IsNullOrEmpty())
                         return Task.CompletedTask;
 
-                    ApiResult<IEnumerable<SelectSeatTaskResp>> overdueTasks = _selectSeatTaskService.GetOverdueTask(sessions.Result.Select(x => x.SessionId), DateTime.Now.AddMinutes(-10));
+                    ApiResult<IEnumerable<SelectSeatTaskResp>> overdueTasks = _selectSeatTaskService.GetOverdueTask(sessions.Result.Select(x => x.SessionId), DateTime.Now.AddMinutes(-5));
                     if (overdueTasks.Status != ResultStatus.SUCCESS || overdueTasks.Result.IsNullOrEmpty())
                         return Task.CompletedTask;
 

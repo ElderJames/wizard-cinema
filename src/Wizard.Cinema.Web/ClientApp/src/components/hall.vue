@@ -52,7 +52,7 @@
               //-   span.text 情侣座
           .recommend-price-block
             .recommend-block
-              .title {{canSelectTask==null?('还不能选，'+( currentSerialNo!=0?'选座中的编号，':'')+'需要等待'+waitPeople+'人'):('请选择选'+canSelectTask.total+'个座位')}}
+              .title {{canSelectTask==null?('还不能选，'+( currentSerialNo!=0?'选座中的编号'+currentSerialNo :'')+'需要等待'+waitPeople+'人'):('请选择选'+canSelectTask.total+'个座位')}}
               .recommend-list.grid-4
           .price-block
             .title-block(v-if="canSelectTask!=null") 已选座位 ({{selectedSeats.length}}/{{canSelectTask.total}})
@@ -197,7 +197,7 @@ export default {
       this.canSelectTask = this.taskInfo.canSelectTask;
       this.canSelct = this.canSelectTask != null;
       if (this.taskInfo.current)
-        this.currentSerialNo = taskInfo.current.serialNo;
+        this.currentSerialNo = this.taskInfo.current.serialNo;
       if (this.taskInfo.unfinishedTasks.length > 0)
         this.waitPeople = this.taskInfo.unfinishedTasks[0].people;
       else this.waitPeople = 0;
