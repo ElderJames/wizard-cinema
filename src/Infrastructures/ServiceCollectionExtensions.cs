@@ -13,13 +13,8 @@ namespace Infrastructures
     {
         public static void AddAutoServices(this IServiceCollection services, string assemblyName = "")
         {
-            string platform = Environment.OSVersion.Platform.ToString();
-            IEnumerable<AssemblyName> runtimeAssemblyNames = DependencyContext.Default.GetRuntimeAssemblyNames(platform);
-
             //自动注册
-            foreach (TypeInfo implType in runtimeAssemblyNames.Where(x => x.FullName.Contains(assemblyName))
-                .Select(Assembly.Load)
-                .SelectMany(a => a.ExportedTypes).Where(x => x.GetCustomAttribute<ServiceAttribute>() != null))
+            foreach (TypeInfo implType in TypeScanner.AllTypes.Where(x => x.GetCustomAttribute<ServiceAttribute>() != null))
             {
                 ServiceAttribute attr = implType.GetCustomAttribute<ServiceAttribute>();
                 IEnumerable<Type> interfaceTypes = implType.ImplementedInterfaces;

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Wizard.Cinema.Admin
@@ -12,6 +12,7 @@ namespace Wizard.Cinema.Admin
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+
                 .UseStartup<Startup>();
     }
 }

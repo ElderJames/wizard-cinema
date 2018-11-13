@@ -1,4 +1,6 @@
-﻿using Infrastructures;
+﻿using System;
+using System.Collections.Generic;
+using Infrastructures;
 using Infrastructures.JsonConverters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using Wizard.Cinema.Admin.Extensions;
+using Wizard.Cinema.Admin.Quartz;
+using Wizard.Cinema.Admin.Quartz.Jobs;
 using Wizard.Cinema.Application.Services.Extensions;
 using Wizard.Cinema.Remote;
 
@@ -28,13 +35,9 @@ namespace Wizard.Cinema.Admin
             services.AddApplicationService();
             services.AddAutoServices();
 
-            services.AddJwtAuthentication(Configuration);
+            services.AddQuartz();
 
-            // api user claim policy
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.Strings.JwtClaimIdentifiers.Rol, Constants.Strings.JwtClaims.ApiAccess));
-            //});
+            services.AddJwtAuthentication(Configuration);
 
             services.AddMvc()
                 .AddJsonOptions(options =>
@@ -88,6 +91,8 @@ namespace Wizard.Cinema.Admin
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
+
+            app.UseQuartz();
         }
     }
 }

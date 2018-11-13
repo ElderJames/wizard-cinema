@@ -109,6 +109,7 @@ namespace Wizard.Cinema.Web.Controllers
                 {
                     x.EndTime,
                     x.SeatNos,
+                    x.SerialNo,
                     Status = x.Status.GetName(),
                 }),
                 unfinishedTasks = myTasks.Where(x => x.Status != SelectTaskStatus.超时已重排 && x.Status != SelectTaskStatus.已完成)
@@ -137,7 +138,8 @@ namespace Wizard.Cinema.Web.Controllers
                     {
                         currentWizard.BeginTime,
                         currentWizard.WechatName,
-                        currentWizard.Total
+                        currentWizard.Total,
+                        currentWizard.SerialNo,
                     },
                 next = nextWizard == null
                     ? null
