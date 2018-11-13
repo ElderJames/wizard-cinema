@@ -128,11 +128,17 @@
         <IsNotNull Prepend="AND" Property="SessionId">
           SessionId = @SessionId
         </IsNotNull>
+        <IsNotNull Prepend="AND" Property="SessionIds">
+          SessionId IN @SessionIds
+        </IsNotNull>
         <IsNotNull Prepend="AND" Property="WizardId">
           WizardId = @WizardId
         </IsNotNull>
         <IsNotNull Prepend="AND" Property="Status">
           Status = @Status
+        </IsNotNull>
+        <IsNotNull Prepend="AND" Property="OverdueBeginTime">
+          @OverdueBeginTime >= BeginTime
         </IsNotNull>
       </Where>
     </Statement>

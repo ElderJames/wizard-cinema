@@ -141,5 +141,11 @@ namespace Wizard.Cinema.Application.Services
             IEnumerable<SelectSeatTaskInfo> tasks = _seatTaskQueryService.QueryByWizardId(sessionId, wizardId);
             return new ApiResult<IEnumerable<SelectSeatTaskResp>>(ResultStatus.SUCCESS, Mapper.Map<SelectSeatTaskInfo, SelectSeatTaskResp>(tasks));
         }
+
+        public ApiResult<IEnumerable<SelectSeatTaskResp>> GetOverdueTask(IEnumerable<long> sessionIds, DateTime overdueTime)
+        {
+            IEnumerable<SelectSeatTaskInfo> tasks = _seatTaskQueryService.QueryByOverdueBeginTime(sessionIds, DTOs.EnumTypes.SelectTaskStatus.进行中, overdueTime);
+            return new ApiResult<IEnumerable<SelectSeatTaskResp>>(ResultStatus.SUCCESS, Mapper.Map<SelectSeatTaskInfo, SelectSeatTaskResp>(tasks));
+        }
     }
 }

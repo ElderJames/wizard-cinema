@@ -1,4 +1,6 @@
-﻿using Infrastructures;
+﻿using System.Collections.Generic;
+using Infrastructures;
+using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
 
 namespace Wizard.Cinema.QueryServices
@@ -10,5 +12,7 @@ namespace Wizard.Cinema.QueryServices
         SessionInfo QueryByActivityId(long activityId);
 
         PagedData<SessionInfo> QueryPaged(SearchSessionCondition search);
+
+        IEnumerable<SessionInfo> Query(SessionStatus? status);
     }
 }

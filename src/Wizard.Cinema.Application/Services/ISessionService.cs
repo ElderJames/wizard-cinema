@@ -1,4 +1,6 @@
-﻿using Infrastructures;
+﻿using System.Collections.Generic;
+using Infrastructures;
+using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 
@@ -11,6 +13,8 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<bool> Change(UpdateSessionReqs request);
 
         ApiResult<SessionResp> GetSession(long sessionId);
+
+        ApiResult<IEnumerable<SessionResp>> GetSessions(SessionStatus? status = null);
 
         ApiResult<SessionResp> GetSessionByActivityId(long activityId);
 

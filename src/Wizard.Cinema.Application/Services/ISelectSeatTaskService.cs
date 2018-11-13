@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Infrastructures;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
@@ -35,5 +36,12 @@ namespace Wizard.Cinema.Application.Services
         /// <param name="wizardId"></param>
         /// <returns></returns>
         ApiResult<IEnumerable<SelectSeatTaskResp>> GetByWizardId(long sessionId, long wizardId);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="overdueTime"></param>
+        /// <returns></returns>
+        ApiResult<IEnumerable<SelectSeatTaskResp>> GetOverdueTask(IEnumerable<long> sessionIds, DateTime overdueTime);
     }
 }

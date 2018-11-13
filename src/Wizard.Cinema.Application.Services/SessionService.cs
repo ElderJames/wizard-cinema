@@ -6,12 +6,11 @@ using Infrastructures;
 using Infrastructures.Attributes;
 using Infrastructures.Exceptions;
 using Microsoft.Extensions.Logging;
+using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Domain.Activity;
-using Wizard.Cinema.Domain.Activity.EnumTypes;
 using Wizard.Cinema.Domain.Cinema;
-using Wizard.Cinema.Domain.Cinema.EnumTypes;
 using Wizard.Cinema.Domain.Movie;
 using Wizard.Cinema.QueryServices;
 using Wizard.Cinema.QueryServices.DTOs.Cinema;
@@ -100,7 +99,7 @@ namespace Wizard.Cinema.Application.Services
                 if (activity == null)
                     return new ApiResult<bool>(ResultStatus.FAIL, "找不到所选的活动");
 
-                if (activity.Status != ActivityStatus.未启动)
+                if (activity.Status != Domain.Activity.EnumTypes.ActivityStatus.未启动)
                     return new ApiResult<bool>(ResultStatus.FAIL, "活动已启动，无法再修改了！");
 
                 session.Change(activity.DivisionId, activity.ActivityId, request.CinemaId, request.HallId, request.Seats.Select(x => x.SeatNo).ToArray());
@@ -191,7 +190,7 @@ namespace Wizard.Cinema.Application.Services
                     if (activity == null)
                         return new ApiResult<bool>(ResultStatus.FAIL, "所选场次对应活动不存在");
 
-                    if (activity.Status != ActivityStatus.报名结束)
+                    if (activity.Status != Domain.Activity.EnumTypes.ActivityStatus.报名结束)
                         return new ApiResult<bool>(ResultStatus.FAIL, $"活动{activity.Status.GetName()}");
 
                     IEnumerable<Applicant> applicants = _applicantRepository.QueryByActivityId(activity.ActivityId);
@@ -230,7 +229,7 @@ namespace Wizard.Cinema.Application.Services
                     return new ApiResult<bool>(ResultStatus.FAIL, "所选场次不存在");
 
                 IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.QueryBySessionId(sessionId);
-                if (tasks.Any(x => x.Status == SelectTaskStatus.已完成))
+                if (tasks.Any(x => x.Status == Domain.Cinema.EnumTypes.SelectTaskStatus.已完成))
                     return new ApiResult<bool>(ResultStatus.SUCCESS, "已有选座，不能停止");
 
                 session.Stop();
@@ -291,7 +290,7 @@ namespace Wizard.Cinema.Application.Services
             if (session == null)
                 return new ApiResult<bool>(ResultStatus.FAIL, "场次不存在");
 
-            IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.Query(sessionId, SelectTaskStatus.未排队);
+            IEnumerable<SelectSeatTask> tasks = _selectSeatTaskRepository.Query(sessionId, Domain.Cinema.EnumTypes.SelectTaskStatus.未排队);
 
             if (tasks.IsNullOrEmpty())
                 return new ApiResult<bool>(ResultStatus.FAIL, "没有为排队的任务");
@@ -304,6 +303,12 @@ namespace Wizard.Cinema.Application.Services
             _selectSeatTaskRepository.CheckIn(tasks);
 
             return new ApiResult<bool>(ResultStatus.SUCCESS, true);
+        }
+
+        public ApiResult<IEnumerable<SessionResp>> GetSessions(SessionStatus? status = null)
+        {
+            IEnumerable<SessionInfo> sessions = _sessionQueryService.Query(status);
+            return new ApiResult<IEnumerable<SessionResp>>(ResultStatus.SUCCESS, Mapper.Map<SessionInfo, SessionResp>(sessions));
         }
     }
 }
