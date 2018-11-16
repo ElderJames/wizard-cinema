@@ -76,4 +76,13 @@ export class SessionService {
                 })
         })
     }
+
+    exportTasks = (sessionId: number): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            this.http.get(`api/session/${sessionId}/export`)
+                .subscribe((res) => {
+                    resolve(res);
+                })
+        })
+    }
 }

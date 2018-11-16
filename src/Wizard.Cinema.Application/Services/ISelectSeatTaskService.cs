@@ -30,6 +30,13 @@ namespace Wizard.Cinema.Application.Services
         ApiResult<PagedData<SelectSeatTaskResp>> Search(SearchSelectSeatTaskReqs request);
 
         /// <summary>
+        /// 查询任务列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        ApiResult<IEnumerable<SelectSeatTaskResp>> GetTaskList(SearchSelectSeatTaskReqs request);
+
+        /// <summary>
         /// 查询个人状态
         /// </summary>
         /// <param name="sessionId"></param>

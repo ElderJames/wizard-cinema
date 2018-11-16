@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Wizard.Cinema.Admin.Helpers;
 using Wizard.Cinema.Admin.Models;
+using Wizard.Cinema.Application.DTOs.EnumTypes;
 using Wizard.Cinema.Application.DTOs.Request.Session;
 using Wizard.Cinema.Application.DTOs.Response;
 using Wizard.Cinema.Application.Services;
@@ -235,6 +238,43 @@ namespace Wizard.Cinema.Admin.Controllers
         {
             ApiResult<bool> result = _sessionService.Enqueue(sessionId);
             return Json(result);
+        }
+
+        [HttpGet("{sessionId}/export")]
+        public IActionResult ExportSeatResult(long sessionId)
+        {
+            var search = new SearchSelectSeatTaskReqs()
+            {
+                SessionId = sessionId,
+                Status = SelectTaskStatus.已完成,
+                PageSize = int.MaxValue
+            };
+            ApiResult<IEnumerable<SelectSeatTaskResp>> taskResult = _selectSeatTaskService.GetTaskList(search);
+
+            if (taskResult.Status != ResultStatus.SUCCESS)
+                return Ok(new ApiResult<object>(ResultStatus.FAIL, "队列查询异常"));
+
+            ApiResult<IEnumerable<ApplicantResp>> applicants = _activityService.GetApplicants(taskResult.Result.Select(x => x.WizardId).ToArray());
+            ApiResult<IEnumerable<SeatResp>> seatList = _seatService.GetBySession(sessionId);
+
+            byte[] buffer = ExcelHelper.ExportExcel(taskResult.Result.Select(x =>
+            {
+                ApplicantResp applicant = applicants.Result.FirstOrDefault(o => o.WizardId == x.WizardId);
+                IEnumerable<string> seats = seatList.Result.Where(o => x.SeatNos != null && o.SeatNo.IsIn(x.SeatNos))
+                    .Select(o => o.Position[0] + "排" + o.Position[1] + "坐");
+
+                return new
+                {
+                    PhoneSuffix = applicant.Mobile.Substring(7, 4),
+                    x.SerialNo,
+                    applicant?.Mobile,
+                    applicant?.RealName,
+                    x.Total,
+                    Seats = string.Join(",", seats)
+                };
+            }).OrderBy(x => x.PhoneSuffix));
+
+            return File(buffer, "application/ms-excel", $"导出座位表{DateTime.Now:yyyyMMddhhmmss}.xlsx");
         }
     }
 }

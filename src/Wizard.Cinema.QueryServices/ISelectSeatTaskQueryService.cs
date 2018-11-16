@@ -14,5 +14,7 @@ namespace Wizard.Cinema.QueryServices
         IEnumerable<SelectSeatTaskInfo> QueryByWizardId(long sessionId, long wizardId);
 
         IEnumerable<SelectSeatTaskInfo> QueryByOverdueBeginTime(IEnumerable<long> sessionIds, SelectTaskStatus status, DateTime overdueBeginTime);
+
+        IEnumerable<SelectSeatTaskInfo> Query(SearchSelectSeatTaskCondition condition);
     }
 }

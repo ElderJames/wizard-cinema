@@ -4,6 +4,10 @@
     <i class="anticon anticon-plus"></i>
     <span>全部排队</span>
   </button>
+  <button nz-button down-file http-url="api/session/{{sessionId}}/export" [nzType]="'primary'" (click)="export()">
+    <i class="anticon anticon-plus"></i>
+    <span>导出</span>
+  </button>
   <simple-table #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (checkboxChange)="checkboxChange($event)"
     (filterChange)="getData()" (change)="change()" [ps]="q.ps" [pi]="q.pi" [frontPagination]="false">
     <ng-template st-row="status" let-i>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -13,9 +16,11 @@ namespace Wizard.Cinema.Admin.Helpers
 {
     public static class ExcelHelper
     {
-        /// <summary> 导入Excel </summary>
+        /// <summary>
+        /// 导入Excel
+        /// </summary>
         /// <param name="file">导入文件</param>
-        /// <returns> </returns>
+        /// <returns></returns>
         public static List<T> InputExcel<T>(IFormFile file) where T : new()
         {
             var list = new List<T>();
@@ -102,6 +107,79 @@ namespace Wizard.Cinema.Admin.Helpers
 
                 return list;
             }
+        }
+
+        public static byte[] ExportExcel<T>(IEnumerable<T> list)
+        {
+            PropertyInfo[] propertyList = typeof(T).GetProperties();
+
+            IWorkbook workbook = new HSSFWorkbook();
+
+            ISheet sheet = workbook.CreateSheet();
+            IRow headerRow = sheet.CreateRow(0);
+            for (int i = 0; i < propertyList.Length; i++)
+            {
+                PropertyInfo property = propertyList[i];
+                string column = property.GetCustomAttribute<ColumnAttribute>()?.Name ?? property.Name;
+
+                headerRow.CreateCell(i).SetCellValue(column);
+            }
+
+            for (int i = 0; i < list.Count(); i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+                var obj = list.ElementAt(i);
+                for (int j = 0; j < propertyList.Length; j++)
+                {
+                    PropertyInfo property = propertyList[j];
+                    object value = property.GetValue(obj);
+                    Type propertyType = property.PropertyType;
+
+                    if (propertyType == typeof(string))
+                    {
+                        row.CreateCell(j).SetCellValue(value.ToString());
+                    }
+                    else if (propertyType == typeof(DateTime))
+                    {
+                        var pdt = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
+                        row.CreateCell(j).SetCellValue(pdt);
+                    }
+                    else if (propertyType == typeof(bool))
+                    {
+                        bool pb = Convert.ToBoolean(value);
+                        row.CreateCell(j).SetCellValue(pb);
+                    }
+                    else if (propertyType == typeof(short))
+                    {
+                        short pi16 = Convert.ToInt16(value);
+                        row.CreateCell(j).SetCellValue(pi16);
+                    }
+                    else if (propertyType == typeof(int))
+                    {
+                        int pi32 = Convert.ToInt32(value);
+                        row.CreateCell(j).SetCellValue(pi32);
+                    }
+                    else if (propertyType == typeof(long))
+                    {
+                        long pi64 = Convert.ToInt64(value);
+                        row.CreateCell(j).SetCellValue(pi64);
+                    }
+                    else if (propertyType == typeof(byte))
+                    {
+                        byte pb = Convert.ToByte(value);
+                        row.CreateCell(j).SetCellValue(pb);
+                    }
+                }
+            }
+
+            byte[] buffer = new byte[1024 * 5];
+            using (var ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                buffer = ms.GetBuffer();
+                ms.Close();
+            }
+            return buffer;
         }
     }
 }

@@ -135,4 +135,8 @@ export class SessionTaskComponent implements OnInit {
     await this.sessionSrv.enqueueTasks(this.sessionId);
     await this.getData();
   }
+
+  async export() {
+    await this.sessionSrv.exportTasks(this.sessionId);
+  }
 }

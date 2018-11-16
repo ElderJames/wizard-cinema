@@ -74,12 +74,12 @@
         span(v-if='taskInfo.unfinishedTasks.length>0') 
           | 目前{{canSelct?"可以选座":"还在等待中"}}，以下是选座注意事项：
           | 您一共需要选{{taskInfo.unfinishedTasks.length}}次：
-          p(v-for="(task, index) in taskInfo.unfinishedTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位
+          p(v-for="(task, index) in taskInfo.unfinishedTasks") {{index+1}}，序号{{task.serialNo}}，可以选{{task.total}}个座位,{{task.status}}
         span(v-else)
           | 您没有需要选的座位了，以下是选座情况：
           p(v-for="(task, index) in taskInfo.myTasks") {{index+1}}，
-            span(v-if="task.seatNos!=null&&task.seatNos.length>0") {{task.endTime}} --&gt;
-              span(v-for="seatNo in task.seatNos") 已选 [{{getSeatInfo(seatNo)}}]
+            span(v-if="task.seatNos!=null&&task.seatNos.length>0") {{task.endTime}} --&gt; 已选
+              span(v-for="seatNo in task.seatNos") [{{getSeatInfo(seatNo)}}]
             span(v-else) {{task.endTime}} --&gt; {{task.status}}
 </template>
 
