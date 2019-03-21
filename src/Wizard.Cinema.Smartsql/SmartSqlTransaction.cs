@@ -5,11 +5,11 @@ using SmartSql.Abstractions;
 
 namespace Wizard.Cinema.Smartsql
 {
-    public class SmartSqlTransactionRepository : ITransactionRepository
+    public class SmartSqlTransaction : ITransactionRepository
     {
         private readonly ITransaction _transaction;
 
-        public SmartSqlTransactionRepository(ITransaction transaction)
+        public SmartSqlTransaction(ITransaction transaction)
         {
             this._transaction = transaction;
         }
